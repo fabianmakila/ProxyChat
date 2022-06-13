@@ -1,5 +1,5 @@
 plugins {
-    id("com.diffplug.spotless") version "6.6.1"
+    id("com.diffplug.spotless") version "6.7.2"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("net.kyori.indra") version "2.1.1"
     java
