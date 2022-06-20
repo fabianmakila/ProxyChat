@@ -27,6 +27,7 @@ public final class ChannelRegistry {
         this.proxyChat = proxyChat;
         this.configChannelDir = proxyChat.dataDirectory().resolve("channels");
 
+        saveExampleConfigChannel();
         loadConfigChannels();
     }
 
@@ -56,7 +57,7 @@ public final class ChannelRegistry {
             paths.forEach(path -> {
                 final String fileName = path.getFileName().toString();
 
-                if (!fileName.endsWith(".conf")) {
+                if (!fileName.endsWith(".conf") || fileName.equals("example.conf")) {
                     return;
                 }
 
@@ -72,6 +73,20 @@ public final class ChannelRegistry {
         } catch (final IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void saveExampleConfigChannel() {
+        ConfigLoader<ConfigChannel> loader = new ConfigLoader<>(
+                ConfigChannel.class,
+                this.configChannelDir.resolve("example.conf"),
+                options -> options.header("ProxyChat example channel configuration.")
+        );
+        try {
+            loader.save(new ConfigChannel());
+        } catch (ConfigurateException e) {
+            throw new IllegalStateException("Failed to save example channel config", e);
+        }
+
     }
 
     private ConfigLoader<ConfigChannel> loader(Path path) {
