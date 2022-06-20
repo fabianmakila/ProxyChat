@@ -11,10 +11,13 @@ import java.util.List;
 public final class ConfigChannel implements Channel {
 
     @Comment("The channel's name, visible in commands.")
-    private String name;
-    private String format = "<sender> <message>";
-    private String commandName;
-    private List<String> commandAliases = new ArrayList<>();
+    private String name = "example";
+    @Comment("Chat format for the channel.\nPlaceholders: <sender>, <message>")
+    private String format = "[Example] <sender>: <message>";
+    @Comment("The command used to interact with the channel.")
+    private String commandName = "example";
+    @Comment("Additional command aliases.")
+    private List<String> commandAliases = List.of("example-alias1", "example-alias2");
 
     public ConfigChannel() {
     }
