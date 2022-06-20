@@ -33,6 +33,16 @@
         <module name="ProxyChat.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="11">
+      <module name="ProxyChat.proxychat-api" target="11" />
+      <module name="ProxyChat.proxychat-api.main" target="11" />
+      <module name="ProxyChat.proxychat-api.test" target="11" />
+      <module name="ProxyChat.proxychat-common" target="11" />
+      <module name="ProxyChat.proxychat-common.main" target="11" />
+      <module name="ProxyChat.proxychat-common.test" target="11" />
+      <module name="ProxyChat.proxychat-velocity" target="11" />
+      <module name="ProxyChat.proxychat-velocity.main" target="11" />
+      <module name="ProxyChat.proxychat-velocity.test" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -72,7 +72,7 @@ public final class ProxyChat {
         this.messageService = new MessageService(this);
 
         this.commandManager = new VelocityCommandManager<>(this.server.getPluginManager().ensurePluginContainer(this), this.server, CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
-        this.commandManager.setCommandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
+        this.commandManager.commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
         this.commandManager.registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
 
         registerCommands();
