@@ -40,7 +40,7 @@ spotless {
         importOrder()
         indentWithSpaces(4)
         trimTrailingWhitespace()
-        //removeUnusedImports()
+        removeUnusedImports()
     }
 }
 
