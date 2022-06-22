@@ -8,14 +8,19 @@ import fi.fabianadrian.proxychat.format.FormatComponentProvider;
 import fi.fabianadrian.proxychat.locale.Messages;
 import fi.fabianadrian.proxychat.user.User;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class MessageService {
 
     private final ProxyChat proxyChat;
     private final FormatComponentProvider componentProvider;
+    private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     public MessageService(ProxyChat proxyChat) {
         this.proxyChat = proxyChat;
@@ -68,7 +73,7 @@ public final class MessageService {
     }
 
     public void sendChannelMessage(Channel channel, Player sender, String message) {
-        Component component = MiniMessage.miniMessage().deserialize(
+        Component component = miniMessage.deserialize(
                 channel.format(),
                 TagResolver.resolver(
                         Placeholder.unparsed("sender", sender.getUsername()),
@@ -80,5 +85,18 @@ public final class MessageService {
             if (!user.player().hasPermission(channel.permission())) continue;
             user.player().sendMessage(sender, component);
         }
+    }
+
+    public void sendWelcomeMessage(Player player) {
+        List<String> rawLines = this.proxyChat.configManager().mainConfig().welcomeMessage();
+
+        if (rawLines.isEmpty()) return;
+
+        List<Component> lines = new ArrayList<>();
+        rawLines.forEach(line -> lines.add(miniMessage.deserialize(line, TagResolver.resolver(
+                Placeholder.unparsed("name", player.getUsername())
+        ))));
+
+        player.sendMessage(Component.join(JoinConfiguration.newlines(), lines));
     }
 }

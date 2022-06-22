@@ -143,6 +143,6 @@ public final class ProxyChat {
 
     private void registerListeners() {
         this.server.getEventManager().register(this, new ChatListener(this));
-        this.server.getEventManager().register(this, new LoginDisconnectListener(this.userManager));
+        this.server.getEventManager().register(this, new LoginDisconnectListener(this));
     }
 }

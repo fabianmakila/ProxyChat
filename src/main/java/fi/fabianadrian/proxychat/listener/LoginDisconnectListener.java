@@ -3,24 +3,28 @@ package fi.fabianadrian.proxychat.listener;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
+import com.velocitypowered.api.proxy.Player;
+import fi.fabianadrian.proxychat.ProxyChat;
 import fi.fabianadrian.proxychat.user.UserManager;
 
 public final class LoginDisconnectListener {
 
-    private final UserManager userManager;
+    private final ProxyChat proxyChat;
 
-    public LoginDisconnectListener(UserManager userManager) {
-        this.userManager = userManager;
+    public LoginDisconnectListener(ProxyChat proxyChat) {
+        this.proxyChat = proxyChat;
     }
 
     @Subscribe
     public void onLogin(PostLoginEvent event) {
-        this.userManager.loadUser(event.getPlayer());
+        Player player = event.getPlayer();
+        this.proxyChat.userManager().loadUser(player);
+        this.proxyChat.messageService().sendWelcomeMessage(player);
     }
 
     @Subscribe
     public void onDisconnect(DisconnectEvent event) {
         if (event.getLoginStatus() != DisconnectEvent.LoginStatus.SUCCESSFUL_LOGIN) return;
-        this.userManager.unloadUser(event.getPlayer().getUniqueId());
+        this.proxyChat.userManager().unloadUser(event.getPlayer().getUniqueId());
     }
 }
