@@ -52,7 +52,7 @@ public final class FormatComponentProvider {
 
     public Component messageSpyComponent(String senderName, String receiverName, String message) {
         return this.miniMessage.deserialize(
-                this.mainConfig.formats().msg(),
+                this.mainConfig.formats().msgSpy(),
                 TagResolver.resolver(
                         Placeholder.unparsed("sender", senderName),
                         Placeholder.unparsed("receiver", receiverName),
