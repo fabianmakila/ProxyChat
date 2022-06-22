@@ -1,14 +1,27 @@
 package fi.fabianadrian.proxychat.config;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+
+import java.util.List;
 
 @ConfigSerializable
 public final class ProxyChatConfig {
 
     private FormatSection formats = new FormatSection();
+    @Comment("Placeholders: <name>")
+    private List<String> welcomeMessage = List.of(
+            "<rainbow>----------------------------------------</rainbow>",
+            "        Welcome to our network, <name>!",
+            "<rainbow>----------------------------------------</rainbow>"
+    );
 
     public FormatSection formats() {
         return this.formats;
+    }
+
+    public List<String> welcomeMessage() {
+        return this.welcomeMessage;
     }
 
     @ConfigSerializable
