@@ -23,6 +23,7 @@ import fi.fabianadrian.proxychat.locale.TranslationManager;
 import fi.fabianadrian.proxychat.service.AnnouncementService;
 import fi.fabianadrian.proxychat.service.MessageService;
 import fi.fabianadrian.proxychat.user.UserManager;
+import org.bstats.velocity.Metrics;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -41,6 +42,7 @@ public final class ProxyChat {
     private final ProxyServer server;
     private final Logger logger;
     private final Path dataDirectory;
+    private final Metrics.Factory metricsFactory;
     private VelocityCommandManager<CommandSource> commandManager;
     private ConfigManager configManager;
     private FormatComponentProvider formatComponentProvider;
@@ -51,10 +53,11 @@ public final class ProxyChat {
     private AnnouncementService announcementService;
 
     @Inject
-    public ProxyChat(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
+    public ProxyChat(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory, Metrics.Factory metricsFactory) {
         this.server = server;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
+        this.metricsFactory = metricsFactory;
     }
 
     @Subscribe
@@ -84,6 +87,9 @@ public final class ProxyChat {
         this.announcementService.reload();
 
         registerListeners();
+
+        // bStats
+        metricsFactory.make(this, 15557);
     }
 
     public Logger logger() {

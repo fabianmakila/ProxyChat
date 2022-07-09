@@ -27,6 +27,7 @@ dependencies {
     implementation("net.kyori:adventure-text-minimessage:4.11.0")
     implementation("org.spongepowered:configurate-hocon:4.1.2")
     implementation("org.spongepowered:configurate-gson:4.1.2")
+    implementation("org.bstats:bstats-velocity:3.0.0")
 }
 
 indra {
@@ -50,7 +51,8 @@ tasks {
         sequenceOf(
             "cloud.commandframework",
             "net.kyori.adventure.text.minimessage",
-            "org.spongepowered.configurate"
+            "org.spongepowered.configurate",
+            "org.bstats"
         ).forEach { pkg ->
             relocate(pkg, "${rootProject.group}.${rootProject.name.toLowerCase()}.lib.$pkg")
         }
