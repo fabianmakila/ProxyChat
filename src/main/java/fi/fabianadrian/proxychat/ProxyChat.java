@@ -5,6 +5,7 @@ import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.velocity.VelocityCommandManager;
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
@@ -148,7 +149,10 @@ public final class ProxyChat {
     }
 
     private void registerListeners() {
-        this.server.getEventManager().register(this, new ChatListener(this));
-        this.server.getEventManager().register(this, new LoginDisconnectListener(this));
+        EventManager manager = this.server.getEventManager();
+        Stream.of(
+                new ChatListener(this),
+                new LoginDisconnectListener(this)
+        ).forEach(listener -> manager.register(this, listener));
     }
 }
