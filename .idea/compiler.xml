@@ -30,19 +30,20 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.kyori/examination-api/1.3.0/8a2d185275307f1e2ef2adf7152b9a0d1d44c30b/examination-api-1.3.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar" />
         </processorPath>
-        <module name="ProxyChat.main" />
+        <module name="ProxyChat.plugin.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11">
-      <module name="ProxyChat.proxychat-api" target="11" />
-      <module name="ProxyChat.proxychat-api.main" target="11" />
-      <module name="ProxyChat.proxychat-api.test" target="11" />
+      <module name="ProxyChat.main" target="17" />
+      <module name="ProxyChat.proxychat-api.main" target="17" />
+      <module name="ProxyChat.proxychat-api.test" target="17" />
       <module name="ProxyChat.proxychat-common" target="11" />
       <module name="ProxyChat.proxychat-common.main" target="11" />
       <module name="ProxyChat.proxychat-common.test" target="11" />
       <module name="ProxyChat.proxychat-velocity" target="11" />
       <module name="ProxyChat.proxychat-velocity.main" target="11" />
       <module name="ProxyChat.proxychat-velocity.test" target="11" />
+      <module name="ProxyChat.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
