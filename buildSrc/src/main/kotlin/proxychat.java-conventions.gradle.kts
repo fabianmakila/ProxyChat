@@ -21,7 +21,7 @@ indra {
 
 spotless {
     java {
-        importOrder()
+        //importOrder() - Broken currently
         indentWithSpaces(4)
         trimTrailingWhitespace()
         removeUnusedImports()
