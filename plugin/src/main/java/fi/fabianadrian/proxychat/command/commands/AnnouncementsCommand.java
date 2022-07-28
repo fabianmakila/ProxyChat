@@ -27,12 +27,7 @@ public final class AnnouncementsCommand extends AbstractCommand {
     private void executeBroadcast(CommandContext<CommandSource> ctx) {
         Optional<Boolean> visibleOptional = ctx.getOptional("visible");
         User user = this.proxyChat.userManager().user((Player) ctx.getSender());
-        boolean visible;
-        if (visibleOptional.isEmpty()) {
-            visible = !user.announcements();
-        } else {
-            visible = visibleOptional.get();
-        }
+        boolean visible = visibleOptional.orElseGet(() -> !user.announcements());
 
         user.announcements(visible);
 
