@@ -12,7 +12,7 @@ import java.util.UUID;
 @ConfigSerializable
 public final class User {
 
-    private transient Player player;
+    private final transient Player player;
 
     private boolean announcements = true;
     private boolean messages = true;
@@ -22,12 +22,19 @@ public final class User {
 
     private transient String selectedChannel;
 
-    public Player player() {
-        return this.player;
+    public User(Player player) {
+        this.player = player;
     }
 
-    public void player(Player player) {
-        this.player = player;
+    public void populate(User deserialized) {
+        this.announcements = deserialized.announcements;
+        this.messages = deserialized.messages;
+        this.spying = deserialized.spying;
+        this.mutedChannels = deserialized.mutedChannels;
+    }
+
+    public Player player() {
+        return this.player;
     }
 
     public boolean spying() {

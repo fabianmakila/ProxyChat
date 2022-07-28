@@ -6,7 +6,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.ProxyChat;
 import fi.fabianadrian.proxychat.api.channel.Channel;
-import fi.fabianadrian.proxychat.config.loader.ConfigLoader;
+import fi.fabianadrian.proxychat.config.ConfigLoader;
 import fi.fabianadrian.proxychat.locale.Messages;
 import fi.fabianadrian.proxychat.user.User;
 import org.spongepowered.configurate.ConfigurateException;

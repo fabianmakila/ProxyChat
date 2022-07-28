@@ -1,10 +1,12 @@
 package fi.fabianadrian.proxychat.user;
 
+import com.google.gson.Gson;
 import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.ProxyChat;
-import fi.fabianadrian.proxychat.config.loader.UserConfigLoader;
-import org.spongepowered.configurate.ConfigurateException;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.UUID;
 
 public final class UserManager {
 
+    private final Gson gson = new Gson();
     private final ProxyChat proxyChat;
     private final Path userDataDirectory;
     private final Map<UUID, User> userMap = new HashMap<>();
@@ -23,30 +26,29 @@ public final class UserManager {
     }
 
     public void loadUser(Player player) {
-        UserConfigLoader loader = loader(player.getUniqueId());
-        try {
-            User user = loader.load();
-            user.player(player);
-            this.userMap.put(player.getUniqueId(), user);
-        } catch (ConfigurateException e) {
-            this.proxyChat.logger().warn("Failed to load data for user with UUID: " + player.getUniqueId(), e);
+        Path file = this.userFile(player.getUniqueId());
+        User user = new User(player);
+        if (Files.exists(file)) {
+            try (BufferedReader reader = Files.newBufferedReader(file)) {
+                User deserialized = this.gson.fromJson(reader, User.class);
+                user.populate(deserialized);
+            } catch (Exception e) {
+                this.proxyChat.logger().warn("Failed to load data for user with UUID: " + player.getUniqueId(), e);
+            }
         }
-    }
-
-    private UserConfigLoader loader(UUID uuid) {
-        //ChannelSerializer channelSerializer = new ChannelSerializer(this.plugin.channelRegistry());
-        return new UserConfigLoader(
-                userDataDirectory.resolve(uuid + ".json")
-        );
     }
 
     private void saveUser(final User user) {
-        UserConfigLoader loader = this.loader(user.player().getUniqueId());
-        try {
-            loader.save(user);
-        } catch (ConfigurateException e) {
+        Path file = this.userFile(user.player().getUniqueId());
+        try (BufferedWriter writer = Files.newBufferedWriter(file)) {
+            this.gson.toJson(user, writer);
+        } catch (Exception e) {
             this.proxyChat.logger().warn("Failed to save data for user with UUID: " + user.player().getUniqueId(), e);
         }
+    }
+
+    private Path userFile(UUID uuid) {
+        return this.userDataDirectory.resolve(uuid + ".json");
     }
 
     public User user(UUID uuid) {

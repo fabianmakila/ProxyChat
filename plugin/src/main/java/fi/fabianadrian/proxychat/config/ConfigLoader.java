@@ -1,4 +1,4 @@
-package fi.fabianadrian.proxychat.config.loader;
+package fi.fabianadrian.proxychat.config;
 
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;

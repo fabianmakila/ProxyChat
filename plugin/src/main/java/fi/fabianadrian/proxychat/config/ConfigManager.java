@@ -1,7 +1,6 @@
 package fi.fabianadrian.proxychat.config;
 
 import fi.fabianadrian.proxychat.ProxyChat;
-import fi.fabianadrian.proxychat.config.loader.ConfigLoader;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.nio.file.Path;
