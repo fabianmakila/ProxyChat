@@ -31,10 +31,6 @@ public final class AnnouncementsCommand extends AbstractCommand {
 
         user.announcements(visible);
 
-        if (visible) {
-            ctx.getSender().sendMessage(Messages.COMMAND_ANNOUNCEMENTS_ON);
-        } else {
-            ctx.getSender().sendMessage(Messages.COMMAND_ANNOUNCEMENTS_OFF);
-        }
+        ctx.getSender().sendMessage(visible ? Messages.COMMAND_ANNOUNCEMENTS_ON : Messages.COMMAND_ANNOUNCEMENTS_OFF);
     }
 }
