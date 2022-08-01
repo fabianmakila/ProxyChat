@@ -36,6 +36,8 @@ public final class UserManager {
                 this.proxyChat.logger().warn("Failed to load data for user with UUID: " + player.getUniqueId(), e);
             }
         }
+
+        userMap.put(player.getUniqueId(), user);
     }
 
     private void saveUser(final User user) {
