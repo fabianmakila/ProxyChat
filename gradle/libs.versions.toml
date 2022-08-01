@@ -1,0 +1,18 @@
+[versions]
+adventure = "4.11.0"
+bstats = "3.0.0"
+cloud = "1.7.0"
+configurate = "4.1.2"
+gson = "2.9.0"
+velocity = "3.1.1"
+
+[libraries]
+bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats" }
+cloud-velocity = { module = "cloud.commandframework:cloud-velocity", version.ref = "cloud" }
+configurate-hocon = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure"}
+velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
+
+[plugins]
+shadow = "com.github.johnrengelman.shadow:7.1.2"

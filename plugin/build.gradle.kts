@@ -1,21 +1,21 @@
 plugins {
     id("proxychat.java-conventions")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    alias(libs.plugins.shadow)
 }
 
 dependencies {
     api(projects.api)
 
-    //Velocity
-    compileOnly("com.velocitypowered:velocity-api:3.1.1")
-    annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
+    // Velocity
+    compileOnly(libs.velocity.api)
+    annotationProcessor(libs.velocity.api)
 
-    //Libraries
-    implementation("com.google.code.gson:gson:2.9.0")
-    implementation("cloud.commandframework:cloud-velocity:1.7.0")
-    implementation("net.kyori:adventure-text-minimessage:4.11.0")
-    implementation("org.spongepowered:configurate-hocon:4.1.2")
-    implementation("org.bstats:bstats-velocity:3.0.0")
+    // Libraries
+    implementation(libs.bstats.velocity)
+    implementation(libs.cloud.velocity)
+    implementation(libs.configurate.hocon)
+    implementation(libs.gson)
+    implementation(libs.minimessage)
 }
 
 tasks {
