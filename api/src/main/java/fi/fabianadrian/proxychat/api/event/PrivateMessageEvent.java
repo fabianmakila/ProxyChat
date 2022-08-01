@@ -2,30 +2,29 @@ package fi.fabianadrian.proxychat.api.event;
 
 import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.proxy.Player;
-import fi.fabianadrian.proxychat.api.channel.Channel;
 
 import java.util.Objects;
 
-public final class ChannelMessageEvent implements ResultedEvent<ResultedEvent.GenericResult> {
+public final class PrivateMessageEvent implements ResultedEvent<ResultedEvent.GenericResult> {
 
-    private final Channel channel;
     private final Player sender;
+    private final Player recipient;
     private final String message;
 
-    private GenericResult result = GenericResult.allowed();
+    private ResultedEvent.GenericResult result = ResultedEvent.GenericResult.allowed();
 
-    public ChannelMessageEvent(Channel channel, Player sender, String message) {
-        this.channel = channel;
+    public PrivateMessageEvent(Player sender, Player recipient, String message) {
         this.sender = sender;
+        this.recipient = recipient;
         this.message = message;
-    }
-
-    public Channel channel() {
-        return this.channel;
     }
 
     public Player sender() {
         return this.sender;
+    }
+
+    public Player recipient() {
+        return this.recipient;
     }
 
     public String message() {
@@ -38,7 +37,7 @@ public final class ChannelMessageEvent implements ResultedEvent<ResultedEvent.Ge
     }
 
     @Override
-    public void setResult(GenericResult result) {
+    public void setResult(ResultedEvent.GenericResult result) {
         this.result = Objects.requireNonNull(result);
     }
 }
