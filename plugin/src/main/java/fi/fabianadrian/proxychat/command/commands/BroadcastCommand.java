@@ -19,7 +19,7 @@ public final class BroadcastCommand extends AbstractCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("broadcast", "bc")
-                .permission(CommandPermissions.BROADCAST)
+                .permission(CommandPermissions.BROADCAST.permission())
                 .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
                 .handler(this::executeBroadcast);
 

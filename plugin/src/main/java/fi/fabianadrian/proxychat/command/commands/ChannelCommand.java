@@ -26,20 +26,23 @@ public final class ChannelCommand extends AbstractCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("channel", "ch")
-                .permission(CommandPermissions.CHANNEL);
+                .permission(CommandPermissions.CHANNEL.permission());
 
         this.commandManager.command(builder.literal("list")
+                .permission(CommandPermissions.CHANNEL_LIST.permission())
                 .handler(this::executeList)
         );
 
         this.commandManager.command(builder.literal("mute")
                 .argument(ChannelArgument.of("channel"))
+                .permission(CommandPermissions.CHANNEL_MUTE.permission())
                 .senderType(Player.class)
                 .handler(this::executeMute)
         );
 
         this.commandManager.command(builder.literal("unmute")
                 .argument(ChannelArgument.of("channel"))
+                .permission(CommandPermissions.CHANNEL_MUTE.permission())
                 .senderType(Player.class)
                 .handler(this::executeUnmute)
         );

@@ -15,7 +15,7 @@ public final class ProxyChatCommand extends AbstractCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("proxychat")
-                .permission(CommandPermissions.PROXYCHAT)
+                .permission(CommandPermissions.PROXYCHAT.permission())
                 .literal("reload")
                 .handler(this::executeReload);
 

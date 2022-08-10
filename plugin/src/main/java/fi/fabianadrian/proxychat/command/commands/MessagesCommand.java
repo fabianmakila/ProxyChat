@@ -20,10 +20,17 @@ public class MessagesCommand extends AbstractCommand {
 
     @Override
     public void register() {
-        var builder = this.commandManager.commandBuilder("messages", "msgs").senderType(Player.class);
+        var builder = this.commandManager.commandBuilder("messages", "msgs").permission(CommandPermissions.MESSAGES.permission()).senderType(Player.class);
 
-        this.commandManager.command(builder.literal("spy").permission(CommandPermissions.MESSAGES_SPY).argument(BooleanArgument.optional("enabled")).handler(this::executeSpy));
-        this.commandManager.command(builder.literal("toggle").permission(CommandPermissions.MESSAGES_TOGGLE).argument(BooleanArgument.optional("enabled")).handler(this::executeToggle));
+        this.commandManager.command(builder.literal("spy")
+                .permission(CommandPermissions.MESSAGES_SPY.permission())
+                .argument(BooleanArgument.optional("enabled"))
+                .handler(this::executeSpy));
+
+        this.commandManager.command(builder.literal("toggle")
+                .permission(CommandPermissions.MESSAGES_TOGGLE.permission())
+                .argument(BooleanArgument.optional("enabled"))
+                .handler(this::executeToggle));
     }
 
     private void executeSpy(CommandContext<CommandSource> ctx) {

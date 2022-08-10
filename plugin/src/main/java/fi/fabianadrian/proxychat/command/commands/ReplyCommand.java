@@ -21,7 +21,7 @@ public final class ReplyCommand extends AbstractCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("reply", "r")
-                .permission(CommandPermissions.MESSAGE)
+                .permission(CommandPermissions.MESSAGE.permission())
                 .senderType(Player.class)
                 .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
                 .handler(this::executeReply);

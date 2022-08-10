@@ -17,7 +17,7 @@ public final class MessageCommand extends AbstractCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("message", "msg", "dm")
-                .permission(CommandPermissions.MESSAGE)
+                .permission(CommandPermissions.MESSAGE.permission())
                 .senderType(Player.class)
                 .argument(PlayerArgument.of("receiver"))
                 .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
