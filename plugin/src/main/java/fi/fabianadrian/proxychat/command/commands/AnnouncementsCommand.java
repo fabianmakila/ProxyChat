@@ -20,7 +20,7 @@ public final class AnnouncementsCommand extends AbstractCommand {
 
     @Override
     public void register() {
-        var builder = this.commandManager.commandBuilder("announcements").permission(CommandPermissions.BROADCAST);
+        var builder = this.commandManager.commandBuilder("announcements").permission(CommandPermissions.ANNOUNCEMENTS);
         this.commandManager.command(builder.argument(BooleanArgument.optional("visible")).senderType(Player.class).handler(this::executeBroadcast));
     }
 
