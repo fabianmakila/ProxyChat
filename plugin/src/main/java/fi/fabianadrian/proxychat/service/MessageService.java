@@ -38,7 +38,7 @@ public final class MessageService {
             return;
         }
 
-        if (!sender.hasPermission(CommandPermissions.MESSAGES_TOGGLE_OVERRIDE)) {
+        if (!sender.hasPermission(CommandPermissions.MESSAGES_TOGGLE_OVERRIDE.permission())) {
             if (!senderUser.messages()) {
                 sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_SELF_DISABLE);
                 return;
