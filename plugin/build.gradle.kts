@@ -4,8 +4,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.api)
-
     // Velocity
     compileOnly(libs.velocity.api)
     annotationProcessor(libs.velocity.api)
