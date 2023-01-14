@@ -2,7 +2,6 @@ package fi.fabianadrian.proxychat.locale;
 
 import com.google.common.collect.Maps;
 import fi.fabianadrian.proxychat.ProxyChat;
-import fi.fabianadrian.proxychat.utils.MoreFiles;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
@@ -11,6 +10,7 @@ import net.kyori.adventure.translation.Translator;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -32,7 +32,7 @@ public final class TranslationManager {
         this.translationsDirectory = this.proxyChat.dataDirectory().resolve("translations");
 
         try {
-            MoreFiles.createDirectoryIfNotExists(this.translationsDirectory);
+            createDirectoryIfNotExists(this.translationsDirectory);
         } catch (IOException ignored) {
         }
     }
@@ -141,5 +141,19 @@ public final class TranslationManager {
         this.registry.registerAll(locale, bundle, false);
         this.installed.add(locale);
         return Maps.immutableEntry(locale, bundle);
+    }
+
+    private Path createDirectoryIfNotExists(Path path) throws IOException {
+        if (Files.exists(path) && (Files.isDirectory(path) || Files.isSymbolicLink(path))) {
+            return path;
+        }
+
+        try {
+            Files.createDirectory(path);
+        } catch (FileAlreadyExistsException e) {
+            // ignore
+        }
+
+        return path;
     }
 }
