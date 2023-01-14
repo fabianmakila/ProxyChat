@@ -5,7 +5,7 @@ import cloud.commandframework.context.CommandContext;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.ProxyChat;
-import fi.fabianadrian.proxychat.command.AbstractCommand;
+import fi.fabianadrian.proxychat.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.command.CommandPermissions;
 import fi.fabianadrian.proxychat.locale.Messages;
 import fi.fabianadrian.proxychat.user.User;
@@ -13,7 +13,7 @@ import fi.fabianadrian.proxychat.user.User;
 import java.util.Optional;
 import java.util.UUID;
 
-public final class ReplyCommand extends AbstractCommand {
+public final class ReplyCommand extends ProxyChatCommand {
     public ReplyCommand(ProxyChat proxyChat) {
         super(proxyChat);
     }

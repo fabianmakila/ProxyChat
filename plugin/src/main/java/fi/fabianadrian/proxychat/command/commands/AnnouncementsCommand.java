@@ -5,14 +5,14 @@ import cloud.commandframework.context.CommandContext;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.ProxyChat;
-import fi.fabianadrian.proxychat.command.AbstractCommand;
+import fi.fabianadrian.proxychat.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.command.CommandPermissions;
 import fi.fabianadrian.proxychat.locale.Messages;
 import fi.fabianadrian.proxychat.user.User;
 
 import java.util.Optional;
 
-public final class AnnouncementsCommand extends AbstractCommand {
+public final class AnnouncementsCommand extends ProxyChatCommand {
 
     public AnnouncementsCommand(ProxyChat proxyChat) {
         super(proxyChat);

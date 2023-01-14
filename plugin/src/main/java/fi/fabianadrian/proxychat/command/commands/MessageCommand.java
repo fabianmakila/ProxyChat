@@ -6,10 +6,10 @@ import cloud.commandframework.velocity.arguments.PlayerArgument;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.ProxyChat;
-import fi.fabianadrian.proxychat.command.AbstractCommand;
+import fi.fabianadrian.proxychat.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.command.CommandPermissions;
 
-public final class MessageCommand extends AbstractCommand {
+public final class MessageCommand extends ProxyChatCommand {
     public MessageCommand(ProxyChat proxyChat) {
         super(proxyChat);
     }

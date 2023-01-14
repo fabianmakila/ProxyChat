@@ -5,7 +5,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.ProxyChat;
 import fi.fabianadrian.proxychat.api.channel.Channel;
-import fi.fabianadrian.proxychat.command.AbstractCommand;
+import fi.fabianadrian.proxychat.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.command.CommandPermissions;
 import fi.fabianadrian.proxychat.command.argument.ChannelArgument;
 import fi.fabianadrian.proxychat.locale.Messages;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public final class ChannelCommand extends AbstractCommand {
+public final class ChannelCommand extends ProxyChatCommand {
     public ChannelCommand(ProxyChat proxyChat) {
         super(proxyChat);
     }

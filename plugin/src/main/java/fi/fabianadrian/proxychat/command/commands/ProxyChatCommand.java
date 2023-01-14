@@ -3,11 +3,10 @@ package fi.fabianadrian.proxychat.command.commands;
 import cloud.commandframework.context.CommandContext;
 import com.velocitypowered.api.command.CommandSource;
 import fi.fabianadrian.proxychat.ProxyChat;
-import fi.fabianadrian.proxychat.command.AbstractCommand;
 import fi.fabianadrian.proxychat.command.CommandPermissions;
 import fi.fabianadrian.proxychat.locale.Messages;
 
-public final class ProxyChatCommand extends AbstractCommand {
+public final class ProxyChatCommand extends fi.fabianadrian.proxychat.command.ProxyChatCommand {
     public ProxyChatCommand(ProxyChat proxyChat) {
         super(proxyChat);
     }

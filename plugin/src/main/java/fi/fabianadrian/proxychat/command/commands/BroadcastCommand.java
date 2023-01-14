@@ -5,10 +5,10 @@ import cloud.commandframework.context.CommandContext;
 import com.velocitypowered.api.command.CommandSource;
 import fi.fabianadrian.proxychat.command.CommandPermissions;
 import fi.fabianadrian.proxychat.ProxyChat;
-import fi.fabianadrian.proxychat.command.AbstractCommand;
+import fi.fabianadrian.proxychat.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.format.FormatComponentProvider;
 
-public final class BroadcastCommand extends AbstractCommand {
+public final class BroadcastCommand extends ProxyChatCommand {
     private final FormatComponentProvider componentProvider;
 
     public BroadcastCommand(ProxyChat proxyChat) {

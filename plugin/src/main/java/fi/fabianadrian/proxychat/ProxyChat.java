@@ -12,7 +12,7 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import fi.fabianadrian.proxychat.channel.ChannelRegistry;
-import fi.fabianadrian.proxychat.command.AbstractCommand;
+import fi.fabianadrian.proxychat.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.command.commands.*;
 import fi.fabianadrian.proxychat.command.processor.ProxyChatCommandPreprocessor;
 import fi.fabianadrian.proxychat.command.processor.ProxyChatCommandSuggestionProcessor;
@@ -112,9 +112,9 @@ public final class ProxyChat {
                 new ChannelCommand(this),
                 new MessageCommand(this),
                 new MessagesCommand(this),
-                new ProxyChatCommand(this),
+                new fi.fabianadrian.proxychat.command.commands.ProxyChatCommand(this),
                 new ReplyCommand(this)
-        ).forEach(AbstractCommand::register);
+        ).forEach(ProxyChatCommand::register);
     }
 
     public ConfigManager configManager() {
