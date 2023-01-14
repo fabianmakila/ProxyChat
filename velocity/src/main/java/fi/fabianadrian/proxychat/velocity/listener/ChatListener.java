@@ -1,4 +1,4 @@
-package fi.fabianadrian.proxychat.common.listener;
+package fi.fabianadrian.proxychat.velocity.listener;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
