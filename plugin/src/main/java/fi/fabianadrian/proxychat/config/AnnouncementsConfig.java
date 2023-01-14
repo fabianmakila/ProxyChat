@@ -29,9 +29,6 @@ public final class AnnouncementsConfig {
     }
 
     public String prefix() {
-        if (this.prefix == null) {
-            return "";
-        }
         return this.prefix;
     }
 }
