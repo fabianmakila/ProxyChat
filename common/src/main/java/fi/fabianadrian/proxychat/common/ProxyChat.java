@@ -1,6 +1,8 @@
 package fi.fabianadrian.proxychat.common;
 
+import cloud.commandframework.CommandManager;
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
+import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.commands.*;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandPreprocessor;
@@ -8,17 +10,15 @@ import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandSugges
 import fi.fabianadrian.proxychat.common.config.ConfigManager;
 import fi.fabianadrian.proxychat.common.format.FormatComponentProvider;
 import fi.fabianadrian.proxychat.common.locale.TranslationManager;
+import fi.fabianadrian.proxychat.common.platform.Platform;
 import fi.fabianadrian.proxychat.common.service.AnnouncementService;
 import fi.fabianadrian.proxychat.common.service.MessageService;
 import fi.fabianadrian.proxychat.common.user.UserManager;
-import org.slf4j.Logger;
 
-import java.nio.file.Path;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
-public abstract class ProxyChat {
-    private final VelocityCommandManager<CommandSource> commandManager;
+public final class ProxyChat {
+    private final Platform platform;
     private final ConfigManager configManager;
     private final FormatComponentProvider formatComponentProvider;
     private final UserManager userManager;
@@ -27,7 +27,9 @@ public abstract class ProxyChat {
     private final ChannelRegistry channelRegistry;
     private final AnnouncementService announcementService;
 
-    public ProxyChat() {
+    public ProxyChat(Platform platform) {
+        this.platform = platform;
+
         this.configManager = new ConfigManager(this);
         this.configManager.loadConfigs();
 
@@ -40,8 +42,7 @@ public abstract class ProxyChat {
 
         this.messageService = new MessageService(this);
 
-        this.commandManager = new VelocityCommandManager<>(this.server.getPluginManager().ensurePluginContainer(this), this.server, CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
-        this.commandManager.commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
+        this.platform.commandManager.commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
         this.commandManager.registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
 
         registerCommands();
@@ -53,12 +54,8 @@ public abstract class ProxyChat {
         this.announcementService.reload();
     }
 
-    public abstract Logger logger();
-
-    public abstract Path dataDirectory();
-
-    public CommandManager<CommandSource> commandManager() {
-        return this.commandManager;
+    public Platform platform() {
+        return platform;
     }
 
     private void registerCommands() {

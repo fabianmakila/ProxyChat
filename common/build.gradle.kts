@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     // Libraries
+    api(libs.cloud.core)
     api(libs.slf4j)
     api(libs.configurate.hocon)
     api(libs.gson)

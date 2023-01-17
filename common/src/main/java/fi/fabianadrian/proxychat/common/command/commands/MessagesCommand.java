@@ -45,9 +45,9 @@ public class MessagesCommand extends ProxyChatCommand {
     private void executeToggle(CommandContext<CommandSource> ctx) {
         Optional<Boolean> enabledOptional = ctx.getOptional("enabled");
         User user = this.proxyChat.userManager().user((Player) ctx.getSender());
-        boolean value = enabledOptional.orElseGet(() -> !user.messages());
+        boolean value = enabledOptional.orElseGet(() -> !user.allowMessages());
 
-        user.messages(value);
+        user.allowMessages(value);
         ctx.getSender().sendMessage(value ? Messages.COMMAND_MESSAGES_TOGGLE_ENABLE : Messages.COMMAND_MESSAGES_TOGGLE_DISABLE);
     }
 }

@@ -1,7 +1,8 @@
 package fi.fabianadrian.proxychat.common.user;
 
-import com.velocitypowered.api.proxy.Player;
-import fi.fabianadrian.proxychat.api.channel.Channel;
+import fi.fabianadrian.proxychat.common.channel.Channel;
+import fi.fabianadrian.proxychat.common.command.Commander;
+import net.kyori.adventure.text.Component;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 import java.util.Collections;
@@ -10,9 +11,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @ConfigSerializable
-public final class User {
+public abstract class User<P> implements Commander {
 
-    private final transient Player player;
+    protected final transient P base;
 
     private boolean announcements = true;
     private boolean messages = true;
@@ -22,20 +23,24 @@ public final class User {
 
     private transient String selectedChannel;
 
-    public User(Player player) {
-        this.player = player;
+    public User(P base) {
+        this.base = base;
     }
 
-    public void populate(User deserialized) {
+    public void populate(User<P> deserialized) {
         this.announcements = deserialized.announcements;
         this.messages = deserialized.messages;
         this.spying = deserialized.spying;
         this.mutedChannels = deserialized.mutedChannels;
     }
 
-    public Player player() {
-        return this.player;
+    public P base() {
+        return this.base;
     }
+
+    public abstract UUID uuid();
+
+    public abstract String name();
 
     public boolean spying() {
         return this.spying;
@@ -77,11 +82,11 @@ public final class User {
         this.announcements = value;
     }
 
-    public boolean messages() {
+    public boolean allowMessages() {
         return this.messages;
     }
 
-    public void messages(boolean value) {
+    public void allowMessages(boolean value) {
         this.messages = value;
     }
 

@@ -1,13 +1,22 @@
 package fi.fabianadrian.proxychat.velocity;
 
+import cloud.commandframework.CommandManager;
+import cloud.commandframework.execution.CommandExecutionCoordinator;
+import cloud.commandframework.velocity.VelocityCommandManager;
 import com.google.inject.Inject;
+import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import fi.fabianadrian.proxychat.common.ProxyChat;
+import fi.fabianadrian.proxychat.common.command.Commander;
+import fi.fabianadrian.proxychat.common.platform.Platform;
+import fi.fabianadrian.proxychat.common.user.User;
+import fi.fabianadrian.proxychat.velocity.command.VelocityConsoleCommander;
 import fi.fabianadrian.proxychat.velocity.listener.ChatListener;
 import fi.fabianadrian.proxychat.velocity.listener.LoginDisconnectListener;
 import org.bstats.velocity.Metrics;
@@ -24,7 +33,9 @@ import java.util.stream.Stream;
         description = "A simple chat plugin for Velocity.",
         authors = {"FabianAdrian"}
 )
-public final class ProxyChatVelocity extends ProxyChat {
+public final class ProxyChatVelocity implements Platform {
+    private ProxyChat proxyChat;
+    private CommandManager<Commander> commandManager;
     private final Path dataDirectory;
     private final Metrics.Factory metricsFactory;
     private final ProxyServer server;
@@ -40,6 +51,26 @@ public final class ProxyChatVelocity extends ProxyChat {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
+        this.commandManager = new VelocityCommandManager<>(
+                this.server.getPluginManager().ensurePluginContainer(this),
+                this.server,
+                CommandExecutionCoordinator.simpleCoordinator(),
+                commandSource -> {
+                    if (commandSource instanceof Player) {
+                        return this.proxyChat.userManager().user(((Player) commandSource).getUniqueId());
+                    }
+                    return new VelocityConsoleCommander();
+                },
+                commander -> {
+                    if (commander instanceof VelocityConsoleCommander) {
+                        return ((VelocityConsoleCommander) commander).commandSource();
+                    }
+                    return (CommandSource) ((User) commander).base().base();
+                }
+        );
+
+        this.proxyChat = new ProxyChat(this);
+
         registerListeners();
 
         // bStats
@@ -62,5 +93,10 @@ public final class ProxyChatVelocity extends ProxyChat {
     @Override
     public Path dataDirectory() {
         return this.dataDirectory;
+    }
+
+    @Override
+    public CommandManager<Commander> commandManager() {
+        return this.commandManager;
     }
 }

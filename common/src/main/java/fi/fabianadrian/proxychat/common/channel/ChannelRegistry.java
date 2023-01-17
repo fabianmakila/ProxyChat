@@ -2,19 +2,19 @@ package fi.fabianadrian.proxychat.common.channel;
 
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.arguments.standard.StringArgument;
-import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.api.channel.Channel;
+import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.config.ConfigLoader;
-import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.User;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
@@ -26,7 +26,7 @@ public final class ChannelRegistry {
 
     public ChannelRegistry(ProxyChat proxyChat) {
         this.proxyChat = proxyChat;
-        this.configChannelDir = proxyChat.dataDirectory().resolve("channels");
+        this.configChannelDir = proxyChat.platform().dataDirectory().resolve("channels");
 
         saveExampleConfigChannel();
         loadConfigChannels();
@@ -42,10 +42,6 @@ public final class ChannelRegistry {
 
     public void register(Channel channel) throws ChannelRegisterException {
         String name = channel.name();
-        //TODO Is the validation needed here?
-        if (!Channel.isValidName(name)) {
-            throw new ChannelRegisterException("Invalid channel name: " + channel.name());
-        }
 
         this.registerChannelCommands(channel);
 
@@ -62,9 +58,9 @@ public final class ChannelRegistry {
                     return;
                 }
 
-                ConfigLoader<ConfigChannel> loader = this.loader(path);
+                ConfigLoader<Channel> loader = this.loader(path);
                 try {
-                    ConfigChannel channel = loader.load();
+                    Channel channel = loader.load();
                     loader.save(channel);
                     this.register(channel);
                 } catch (ConfigurateException | ChannelRegistry.ChannelRegisterException e) {
@@ -77,22 +73,22 @@ public final class ChannelRegistry {
     }
 
     private void saveExampleConfigChannel() {
-        ConfigLoader<ConfigChannel> loader = new ConfigLoader<>(
-                ConfigChannel.class,
+        ConfigLoader<Channel> loader = new ConfigLoader<>(
+                Channel.class,
                 this.configChannelDir.resolve("example.conf"),
                 options -> options.header("ProxyChat example channel configuration.")
         );
         try {
-            loader.save(new ConfigChannel());
+            loader.save(new Channel());
         } catch (ConfigurateException e) {
             throw new IllegalStateException("Failed to save example channel config", e);
         }
 
     }
 
-    private ConfigLoader<ConfigChannel> loader(Path path) {
+    private ConfigLoader<Channel> loader(Path path) {
         return new ConfigLoader<>(
-                ConfigChannel.class,
+                Channel.class,
                 path,
                 UnaryOperator.identity()
         );
@@ -102,31 +98,18 @@ public final class ChannelRegistry {
     private void registerChannelCommands(Channel channel) {
         if (channel.commandName().isBlank()) return;
 
-        CommandManager<CommandSource> commandManager = this.proxyChat.commandManager();
+        CommandManager<Commander> commandManager = this.proxyChat.platform().commandManager();
         var builder = commandManager.commandBuilder(
                         channel.commandName(),
                         channel.commandAliases(),
                         commandManager.createDefaultCommandMeta()
                 )
                 .permission(channel.permission())
-                .argument(StringArgument.optional("message", StringArgument.StringMode.GREEDY))
-                .senderType(Player.class)
+                .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
+                .senderType(User.class)
                 .handler(handler -> {
-                    Player player = (Player) handler.getSender();
-                    if (handler.contains("message")) {
-                        final String message = handler.get("message");
-                        this.proxyChat.messageService().sendChannelMessage(channel, player, message);
-                    } else {
-                        User user = this.proxyChat.userManager().user(player.getUniqueId());
-                        if (channel.name().equals(user.selectedChannel())) {
-                            user.clearSelectedChannel();
-                            player.sendMessage(Messages.COMMAND_CHANNEL_DESELECT);
-                            return;
-                        }
-
-                        user.selectedChannel(channel);
-                        player.sendMessage(Messages.COMMAND_CHANNEL_SELECT);
-                    }
+                    final String message = handler.get("message");
+                    this.proxyChat.messageService().sendChannelMessage(channel, handler.getSender(), message);
                 });
 
         commandManager.command(builder);

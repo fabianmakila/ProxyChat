@@ -53,7 +53,7 @@ public final class AnnouncementService {
         Component announcement = MiniMessage.miniMessage().deserialize(this.config.prefix() + this.config.announcements().get(this.index));
         for (User user : this.proxyChat.userManager().users()) {
             if (!user.announcements()) continue;
-            user.player().sendMessage(announcement);
+            user.base().sendMessage(announcement);
         }
     }
 }

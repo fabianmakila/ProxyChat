@@ -1,6 +1,5 @@
 package fi.fabianadrian.proxychat.common.channel;
 
-import fi.fabianadrian.proxychat.api.channel.Channel;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 
@@ -8,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 @ConfigSerializable
-public final class ConfigChannel implements Channel {
+public final class Channel {
 
     @Comment("The channel's name, visible in commands.")
     private String name = "example";
@@ -19,35 +18,29 @@ public final class ConfigChannel implements Channel {
     @Comment("Additional command aliases.")
     private List<String> commandAliases = List.of("example-alias1", "example-alias2");
 
-    public ConfigChannel() {
+    public Channel() {
     }
 
-    public ConfigChannel(String name) {
-        if (!Channel.isValidName(name)) throw new IllegalStateException("Invalid channel name: " + name);
+    public Channel(String name) {
         this.name = name;
     }
 
-    @Override
     public String name() {
         return this.name;
     }
 
-    @Override
     public String format() {
         return this.format;
     }
 
-    @Override
     public String permission() {
         return "proxychat.channel." + name;
     }
 
-    @Override
     public String commandName() {
         return this.commandName;
     }
 
-    @Override
     public List<String> commandAliases() {
         return Collections.unmodifiableList(this.commandAliases);
     }

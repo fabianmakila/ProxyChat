@@ -29,32 +29,30 @@ public final class MessageService {
         this.componentProvider = proxyChat.formatComponentProvider();
     }
 
-    public void sendPrivateMessage(Player sender, Player receiver, String message) {
-        User senderUser = this.proxyChat.userManager().user(sender.getUniqueId());
-        User receiverUser = this.proxyChat.userManager().user(receiver.getUniqueId());
+    public void sendPrivateMessage(User sender, User receiver, String message) {
 
-        if (senderUser == receiverUser) {
-            senderUser.player().sendMessage(Messages.COMMAND_MESSAGE_ERROR_SELF);
+        if (sender == receiver) {
+            sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_SELF);
             return;
         }
 
         if (!sender.hasPermission(CommandPermissions.MESSAGES_TOGGLE_OVERRIDE.permission())) {
-            if (!senderUser.messages()) {
+            if (!sender.allowMessages()) {
                 sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_SELF_DISABLE);
                 return;
             }
-            if (!receiverUser.messages()) {
+            if (!receiver.allowMessages()) {
                 sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_TARGET_DISABLE);
                 return;
             }
         }
 
         // Message components
-        Component senderComponent = componentProvider.messageSenderComponent(receiverUser.player().getUsername(), message);
-        Component receiverComponent = componentProvider.messageReceiverComponent(senderUser.player().getUsername(), message);
+        Component senderComponent = componentProvider.messageSenderComponent(receiver.base().name(), message);
+        Component receiverComponent = componentProvider.messageReceiverComponent(sender.base().name(), message);
         Component spyComponent = componentProvider.messageSpyComponent(
-                senderUser.player().getUsername(),
-                receiverUser.player().getUsername(),
+                sender.base().name(),
+                receiver.base().name(),
                 message
         );
 
@@ -70,7 +68,7 @@ public final class MessageService {
         //Sends message spy component to every online user that has spy true
         for (User user : this.proxyChat.userManager().users()) {
             if (user == senderUser || user == receiverUser || !user.spying()) continue;
-            user.player().sendMessage(spyComponent);
+            user.base().sendMessage(spyComponent);
         }
     }
 
@@ -87,8 +85,8 @@ public final class MessageService {
             );
 
             for (User user : this.proxyChat.userManager().users()) {
-                if (!user.player().hasPermission(channel.permission())) continue;
-                user.player().sendMessage(sender, component);
+                if (!user.base().hasPermission(channel.permission())) continue;
+                user.base().sendMessage(sender, component);
             }
         });
     }

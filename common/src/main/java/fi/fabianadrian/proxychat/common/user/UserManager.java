@@ -1,8 +1,8 @@
 package fi.fabianadrian.proxychat.common.user;
 
 import com.google.gson.Gson;
-import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.common.ProxyChat;
+import fi.fabianadrian.proxychat.common.platform.PlatformPlayer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,30 +22,30 @@ public final class UserManager {
 
     public UserManager(final ProxyChat proxyChat) {
         this.proxyChat = proxyChat;
-        this.userDataDirectory = proxyChat.dataDirectory().resolve("data/users");
+        this.userDataDirectory = proxyChat.platform().dataDirectory().resolve("data/users");
     }
 
-    public void loadUser(Player player) {
-        Path file = this.userFile(player.getUniqueId());
+    public void loadUser(PlatformPlayer player) {
+        Path file = this.userFile(player.uuid());
         User user = new User(player);
         if (Files.exists(file)) {
             try (BufferedReader reader = Files.newBufferedReader(file)) {
                 User deserialized = this.gson.fromJson(reader, User.class);
                 user.populate(deserialized);
             } catch (Exception e) {
-                this.proxyChat.logger().warn("Failed to load data for user with UUID: " + player.getUniqueId(), e);
+                this.proxyChat.platform().logger().warn("Failed to load data for user with UUID: " + player.uuid(), e);
             }
         }
 
-        userMap.put(player.getUniqueId(), user);
+        userMap.put(player.uuid(), user);
     }
 
     private void saveUser(final User user) {
-        Path file = this.userFile(user.player().getUniqueId());
+        Path file = this.userFile(user.base().uuid());
         try (BufferedWriter writer = Files.newBufferedWriter(file)) {
             this.gson.toJson(user, writer);
         } catch (Exception e) {
-            this.proxyChat.logger().warn("Failed to save data for user with UUID: " + user.player().getUniqueId(), e);
+            this.proxyChat.platform().logger().warn("Failed to save data for user with UUID: " + user.base().uuid(), e);
         }
     }
 
@@ -62,8 +62,8 @@ public final class UserManager {
         return user;
     }
 
-    public User user(Player player) {
-        return user(player.getUniqueId());
+    public User user(PlatformPlayer player) {
+        return user(player.uuid());
     }
 
     public void unloadUser(final UUID uuid) {

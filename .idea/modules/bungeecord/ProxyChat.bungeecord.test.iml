@@ -9,9 +9,4 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$/../../../bungeecord/src/main">
-      <sourceFolder url="file://$MODULE_DIR$/../../../bungeecord/src/main/java" isTestSource="false" />
-    </content>
-  </component>
 </module>
