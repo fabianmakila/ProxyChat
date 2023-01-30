@@ -60,7 +60,7 @@ public final class MessageService {
 
         // Send components
         sender.sendMessage(senderComponent);
-        receiver.sendMessage(senderUser.player(), receiverComponent);
+        receiver.sendMessage(receiverComponent);
 
         receiverUser.lastMessaged(sender.getUniqueId());
 
@@ -88,7 +88,7 @@ public final class MessageService {
 
             for (User user : this.proxyChat.userManager().users()) {
                 if (!user.player().hasPermission(channel.permission())) continue;
-                user.player().sendMessage(sender, component);
+                user.player().sendMessage(component);
             }
         });
     }

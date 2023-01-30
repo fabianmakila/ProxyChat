@@ -100,6 +100,7 @@ public final class ChannelRegistry {
 
     //TODO Maybe move most of this under command package???
     private void registerChannelCommands(Channel channel) {
+        //TODO Add console warning about misconfigured channel
         if (channel.commandName().isBlank()) return;
 
         CommandManager<CommandSource> commandManager = this.proxyChat.commandManager();
@@ -109,8 +110,8 @@ public final class ChannelRegistry {
                         commandManager.createDefaultCommandMeta()
                 )
                 .permission(channel.permission())
-                .argument(StringArgument.optional("message", StringArgument.StringMode.GREEDY))
                 .senderType(Player.class)
+                .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
                 .handler(handler -> {
                     Player player = (Player) handler.getSender();
                     if (handler.contains("message")) {
