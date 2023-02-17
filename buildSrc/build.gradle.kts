@@ -7,6 +7,6 @@ repositories {
 }
 
 dependencies() {
-    implementation("com.diffplug.spotless:spotless-plugin-gradle:6.14.1")
+    implementation("com.diffplug.spotless:spotless-plugin-gradle:6.15.0")
     implementation("net.kyori:indra-common:3.0.1")
 }
