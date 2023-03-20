@@ -15,4 +15,4 @@ minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
 
 [plugins]
-shadow = "com.github.johnrengelman.shadow:7.1.2"
+shadow = "com.github.johnrengelman.shadow:8.1.1"
