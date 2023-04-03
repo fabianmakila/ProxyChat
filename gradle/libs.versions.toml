@@ -1,6 +1,6 @@
 [versions]
 adventure = "4.12.0"
-bstats = "3.0.0"
+bstats = "3.0.2"
 cloud = "1.8.0"
 configurate = "4.1.2"
 gson = "2.10.1"
