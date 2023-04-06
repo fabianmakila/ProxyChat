@@ -109,7 +109,7 @@ public final class ChannelRegistry {
                 .senderType(User.class)
                 .handler(handler -> {
                     final String message = handler.get("message");
-                    this.proxyChat.messageService().sendChannelMessage(channel, handler.getSender(), message);
+                    this.proxyChat.messageService().sendChannelMessage(channel, (User) handler.getSender(), message);
                 });
 
         commandManager.command(builder);

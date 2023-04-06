@@ -16,7 +16,6 @@ import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.platform.Platform;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.velocity.command.VelocityConsoleCommander;
-import fi.fabianadrian.proxychat.velocity.listener.ChatListener;
 import fi.fabianadrian.proxychat.velocity.listener.LoginDisconnectListener;
 import net.kyori.adventure.audience.Audience;
 import org.bstats.velocity.Metrics;
@@ -91,7 +90,6 @@ public final class ProxyChatVelocity implements Platform {
     private void registerListeners() {
         EventManager manager = this.server.getEventManager();
         Stream.of(
-            new ChatListener(this.proxyChat),
             new LoginDisconnectListener(this.proxyChat)
         ).forEach(listener -> manager.register(this, listener));
     }

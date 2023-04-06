@@ -22,8 +22,6 @@ public final class User implements Commander {
     private Set<String> mutedChannels = new HashSet<>();
     private transient UUID lastMessaged;
 
-    private transient String selectedChannel;
-
     public User(PlatformPlayer player) {
         this.player = player;
     }
@@ -65,18 +63,6 @@ public final class User implements Commander {
 
     public boolean unMuteChannel(Channel channel) {
         return this.mutedChannels.remove(channel.name());
-    }
-
-    public String selectedChannel() {
-        return this.selectedChannel;
-    }
-
-    public void selectedChannel(Channel channel) {
-        this.selectedChannel = channel.name();
-    }
-
-    public void clearSelectedChannel() {
-        this.selectedChannel = null;
     }
 
     public boolean announcements() {
