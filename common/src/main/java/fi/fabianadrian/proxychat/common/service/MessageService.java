@@ -1,8 +1,7 @@
 package fi.fabianadrian.proxychat.common.service;
 
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.api.event.ChannelMessageEvent;
-import fi.fabianadrian.proxychat.api.channel.Channel;
+import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.command.CommandPermissions;
 import fi.fabianadrian.proxychat.common.format.FormatComponentProvider;
 import fi.fabianadrian.proxychat.common.locale.Messages;

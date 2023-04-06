@@ -24,7 +24,7 @@ public final class UserManager {
         this.userDataDirectory = proxyChat.platform().dataDirectory().resolve("data/users");
     }
 
-    public void loadUser(PlatformPlayer player) {
+    public User loadUser(PlatformPlayer player) {
         Path file = this.userFile(player.uuid());
         User user = new User(player);
         if (Files.exists(file)) {
@@ -36,7 +36,8 @@ public final class UserManager {
             }
         }
 
-        userMap.put(player.uuid(), user);
+        this.userMap.put(player.uuid(), user);
+        return user;
     }
 
     private void saveUser(final User user) {
@@ -53,7 +54,7 @@ public final class UserManager {
     }
 
     public User user(UUID uuid) {
-        User user = userMap.get(uuid);
+        User user = this.userMap.get(uuid);
         if (user == null) {
             throw new IllegalStateException("No user loaded for UUID: " + uuid);
         }

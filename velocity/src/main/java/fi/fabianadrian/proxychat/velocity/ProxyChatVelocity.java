@@ -23,6 +23,7 @@ import org.bstats.velocity.Metrics;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Plugin(
@@ -59,13 +60,18 @@ public final class ProxyChatVelocity implements Platform {
                     if (commandSource instanceof Player) {
                         return this.proxyChat.userManager().user(((Player) commandSource).getUniqueId());
                     }
-                    return new VelocityConsoleCommander();
+                    return new VelocityConsoleCommander(commandSource);
                 },
                 commander -> {
                     if (commander instanceof VelocityConsoleCommander) {
                         return ((VelocityConsoleCommander) commander).commandSource();
                     }
-                    return (CommandSource) ((User) commander).base().base();
+
+                    Optional<Player> playerOptional = server.getPlayer(((User) commander).uuid());
+                    if (playerOptional.isPresent()) {
+                        return playerOptional.get();
+                    }
+                    throw new IllegalArgumentException();
                 }
         );
 
