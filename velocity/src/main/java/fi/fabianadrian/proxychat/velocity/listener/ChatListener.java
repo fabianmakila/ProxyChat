@@ -6,6 +6,8 @@ import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.user.User;
 
+import java.util.Optional;
+
 public final class ChatListener {
 
     private final ProxyChat proxyChat;
@@ -16,7 +18,14 @@ public final class ChatListener {
 
     @Subscribe
     public void onChat(PlayerChatEvent event) {
-        User user = this.proxyChat.userManager().user(event.getPlayer().getUniqueId());
+        Optional<User> userOptional = this.proxyChat.userManager().user(event.getPlayer().getUniqueId());
+
+        if (userOptional.isEmpty()) {
+            return;
+        }
+
+        User user = userOptional.get();
+
         String selectedChannel = user.selectedChannel();
         if (selectedChannel == null) {
             return;
