@@ -5,6 +5,7 @@ import cloud.commandframework.context.CommandContext;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.common.ProxyChat;
+import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.CommandPermissions;
 import fi.fabianadrian.proxychat.common.locale.Messages;
@@ -21,12 +22,12 @@ public final class AnnouncementsCommand extends ProxyChatCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("announcements").permission(CommandPermissions.ANNOUNCEMENTS.permission());
-        this.commandManager.command(builder.argument(BooleanArgument.optional("visible")).senderType(Player.class).handler(this::executeBroadcast));
+        this.commandManager.command(builder.argument(BooleanArgument.optional("visible")).senderType(User.class).handler(this::executeBroadcast));
     }
 
-    private void executeBroadcast(CommandContext<CommandSource> ctx) {
+    private void executeBroadcast(CommandContext<Commander> ctx) {
         Optional<Boolean> visibleOptional = ctx.getOptional("visible");
-        User user = this.proxyChat.userManager().user((Player) ctx.getSender());
+        User user = (User) ctx.getSender();
         boolean visible = visibleOptional.orElseGet(() -> !user.announcements());
 
         user.announcements(visible);

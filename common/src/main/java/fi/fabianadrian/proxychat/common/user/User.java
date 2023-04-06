@@ -2,7 +2,8 @@ package fi.fabianadrian.proxychat.common.user;
 
 import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.command.Commander;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.audience.Audience;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 import java.util.Collections;
@@ -11,9 +12,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @ConfigSerializable
-public abstract class User<P> implements Commander {
+public final class User implements Commander {
 
-    protected final transient P base;
+    private final transient PlatformPlayer player;
 
     private boolean announcements = true;
     private boolean messages = true;
@@ -23,24 +24,28 @@ public abstract class User<P> implements Commander {
 
     private transient String selectedChannel;
 
-    public User(P base) {
-        this.base = base;
+    public User(PlatformPlayer player) {
+        this.player = player;
     }
 
-    public void populate(User<P> deserialized) {
+    public void populate(User deserialized) {
         this.announcements = deserialized.announcements;
         this.messages = deserialized.messages;
         this.spying = deserialized.spying;
         this.mutedChannels = deserialized.mutedChannels;
     }
 
-    public P base() {
-        return this.base;
+    public UUID uuid() {
+        return this.player.uuid();
     }
 
-    public abstract UUID uuid();
+    public String name() {
+        return this.player.name();
+    }
 
-    public abstract String name();
+    public boolean hasPermission(String permission) {
+        return this.player.hasPermission(permission);
+    }
 
     public boolean spying() {
         return this.spying;
@@ -96,5 +101,10 @@ public abstract class User<P> implements Commander {
 
     public void lastMessaged(UUID uuid) {
         this.lastMessaged = uuid;
+    }
+
+    @Override
+    public @NotNull Audience audience() {
+        return this.player;
     }
 }

@@ -80,8 +80,8 @@ public final class ProxyChatVelocity implements Platform {
     private void registerListeners() {
         EventManager manager = this.server.getEventManager();
         Stream.of(
-                new ChatListener(this),
-                new LoginDisconnectListener(this)
+                new ChatListener(this.proxyChat),
+                new LoginDisconnectListener(this.proxyChat)
         ).forEach(listener -> manager.register(this, listener));
     }
 

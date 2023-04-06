@@ -9,9 +9,9 @@ import cloud.commandframework.captions.CaptionVariable;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import cloud.commandframework.exceptions.parsing.ParserException;
-import com.velocitypowered.api.command.CommandSource;
-import fi.fabianadrian.proxychat.api.channel.Channel;
+import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
+import fi.fabianadrian.proxychat.common.command.Commander;
 import io.leangen.geantyref.TypeToken;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -97,10 +97,10 @@ public final class ChannelArgument<C> extends CommandArgument<C, Channel> {
 
         @Override
         public @NotNull List<@NotNull String> suggestions(final @NotNull CommandContext<C> ctx, final @NotNull String input) {
-            CommandSource commandSource = (CommandSource) ctx.getSender();
+            Commander commander = (Commander) ctx.getSender();
             ChannelRegistry registry = ctx.get("ChannelRegistry");
 
-            return registry.channels().stream().filter(channel -> commandSource.hasPermission(channel.permission())).map(Channel::name).collect(Collectors.toList());
+            return registry.channels().stream().filter(channel -> commander.hasPermission(channel.permission())).map(Channel::name).collect(Collectors.toList());
         }
     }
 

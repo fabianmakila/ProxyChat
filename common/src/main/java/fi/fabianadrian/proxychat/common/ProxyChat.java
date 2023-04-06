@@ -1,8 +1,6 @@
 package fi.fabianadrian.proxychat.common;
 
-import cloud.commandframework.CommandManager;
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
-import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.commands.*;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandPreprocessor;
@@ -42,8 +40,8 @@ public final class ProxyChat {
 
         this.messageService = new MessageService(this);
 
-        this.platform.commandManager.commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
-        this.commandManager.registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
+        this.platform.commandManager().commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
+        this.platform.commandManager().registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
 
         registerCommands();
 

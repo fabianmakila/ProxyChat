@@ -2,7 +2,6 @@ package fi.fabianadrian.proxychat.common.user;
 
 import com.google.gson.Gson;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.platform.PlatformPlayer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -41,11 +40,11 @@ public final class UserManager {
     }
 
     private void saveUser(final User user) {
-        Path file = this.userFile(user.base().uuid());
+        Path file = this.userFile(user.uuid());
         try (BufferedWriter writer = Files.newBufferedWriter(file)) {
             this.gson.toJson(user, writer);
         } catch (Exception e) {
-            this.proxyChat.platform().logger().warn("Failed to save data for user with UUID: " + user.base().uuid(), e);
+            this.proxyChat.platform().logger().warn("Failed to save data for user with UUID: " + user.uuid(), e);
         }
     }
 

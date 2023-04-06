@@ -1,7 +1,5 @@
 package fi.fabianadrian.proxychat.common.service;
 
-import com.velocitypowered.api.event.ResultedEvent;
-import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.api.event.ChannelMessageEvent;
 import fi.fabianadrian.proxychat.api.channel.Channel;
@@ -48,59 +46,55 @@ public final class MessageService {
         }
 
         // Message components
-        Component senderComponent = componentProvider.messageSenderComponent(receiver.base().name(), message);
-        Component receiverComponent = componentProvider.messageReceiverComponent(sender.base().name(), message);
+        Component senderComponent = componentProvider.messageSenderComponent(receiver.name(), message);
+        Component receiverComponent = componentProvider.messageReceiverComponent(sender.name(), message);
         Component spyComponent = componentProvider.messageSpyComponent(
-                sender.base().name(),
-                receiver.base().name(),
+                sender.name(),
+                receiver.name(),
                 message
         );
 
         // Send components
         sender.sendMessage(senderComponent);
-        receiver.sendMessage(senderUser.player(), receiverComponent);
+        receiver.sendMessage(receiverComponent);
 
-        receiverUser.lastMessaged(sender.getUniqueId());
+        receiver.lastMessaged(sender.uuid());
 
         //TODO Send spy component to console if configured
 
         //TODO Optimize this?
         //Sends message spy component to every online user that has spy true
         for (User user : this.proxyChat.userManager().users()) {
-            if (user == senderUser || user == receiverUser || !user.spying()) continue;
-            user.base().sendMessage(spyComponent);
+            if (user == sender || user == receiver || !user.spying()) continue;
+            user.sendMessage(spyComponent);
         }
     }
 
-    public void sendChannelMessage(Channel channel, Player sender, String message) {
-        this.proxyChat.proxyServer().getEventManager().fire(new ChannelMessageEvent(channel, sender, message)).thenAcceptAsync((event) -> {
-            if (event.getResult() == ResultedEvent.GenericResult.denied()) return;
+    public void sendChannelMessage(Channel channel, User sender, String message) {
+        Component component = miniMessage.deserialize(
+            channel.format(),
+            TagResolver.resolver(
+                Placeholder.unparsed("sender", sender.name()),
+                Placeholder.unparsed("message", message)
+            )
+        );
 
-            Component component = miniMessage.deserialize(
-                    channel.format(),
-                    TagResolver.resolver(
-                            Placeholder.unparsed("sender", sender.getUsername()),
-                            Placeholder.unparsed("message", message)
-                    )
-            );
-
-            for (User user : this.proxyChat.userManager().users()) {
-                if (!user.base().hasPermission(channel.permission())) continue;
-                user.base().sendMessage(sender, component);
-            }
-        });
+        for (User user : this.proxyChat.userManager().users()) {
+            if (!user.hasPermission(channel.permission())) continue;
+            user.sendMessage(component);
+        }
     }
 
-    public void sendWelcomeMessage(Player player) {
+    public void sendWelcomeMessage(User user) {
         List<String> rawLines = this.proxyChat.configManager().mainConfig().welcomeMessage();
 
         if (rawLines.isEmpty()) return;
 
         List<Component> lines = new ArrayList<>();
         rawLines.forEach(line -> lines.add(miniMessage.deserialize(line, TagResolver.resolver(
-                Placeholder.unparsed("name", player.getUsername())
+                Placeholder.unparsed("name", user.name())
         ))));
 
-        player.sendMessage(Component.join(JoinConfiguration.newlines(), lines));
+        user.sendMessage(Component.join(JoinConfiguration.newlines(), lines));
     }
 }

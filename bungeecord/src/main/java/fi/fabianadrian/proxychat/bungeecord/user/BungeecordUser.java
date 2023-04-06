@@ -16,17 +16,17 @@ public class BungeecordUser extends User<ProxiedPlayer> {
 
     @Override
     public boolean hasPermission(String permission) {
-        return this.base.hasPermission(permission);
+        return this.player.hasPermission(permission);
     }
 
     @Override
     public UUID uuid() {
-        return this.base.getUniqueId();
+        return this.player.getUniqueId();
     }
 
     @Override
     public String name() {
-        return this.base.getName();
+        return this.player.getName();
     }
 
     @Override

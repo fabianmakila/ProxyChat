@@ -9,15 +9,18 @@ bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats
 
 # Cloud
 cloud-core = { module = "cloud.commandframework:cloud-core", version.ref = "cloud" }
-cloud-bungeecord = { module = "cloud.commandframework:cloud-bungeecord", version.ref = "cloud" }
+cloud-bungeecord = { module = "cloud.commandframework:cloud-bungee", version.ref = "cloud" }
 cloud-velocity = { module = "cloud.commandframework:cloud-velocity", version.ref = "cloud" }
 
 configurate-hocon = { module = "org.spongepowered:configurate-hocon", version = "4.1.2" }
+
+# Google
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
+guava = { module = "com.google.guava:guava", version = "31.1-jre" }
 
 # Adventure
-adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version = "4.2.0"}
-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure"}
+adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version = "4.2.0" }
+minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 
 # Platforms
 waterfall-api = { module = "io.github.waterfallmc:waterfall-api", version = "1.19-R0.1-SNAPSHOT" }
@@ -27,4 +30,4 @@ velocity-api = { module = "com.velocitypowered:velocity-api", version = "3.1.1" 
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.6" }
 
 [plugins]
-shadow = "com.github.johnrengelman.shadow:7.1.2"
+shadow = "com.github.johnrengelman.shadow:8.1.1"

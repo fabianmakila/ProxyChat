@@ -8,5 +8,6 @@ dependencies {
     api(libs.slf4j)
     api(libs.configurate.hocon)
     api(libs.gson)
+    api(libs.guava)
     api(libs.minimessage)
 }

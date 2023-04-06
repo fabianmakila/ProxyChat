@@ -29,7 +29,7 @@ public final class TranslationManager {
 
     public TranslationManager(ProxyChat proxyChat) {
         this.proxyChat = proxyChat;
-        this.translationsDirectory = this.proxyChat.dataDirectory().resolve("translations");
+        this.translationsDirectory = this.proxyChat.platform().dataDirectory().resolve("translations");
 
         try {
             createDirectoryIfNotExists(this.translationsDirectory);
@@ -106,7 +106,7 @@ public final class TranslationManager {
                 loaded.put(result.getKey(), result.getValue());
             } catch (Exception e) {
                 if (!suppressDuplicatesError || !isAdventureDuplicatesException(e)) {
-                    this.proxyChat.logger().warn("Error loading locale file: " + translationFile.getFileName(), e);
+                    this.proxyChat.platform().logger().warn("Error loading locale file: " + translationFile.getFileName(), e);
                 }
             }
         }
