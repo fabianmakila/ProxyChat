@@ -4,7 +4,6 @@ import cloud.commandframework.CommandManager;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.velocity.VelocityCommandManager;
 import com.google.inject.Inject;
-import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -19,7 +18,9 @@ import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.velocity.command.VelocityConsoleCommander;
 import fi.fabianadrian.proxychat.velocity.listener.ChatListener;
 import fi.fabianadrian.proxychat.velocity.listener.LoginDisconnectListener;
+import net.kyori.adventure.audience.Audience;
 import org.bstats.velocity.Metrics;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -27,20 +28,20 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Plugin(
-        id = "proxychat",
-        name = "ProxyChat",
-        version = "0.1.0",
-        url = "https://github.com/fabianmakila/ProxyChat",
-        description = "A simple chat plugin for Velocity.",
-        authors = {"FabianAdrian"}
+    id = "proxychat",
+    name = "ProxyChat",
+    version = "0.1.0",
+    url = "https://github.com/fabianmakila/ProxyChat",
+    description = "A simple chat plugin for Velocity.",
+    authors = {"FabianAdrian"}
 )
 public final class ProxyChatVelocity implements Platform {
-    private ProxyChat proxyChat;
-    private CommandManager<Commander> commandManager;
     private final Path dataDirectory;
     private final Metrics.Factory metricsFactory;
     private final ProxyServer server;
     private final Logger logger;
+    private ProxyChat proxyChat;
+    private CommandManager<Commander> commandManager;
 
     @Inject
     public ProxyChatVelocity(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory, Metrics.Factory metricsFactory) {
@@ -53,26 +54,30 @@ public final class ProxyChatVelocity implements Platform {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.commandManager = new VelocityCommandManager<>(
-                this.server.getPluginManager().ensurePluginContainer(this),
-                this.server,
-                CommandExecutionCoordinator.simpleCoordinator(),
-                commandSource -> {
-                    if (commandSource instanceof Player) {
-                        return this.proxyChat.userManager().user(((Player) commandSource).getUniqueId());
+            this.server.getPluginManager().ensurePluginContainer(this),
+            this.server,
+            CommandExecutionCoordinator.simpleCoordinator(),
+            commandSource -> {
+                if (commandSource instanceof Player) {
+                    Optional<User> userOptional = this.proxyChat.userManager().user(((Player) commandSource).getUniqueId());
+                    if (userOptional.isPresent()) {
+                        return userOptional.get();
                     }
-                    return new VelocityConsoleCommander(commandSource);
-                },
-                commander -> {
-                    if (commander instanceof VelocityConsoleCommander) {
-                        return ((VelocityConsoleCommander) commander).commandSource();
-                    }
-
-                    Optional<Player> playerOptional = server.getPlayer(((User) commander).uuid());
-                    if (playerOptional.isPresent()) {
-                        return playerOptional.get();
-                    }
-                    throw new IllegalArgumentException();
+                    throw new IllegalStateException("User was not loaded");
                 }
+                return new VelocityConsoleCommander(commandSource);
+            },
+            commander -> {
+                if (commander instanceof VelocityConsoleCommander) {
+                    return ((VelocityConsoleCommander) commander).commandSource();
+                }
+
+                Optional<Player> playerOptional = server.getPlayer(((User) commander).uuid());
+                if (playerOptional.isPresent()) {
+                    return playerOptional.get();
+                }
+                throw new IllegalArgumentException();
+            }
         );
 
         this.proxyChat = new ProxyChat(this);
@@ -86,8 +91,8 @@ public final class ProxyChatVelocity implements Platform {
     private void registerListeners() {
         EventManager manager = this.server.getEventManager();
         Stream.of(
-                new ChatListener(this.proxyChat),
-                new LoginDisconnectListener(this.proxyChat)
+            new ChatListener(this.proxyChat),
+            new LoginDisconnectListener(this.proxyChat)
         ).forEach(listener -> manager.register(this, listener));
     }
 
@@ -104,5 +109,10 @@ public final class ProxyChatVelocity implements Platform {
     @Override
     public CommandManager<Commander> commandManager() {
         return this.commandManager;
+    }
+
+    @Override
+    public @NotNull Audience audience() {
+        return this.server;
     }
 }

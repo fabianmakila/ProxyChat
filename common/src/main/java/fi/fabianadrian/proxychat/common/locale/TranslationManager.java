@@ -80,7 +80,7 @@ public final class TranslationManager {
                 this.registry.registerAll(locale, bundle, false);
             });
         } catch (IllegalArgumentException e) {
-            this.proxyChat.logger().warn("Error loading default locale file", e);
+            this.proxyChat.platform().logger().warn("Error loading default locale file", e);
         }
     }
 

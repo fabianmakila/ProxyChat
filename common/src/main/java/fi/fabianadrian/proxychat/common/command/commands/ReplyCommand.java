@@ -2,11 +2,10 @@ package fi.fabianadrian.proxychat.common.command.commands;
 
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
-import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.CommandPermissions;
+import fi.fabianadrian.proxychat.common.command.Commander;
+import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.User;
 
@@ -21,16 +20,16 @@ public final class ReplyCommand extends ProxyChatCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("reply", "r")
-                .permission(CommandPermissions.MESSAGE.permission())
-                .senderType(Player.class)
-                .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
-                .handler(this::executeReply);
+            .permission(CommandPermissions.MESSAGE.permission())
+            .senderType(User.class)
+            .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
+            .handler(this::executeReply);
 
         this.commandManager.command(builder);
     }
 
-    private void executeReply(CommandContext<CommandSource> ctx) {
-        User user = this.proxyChat.userManager().user((Player) ctx.getSender());
+    private void executeReply(CommandContext<Commander> ctx) {
+        User user = (User) ctx.getSender();
 
         UUID lastMessaged = user.lastMessaged();
         if (lastMessaged == null) {
@@ -38,12 +37,12 @@ public final class ReplyCommand extends ProxyChatCommand {
             return;
         }
 
-        Optional<Player> receiver = this.proxyChat.proxyServer().getPlayer(lastMessaged);
+        Optional<User> receiver = this.proxyChat.userManager().user(lastMessaged);
         if (receiver.isEmpty()) {
             ctx.getSender().sendMessage(Messages.COMMAND_REPLY_ERROR_LAST_MESSAGED_OFFLINE);
             return;
         }
 
-        this.proxyChat.messageService().sendPrivateMessage((Player) ctx.getSender(), receiver.get(), ctx.get("message"));
+        this.proxyChat.messageService().sendPrivateMessage((User) ctx.getSender(), receiver.get(), ctx.get("message"));
     }
 }

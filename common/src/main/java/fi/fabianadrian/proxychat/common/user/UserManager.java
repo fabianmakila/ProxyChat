@@ -7,10 +7,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public final class UserManager {
 
@@ -53,17 +50,9 @@ public final class UserManager {
         return this.userDataDirectory.resolve(uuid + ".json");
     }
 
-    public User user(UUID uuid) {
+    public Optional<User> user(UUID uuid) {
         User user = this.userMap.get(uuid);
-        if (user == null) {
-            throw new IllegalStateException("No user loaded for UUID: " + uuid);
-        }
-
-        return user;
-    }
-
-    public User user(PlatformPlayer player) {
-        return user(player.uuid());
+        return Optional.ofNullable(user);
     }
 
     public void unloadUser(final UUID uuid) {

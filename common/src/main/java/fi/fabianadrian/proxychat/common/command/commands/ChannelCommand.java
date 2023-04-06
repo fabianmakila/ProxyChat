@@ -1,12 +1,11 @@
 package fi.fabianadrian.proxychat.common.command.commands;
 
 import cloud.commandframework.context.CommandContext;
-import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.api.channel.Channel;
-import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
+import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.command.CommandPermissions;
+import fi.fabianadrian.proxychat.common.command.Commander;
+import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.argument.ChannelArgument;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.User;
@@ -26,66 +25,64 @@ public final class ChannelCommand extends ProxyChatCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("channel", "ch")
-                .permission(CommandPermissions.CHANNEL.permission());
+            .permission(CommandPermissions.CHANNEL.permission());
 
         this.commandManager.command(builder.literal("list")
-                .permission(CommandPermissions.CHANNEL_LIST.permission())
-                .handler(this::executeList)
+            .permission(CommandPermissions.CHANNEL_LIST.permission())
+            .handler(this::executeList)
         );
 
         this.commandManager.command(builder.literal("mute")
-                .argument(ChannelArgument.of("channel"))
-                .permission(CommandPermissions.CHANNEL_MUTE.permission())
-                .senderType(Player.class)
-                .handler(this::executeMute)
+            .argument(ChannelArgument.of("channel"))
+            .permission(CommandPermissions.CHANNEL_MUTE.permission())
+            .senderType(User.class)
+            .handler(this::executeMute)
         );
 
         this.commandManager.command(builder.literal("unmute")
-                .argument(ChannelArgument.of("channel"))
-                .permission(CommandPermissions.CHANNEL_MUTE.permission())
-                .senderType(Player.class)
-                .handler(this::executeUnmute)
+            .argument(ChannelArgument.of("channel"))
+            .permission(CommandPermissions.CHANNEL_MUTE.permission())
+            .senderType(User.class)
+            .handler(this::executeUnmute)
         );
     }
 
     //TODO Maybe move some of this logic to elsewhere? Seems kinda messy
-    private void executeList(CommandContext<CommandSource> ctx) {
+    private void executeList(CommandContext<Commander> ctx) {
         Stream<Channel> channels = this.proxyChat.channelRegistry().channels().stream().filter(channel -> ctx.getSender().hasPermission(channel.permission()));
         List<Component> channelComponents = new ArrayList<>();
 
-        if ((ctx.getSender() instanceof Player)) {
-            User user = this.proxyChat.userManager().user((Player) ctx.getSender());
+        if ((ctx.getSender() instanceof User)) {
+            User user = (User) ctx.getSender();
             channels.forEach(channel -> channelComponents.add(user.mutedChannels().contains(channel.name()) ? Component.text(channel.name(), NamedTextColor.DARK_GRAY) : Component.text(channel.name(), NamedTextColor.GREEN)));
         } else {
             channels.forEach(channel -> channelComponents.add(Component.text(channel.name(), NamedTextColor.GREEN)));
         }
 
         ctx.getSender().sendMessage(
-                Messages.COMMAND_CHANNEL_LIST.append(Component.newline()).append(Component.join(JoinConfiguration.commas(true), channelComponents))
+            Messages.COMMAND_CHANNEL_LIST.append(Component.newline()).append(Component.join(JoinConfiguration.commas(true), channelComponents))
         );
     }
 
-    private void executeMute(CommandContext<CommandSource> ctx) {
-        Player player = (Player) ctx.getSender();
-        User user = this.proxyChat.userManager().user(player);
+    private void executeMute(CommandContext<Commander> ctx) {
+        User user = (User) ctx.getSender();
         Channel channel = ctx.get("channel");
 
         if (user.muteChannel(channel)) {
-            player.sendMessage(Messages.COMMAND_CHANNEL_MUTED);
+            user.sendMessage(Messages.COMMAND_CHANNEL_MUTED);
         } else {
-            player.sendMessage(Messages.COMMAND_CHANNEL_ERROR_ALREADY_MUTED);
+            user.sendMessage(Messages.COMMAND_CHANNEL_ERROR_ALREADY_MUTED);
         }
     }
 
-    private void executeUnmute(CommandContext<CommandSource> ctx) {
-        Player player = (Player) ctx.getSender();
-        User user = this.proxyChat.userManager().user(player);
+    private void executeUnmute(CommandContext<Commander> ctx) {
+        User user = (User) ctx.getSender();
         Channel channel = ctx.get("channel");
 
         if (user.unMuteChannel(channel)) {
-            player.sendMessage(Messages.COMMAND_CHANNEL_UNMUTED);
+            user.sendMessage(Messages.COMMAND_CHANNEL_UNMUTED);
         } else {
-            player.sendMessage(Messages.COMMAND_CHANNEL_ERROR_NOT_MUTED);
+            user.sendMessage(Messages.COMMAND_CHANNEL_ERROR_NOT_MUTED);
         }
     }
 }
