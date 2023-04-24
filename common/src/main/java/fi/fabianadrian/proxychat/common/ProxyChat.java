@@ -32,6 +32,7 @@ public final class ProxyChat {
         this.configManager.reload();
 
         this.userManager = new UserManager(this);
+        this.userManager.reload();
 
         this.translationManager = new TranslationManager(this);
         this.translationManager.reload();
@@ -78,7 +79,7 @@ public final class ProxyChat {
 
     public void reload() {
         this.configManager.reload();
-
+        this.userManager.reload();
         this.announcementService.reload();
         this.translationManager.reload();
     }

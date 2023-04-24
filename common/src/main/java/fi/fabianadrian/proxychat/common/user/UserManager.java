@@ -5,6 +5,7 @@ import fi.fabianadrian.proxychat.common.ProxyChat;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -19,6 +20,14 @@ public final class UserManager {
     public UserManager(final ProxyChat proxyChat) {
         this.proxyChat = proxyChat;
         this.userDataDirectory = proxyChat.platform().dataDirectory().resolve("data/users");
+    }
+
+    public void reload() {
+        try {
+            Files.createDirectories(this.userDataDirectory);
+        } catch (IOException e) {
+            this.proxyChat.platform().logger().warn("Failed to create user data directory", e);
+        }
     }
 
     public User loadUser(PlatformPlayer player) {
