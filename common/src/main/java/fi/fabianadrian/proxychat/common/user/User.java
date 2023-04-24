@@ -1,6 +1,5 @@
 package fi.fabianadrian.proxychat.common.user;
 
-import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
