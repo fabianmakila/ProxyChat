@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
+group = rootProject.group
+version = rootProject.version
+description = rootProject.description
+
 dependencies {
     implementation(projects.common)
 
@@ -18,6 +22,9 @@ dependencies {
 }
 
 tasks {
+    build {
+        dependsOn(shadowJar)
+    }
     shadowJar {
         minimize()
         sequenceOf(
@@ -29,8 +36,8 @@ tasks {
         ).forEach { pkg ->
             relocate(pkg, "${rootProject.group}.${rootProject.name.lowercase()}.lib.$pkg")
         }
-    }
-    build {
-        dependsOn(shadowJar)
+        destinationDirectory.set(file("${rootProject.rootDir}/dist"))
+        archiveBaseName.set(rootProject.name + "-Velocity")
+        archiveAppendix.set("")
     }
 }
