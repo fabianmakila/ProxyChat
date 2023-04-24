@@ -3,6 +3,7 @@ package fi.fabianadrian.proxychat.common.user;
 import com.google.gson.Gson;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 
+import javax.swing.text.html.Option;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.nio.file.Files;
@@ -53,6 +54,15 @@ public final class UserManager {
     public Optional<User> user(UUID uuid) {
         User user = this.userMap.get(uuid);
         return Optional.ofNullable(user);
+    }
+
+    public Optional<User> user(String name) {
+        for (User user : this.userMap.values()) {
+            if (user.name().equals(name)) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
     }
 
     public void unloadUser(final UUID uuid) {
