@@ -1,16 +1,15 @@
 package fi.fabianadrian.proxychat.common.user;
 
+import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@ConfigSerializable
 public final class User implements Commander {
 
     private final transient PlatformPlayer player;
