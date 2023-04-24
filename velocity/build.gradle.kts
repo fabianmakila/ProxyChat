@@ -16,6 +16,7 @@ dependencies {
 
     // Libraries
     implementation(libs.bstats.velocity)
+    implementation(libs.snakeyaml)
     implementation(libs.cloud.velocity)
     implementation(libs.gson)
     implementation(libs.minimessage)
@@ -31,13 +32,14 @@ tasks {
             "cloud.commandframework",
             "net.kyori.adventure.text.minimessage",
             "space.arim",
+            "org.yaml",
             "org.bstats",
             "com.google.code.gson"
         ).forEach { pkg ->
-            relocate(pkg, "${rootProject.group}.${rootProject.name.lowercase()}.lib.$pkg")
+            relocate(pkg, "${rootProject.group}.${rootProject.name.lowercase()}.dependency.$pkg")
         }
         destinationDirectory.set(file("${rootProject.rootDir}/dist"))
         archiveBaseName.set(rootProject.name + "-Velocity")
-        archiveAppendix.set("")
+        archiveClassifier.set("")
     }
 }
