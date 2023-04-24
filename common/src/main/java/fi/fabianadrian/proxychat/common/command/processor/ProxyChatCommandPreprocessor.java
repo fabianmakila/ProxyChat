@@ -15,5 +15,6 @@ public final class ProxyChatCommandPreprocessor<C> implements CommandPreprocesso
     @Override
     public void accept(@NonNull CommandPreprocessingContext<C> context) {
         context.getCommandContext().store("ChannelRegistry", this.proxyChat.channelRegistry());
+        context.getCommandContext().store("UserManager", this.proxyChat.userManager());
     }
 }
