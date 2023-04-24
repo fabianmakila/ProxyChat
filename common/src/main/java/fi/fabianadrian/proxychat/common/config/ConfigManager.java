@@ -1,56 +1,104 @@
 package fi.fabianadrian.proxychat.common.config;
 
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import org.spongepowered.configurate.ConfigurateException;
+import org.slf4j.Logger;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+import space.arim.dazzleconf.ConfigurationOptions;
+import space.arim.dazzleconf.error.ConfigFormatSyntaxException;
+import space.arim.dazzleconf.error.InvalidConfigException;
+import space.arim.dazzleconf.ext.snakeyaml.CommentMode;
+import space.arim.dazzleconf.ext.snakeyaml.SnakeYamlConfigurationFactory;
+import space.arim.dazzleconf.ext.snakeyaml.SnakeYamlOptions;
+import space.arim.dazzleconf.helper.ConfigurationHelper;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
 public final class ConfigManager {
-
-    private final ConfigLoader<ProxyChatConfig> mainConfigLoader;
-    private final ConfigLoader<AnnouncementsConfig> announcementsConfigLoader;
-
-    private ProxyChatConfig mainConfig;
-    private AnnouncementsConfig announcementsConfig;
+    private final Logger logger;
+    private final ConfigurationHelper<ProxyChatConfig> mainConfigHelper;
+    private final ConfigurationHelper<AnnouncementsConfig> announcementsConfigHelper;
+    private volatile ProxyChatConfig mainConfigData;
+    private volatile AnnouncementsConfig announcementsConfigData;
 
     public ConfigManager(ProxyChat proxyChat) {
-        Path dataDirectory = proxyChat.dataDirectory();
-        this.mainConfigLoader = new ConfigLoader<>(
+        this.logger = proxyChat.platform().logger();
+
+        SnakeYamlOptions yamlOptions = new SnakeYamlOptions.Builder()
+            .yamlSupplier(() -> {
+                DumperOptions dumperOptions = new DumperOptions();
+                // Enables comments
+                dumperOptions.setProcessComments(true);
+                dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+                return new Yaml(dumperOptions);
+            })
+            .commentMode(CommentMode.fullComments())
+            .build();
+
+        Path dataDirectory = proxyChat.platform().dataDirectory();
+
+        this.mainConfigHelper = new ConfigurationHelper<>(
+            dataDirectory,
+            "config.yml",
+            SnakeYamlConfigurationFactory.create(
                 ProxyChatConfig.class,
-                dataDirectory.resolve("main.conf"),
-                options -> options.header("ProxyChat Main Configuration")
+                ConfigurationOptions.defaults(),
+                yamlOptions
+            )
         );
 
-        this.announcementsConfigLoader = new ConfigLoader<>(
+        this.announcementsConfigHelper = new ConfigurationHelper<>(
+            dataDirectory,
+            "announcements.yml",
+            SnakeYamlConfigurationFactory.create(
                 AnnouncementsConfig.class,
-                dataDirectory.resolve("announcements.conf"),
-                options -> options.header("Announcements Configuration")
+                ConfigurationOptions.defaults(),
+                yamlOptions
+            )
         );
     }
 
-    public void loadConfigs() {
+    public void reload() {
         try {
-            this.mainConfig = this.mainConfigLoader.load();
-            this.mainConfigLoader.save(this.mainConfig);
+            this.mainConfigData = this.mainConfigHelper.reloadConfigData();
+            this.announcementsConfigData = this.announcementsConfigHelper.reloadConfigData();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
 
-            this.announcementsConfig = this.announcementsConfigLoader.load();
-            this.announcementsConfigLoader.save(this.announcementsConfig);
-        } catch (ConfigurateException e) {
-            throw new IllegalStateException("Failed to load config", e);
+        } catch (ConfigFormatSyntaxException ex) {
+            this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
+            this.announcementsConfigData = this.announcementsConfigHelper.getFactory().loadDefaults();
+            this.logger.error(
+                "The yaml syntax in your configuration is invalid. " +
+                    "Check your YAML syntax with a tool such as https://yaml-online-parser.appspot.com/",
+                ex
+            );
+        } catch (InvalidConfigException ex) {
+            this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
+            this.announcementsConfigData = this.announcementsConfigHelper.getFactory().loadDefaults();
+            this.logger.error(
+                "One of the values in your configuration is not valid. " +
+                    "Check to make sure you have specified the right data types.",
+                ex
+            );
         }
     }
 
     public ProxyChatConfig mainConfig() {
-        if (this.mainConfig == null) {
-            throw new IllegalStateException("Config has not yet been loaded");
+        ProxyChatConfig configData = this.mainConfigData;
+        if (configData == null) {
+            throw new IllegalStateException("Configuration has not been loaded yet");
         }
-        return this.mainConfig;
+        return configData;
     }
 
     public AnnouncementsConfig announcementsConfig() {
-        if (this.announcementsConfig == null) {
-            throw new IllegalStateException("Config has not yet been loaded");
+        AnnouncementsConfig configData = this.announcementsConfigData;
+        if (configData == null) {
+            throw new IllegalStateException("Configuration has not been loaded yet");
         }
-        return this.announcementsConfig;
+        return configData;
     }
 }

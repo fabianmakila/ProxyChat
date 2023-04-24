@@ -29,7 +29,7 @@ public final class ProxyChat {
         this.platform = platform;
 
         this.configManager = new ConfigManager(this);
-        this.configManager.loadConfigs();
+        this.configManager.reload();
 
         this.userManager = new UserManager(this);
 
@@ -77,7 +77,7 @@ public final class ProxyChat {
     }
 
     public void reload() {
-        this.configManager.loadConfigs();
+        this.configManager.reload();
 
         this.announcementService.reload();
         this.translationManager.reload();

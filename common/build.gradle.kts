@@ -6,7 +6,8 @@ dependencies {
     // Libraries
     api(libs.cloud.core)
     api(libs.slf4j)
-    api(libs.configurate.hocon)
+    implementation(libs.dazzleconf)
+    compileOnly(libs.snakeyaml)
     api(libs.gson)
     api(libs.guava)
     api(libs.minimessage)

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$/../../../velocity/src/main" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/../../../velocity/src/main/java" isTestSource="false" />
+    </content>
+  </component>
   <component name="FacetManager">
     <facet type="minecraft" name="Minecraft">
       <configuration>
@@ -9,10 +14,5 @@
         </autoDetectTypes>
       </configuration>
     </facet>
-  </component>
-  <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$/../../../velocity/src/main">
-      <sourceFolder url="file://$MODULE_DIR$/../../../velocity/src/main/java" isTestSource="false" />
-    </content>
   </component>
 </module>

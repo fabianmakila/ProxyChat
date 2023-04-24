@@ -13,7 +13,7 @@ dependencies {
     // Libraries
     implementation(libs.bstats.velocity)
     implementation(libs.cloud.velocity)
-    implementation(libs.configurate.hocon)
+    implementation(libs.dazzleconf)
     implementation(libs.gson)
     implementation(libs.minimessage)
 }

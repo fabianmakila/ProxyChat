@@ -4,7 +4,6 @@ import cloud.commandframework.CommandManager;
 import cloud.commandframework.arguments.standard.StringArgument;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
-import fi.fabianadrian.proxychat.common.config.ConfigLoader;
 import fi.fabianadrian.proxychat.common.user.User;
 import org.spongepowered.configurate.ConfigurateException;
 

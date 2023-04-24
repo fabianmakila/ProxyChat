@@ -1,34 +1,20 @@
 package fi.fabianadrian.proxychat.common.config;
 
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import space.arim.dazzleconf.annote.ConfDefault;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@ConfigSerializable
-public final class AnnouncementsConfig {
+public interface AnnouncementsConfig {
 
-    private final List<String> announcements = new ArrayList<>();
+    @ConfDefault.DefaultStrings("")
+    List<String> announcements();
 
-    private int interval = 30;
+    @ConfDefault.DefaultInteger(30)
+    int interval();
 
-    private boolean random;
+    @ConfDefault.DefaultBoolean(false)
+    boolean random();
 
-    private String prefix = "<gray>[<green>!</green>]</gray> ";
-
-    public int interval() {
-        return this.interval;
-    }
-
-    public boolean random() {
-        return this.random;
-    }
-
-    public List<String> announcements() {
-        return this.announcements;
-    }
-
-    public String prefix() {
-        return this.prefix;
-    }
+    @ConfDefault.DefaultString("<gray>[<green>!</green>]</gray> ")
+    String prefix();
 }
