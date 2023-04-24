@@ -27,7 +27,9 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
-        minimize()
+        minimize{
+            //exclude(dependency("org.bstats:bstats-velocity:.*"))
+        }
         sequenceOf(
             "cloud.commandframework",
             "net.kyori.adventure.text.minimessage",
