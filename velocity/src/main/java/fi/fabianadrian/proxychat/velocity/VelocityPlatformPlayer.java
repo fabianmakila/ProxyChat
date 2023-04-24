@@ -2,6 +2,8 @@ package fi.fabianadrian.proxychat.velocity;
 
 import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.common.user.PlatformPlayer;
+import net.kyori.adventure.audience.Audience;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -26,5 +28,10 @@ public class VelocityPlatformPlayer implements PlatformPlayer {
     @Override
     public boolean hasPermission(String permission) {
         return this.player.hasPermission(permission);
+    }
+
+    @Override
+    public @NotNull Audience audience() {
+        return this.player;
     }
 }

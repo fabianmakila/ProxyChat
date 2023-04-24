@@ -100,7 +100,11 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
     private void registerListeners() {
         PluginManager manager = this.getProxy().getPluginManager();
         Stream.of(
-            new LoginDisconnectListener(this.proxyChat)
+            new LoginDisconnectListener(this)
         ).forEach(listener -> manager.registerListener(this, listener));
+    }
+
+    public ProxyChat proxyChat() {
+        return this.proxyChat;
     }
 }

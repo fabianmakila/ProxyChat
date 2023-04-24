@@ -1,16 +1,20 @@
 package fi.fabianadrian.proxychat.bungeecord;
 
 import fi.fabianadrian.proxychat.common.user.PlatformPlayer;
+import net.kyori.adventure.audience.Audience;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class BungeecordPlatformPlayer implements PlatformPlayer {
 
     private final ProxiedPlayer player;
+    private final Audience audience;
 
-    public BungeecordPlatformPlayer(ProxiedPlayer player) {
+    public BungeecordPlatformPlayer(ProxiedPlayer player, Audience audience) {
         this.player = player;
+        this.audience = audience;
     }
 
     @Override
@@ -26,5 +30,10 @@ public class BungeecordPlatformPlayer implements PlatformPlayer {
     @Override
     public boolean hasPermission(String permission) {
         return this.player.hasPermission(permission);
+    }
+
+    @Override
+    public @NotNull Audience audience() {
+        return this.audience;
     }
 }
