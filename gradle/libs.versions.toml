@@ -1,5 +1,5 @@
 [versions]
-adventure = "4.13.0"
+adventure = "4.13.1"
 bstats = "3.0.0"
 cloud = "1.8.3"
 
@@ -33,3 +33,4 @@ slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.6" }
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+pluginYml-bungee = { id = "net.minecrell.plugin-yml.bungee", version = "0.5.3" }

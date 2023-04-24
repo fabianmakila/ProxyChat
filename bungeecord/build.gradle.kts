@@ -1,8 +1,7 @@
 plugins {
     id("proxychat.java-conventions")
     alias(libs.plugins.shadow)
-
-    id("net.minecrell.plugin-yml.bungee") version "0.5.1"
+    alias(libs.plugins.pluginYml.bungee)
 }
 
 dependencies {

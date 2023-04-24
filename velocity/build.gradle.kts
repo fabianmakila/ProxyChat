@@ -13,7 +13,6 @@ dependencies {
     // Libraries
     implementation(libs.bstats.velocity)
     implementation(libs.cloud.velocity)
-    implementation(libs.dazzleconf)
     implementation(libs.gson)
     implementation(libs.minimessage)
 }
@@ -24,11 +23,11 @@ tasks {
         sequenceOf(
             "cloud.commandframework",
             "net.kyori.adventure.text.minimessage",
-            "org.spongepowered.configurate",
+            "space.arim",
             "org.bstats",
             "com.google.code.gson"
         ).forEach { pkg ->
-            relocate(pkg, "${rootProject.group}.${rootProject.name.toLowerCase()}.lib.$pkg")
+            relocate(pkg, "${rootProject.group}.${rootProject.name.lowercase()}.lib.$pkg")
         }
     }
     build {
