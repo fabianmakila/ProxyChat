@@ -3,7 +3,6 @@ package fi.fabianadrian.proxychat.velocity.listener;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
-import com.velocitypowered.api.proxy.Player;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.velocity.VelocityPlatformPlayer;
