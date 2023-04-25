@@ -3,7 +3,7 @@ package fi.fabianadrian.proxychat.common.command.commands;
 import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.channel.Channel;
-import fi.fabianadrian.proxychat.common.command.CommandPermissions;
+import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.argument.ChannelArgument;
@@ -25,23 +25,23 @@ public final class ChannelCommand extends ProxyChatCommand {
     @Override
     public void register() {
         var builder = this.commandManager.commandBuilder("channel", "ch")
-            .permission(CommandPermissions.CHANNEL.permission());
+            .permission(CommandPermission.CHANNEL.permission());
 
         this.commandManager.command(builder.literal("list")
-            .permission(CommandPermissions.CHANNEL_LIST.permission())
+            .permission(CommandPermission.CHANNEL_LIST.permission())
             .handler(this::executeList)
         );
 
         this.commandManager.command(builder.literal("mute")
             .argument(ChannelArgument.of("channel"))
-            .permission(CommandPermissions.CHANNEL_MUTE.permission())
+            .permission(CommandPermission.CHANNEL_MUTE.permission())
             .senderType(User.class)
             .handler(this::executeMute)
         );
 
         this.commandManager.command(builder.literal("unmute")
             .argument(ChannelArgument.of("channel"))
-            .permission(CommandPermissions.CHANNEL_MUTE.permission())
+            .permission(CommandPermission.CHANNEL_MUTE.permission())
             .senderType(User.class)
             .handler(this::executeUnmute)
         );

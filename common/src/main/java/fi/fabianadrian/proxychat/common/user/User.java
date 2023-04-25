@@ -15,7 +15,7 @@ public final class User implements Commander {
     private final transient PlatformPlayer player;
 
     private boolean announcements = true;
-    private boolean messages = true;
+    private MessageSetting messageSetting = MessageSetting.EVERYONE;
     private boolean spying;
     private Set<String> mutedChannels = new HashSet<>();
     private transient UUID lastMessaged;
@@ -26,7 +26,7 @@ public final class User implements Commander {
 
     public void populate(User deserialized) {
         this.announcements = deserialized.announcements;
-        this.messages = deserialized.messages;
+        this.messageSetting = deserialized.messageSetting;
         this.spying = deserialized.spying;
         this.mutedChannels = deserialized.mutedChannels;
     }
@@ -71,12 +71,12 @@ public final class User implements Commander {
         this.announcements = value;
     }
 
-    public boolean allowMessages() {
-        return this.messages;
+    public MessageSetting messageSetting() {
+        return this.messageSetting;
     }
 
-    public void allowMessages(boolean value) {
-        this.messages = value;
+    public void messageSetting(MessageSetting value) {
+        this.messageSetting = value;
     }
 
     public UUID lastMessaged() {
@@ -90,5 +90,9 @@ public final class User implements Commander {
     @Override
     public @NotNull Audience audience() {
         return this.player;
+    }
+
+    public enum MessageSetting {
+        NOBODY, FRIENDS, EVERYONE
     }
 }

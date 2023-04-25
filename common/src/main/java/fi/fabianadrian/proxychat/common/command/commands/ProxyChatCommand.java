@@ -2,7 +2,7 @@ package fi.fabianadrian.proxychat.common.command.commands;
 
 import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.command.CommandPermissions;
+import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 
@@ -13,7 +13,7 @@ public final class ProxyChatCommand extends fi.fabianadrian.proxychat.common.com
 
     @Override
     public void register() {
-        var builder = this.commandManager.commandBuilder("proxychat").permission(CommandPermissions.PROXYCHAT.permission());
+        var builder = this.commandManager.commandBuilder("proxychat").permission(CommandPermission.PROXYCHAT.permission());
 
         this.commandManager.command(builder
             .literal("reload")

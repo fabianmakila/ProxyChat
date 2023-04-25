@@ -20,6 +20,9 @@ dependencies {
     implementation(libs.cloud.velocity)
     implementation(libs.gson)
     implementation(libs.minimessage)
+
+    // Plugin hooks
+    compileOnly(libs.partyAndFriends.velocity)
 }
 
 tasks {

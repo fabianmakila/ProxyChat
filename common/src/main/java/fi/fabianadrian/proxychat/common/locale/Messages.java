@@ -41,42 +41,34 @@ public interface Messages {
             .key("proxychat.command.channel.unmuted")
             .color(GREEN)
             .build();
-    Component COMMAND_CHANNEL_SELECT = translatable()
-            .key("proxychat.command.channel.select")
-            .color(GREEN)
-            .build();
-    Component COMMAND_CHANNEL_DESELECT = translatable()
-            .key("proxychat.command.channel.deselect")
-            .color(RED)
-            .build();
     Component COMMAND_MESSAGE_ERROR_SELF = translatable()
             .key("proxychat.command.message.error.self")
             .color(RED)
             .build();
-    Component COMMAND_MESSAGE_ERROR_SELF_DISABLE = translatable()
-            .key("proxychat.command.message.error.self-disabled")
+    Component COMMAND_MESSAGE_ERROR_DISALLOWED = translatable()
+            .key("proxychat.command.message.error.disallowed")
             .color(RED)
             .build();
-    Component COMMAND_MESSAGE_ERROR_TARGET_DISABLE = translatable()
-            .key("proxychat.command.message.error.target-disabled")
-            .color(RED)
+    Component COMMAND_MESSAGES_ALLOW_NOBODY = translatable()
+            .key("proxychat.command.messages.allow.nobody")
+            .color(GREEN)
             .build();
+    Component COMMAND_MESSAGES_ALLOW_FRIENDS = translatable()
+            .key("proxychat.command.messages.allow.friends")
+            .color(GREEN)
+            .build();
+    Component COMMAND_MESSAGES_ALLOW_EVERYONE = translatable()
+        .key("proxychat.command.messages.allow.everyone")
+        .color(GREEN)
+        .build();
     Component COMMAND_MESSAGES_SPY_DISABLE = translatable()
-            .key("proxychat.command.messages.spy.disable")
-            .color(RED)
-            .build();
+        .key("proxychat.command.messages.spy.disable")
+        .color(RED)
+        .build();
     Component COMMAND_MESSAGES_SPY_ENABLE = translatable()
-            .key("proxychat.command.messages.spy.enable")
-            .color(GREEN)
-            .build();
-    Component COMMAND_MESSAGES_TOGGLE_DISABLE = translatable()
-            .key("proxychat.command.messages.toggle.disable")
-            .color(RED)
-            .build();
-    Component COMMAND_MESSAGES_TOGGLE_ENABLE = translatable()
-            .key("proxychat.command.messages.toggle.enable")
-            .color(GREEN)
-            .build();
+        .key("proxychat.command.messages.spy.enable")
+        .color(GREEN)
+        .build();
     Component COMMAND_PROXYCHAT_RELOAD_SUCCESS = translatable()
             .key("proxychat.command.proxychat.reload.success")
             .color(GREEN)

@@ -11,6 +11,7 @@ repositories {
         name = "papermc"
         url = uri("https://papermc.io/repo/repository/maven-public/")
     }
+    maven("https://simonsator.de/repo")
 }
 
 indra {

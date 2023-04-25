@@ -7,10 +7,13 @@ plugins {
 dependencies {
     implementation(projects.common)
 
-    implementation(libs.waterfall.api)
+    compileOnly(libs.waterfall.api)
 
     implementation(libs.cloud.bungeecord)
     implementation(libs.adventure.platform.bungeecord)
+
+    // Plugin hooks
+    compileOnly(libs.partyAndFriends.bungeecord)
 }
 
 bungee {

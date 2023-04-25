@@ -59,13 +59,13 @@ public final class ProxyChat {
 
     private void registerCommands() {
         Stream.of(
-                new AnnouncementsCommand(this),
-                new BroadcastCommand(this),
-                new ChannelCommand(this),
-                new MessageCommand(this),
-                new MessagesCommand(this),
-                new fi.fabianadrian.proxychat.common.command.commands.ProxyChatCommand(this),
-                new ReplyCommand(this)
+            new AnnouncementsCommand(this),
+            new BroadcastCommand(this),
+            new ChannelCommand(this),
+            new MessageCommand(this),
+            new MessagesCommand(this),
+            new fi.fabianadrian.proxychat.common.command.commands.ProxyChatCommand(this),
+            new ReplyCommand(this)
         ).forEach(ProxyChatCommand::register);
     }
 

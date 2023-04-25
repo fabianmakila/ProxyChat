@@ -7,6 +7,7 @@ import fi.fabianadrian.proxychat.bungeecord.command.BungeecordConsoleCommander;
 import fi.fabianadrian.proxychat.bungeecord.listener.LoginDisconnectListener;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
+import fi.fabianadrian.proxychat.common.hook.HookManager;
 import fi.fabianadrian.proxychat.common.platform.Platform;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.audience.Audience;
@@ -90,6 +91,11 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
     @Override
     public CommandManager<Commander> commandManager() {
         return this.commandManager;
+    }
+
+    @Override
+    public HookManager hookManager() {
+        return null;
     }
 
     @Override

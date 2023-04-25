@@ -2,8 +2,9 @@ package fi.fabianadrian.proxychat.common.service;
 
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.channel.Channel;
-import fi.fabianadrian.proxychat.common.command.CommandPermissions;
+import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.format.FormatComponentProvider;
+import fi.fabianadrian.proxychat.common.hook.FriendHook;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
@@ -20,27 +21,30 @@ public final class MessageService {
     private final ProxyChat proxyChat;
     private final FormatComponentProvider componentProvider;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
+    private final FriendHook friendHook;
 
     public MessageService(ProxyChat proxyChat) {
         this.proxyChat = proxyChat;
         this.componentProvider = proxyChat.formatComponentProvider();
+        this.friendHook = proxyChat.platform().hookManager().friendHook();
     }
 
     public void sendPrivateMessage(User sender, User receiver, String message) {
-
         if (sender == receiver) {
             sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_SELF);
             return;
         }
 
-        if (!sender.hasPermission(CommandPermissions.MESSAGES_TOGGLE_OVERRIDE.permission())) {
-            if (!sender.allowMessages()) {
-                sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_SELF_DISABLE);
-                return;
-            }
-            if (!receiver.allowMessages()) {
-                sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_TARGET_DISABLE);
-                return;
+        if (!sender.hasPermission(CommandPermission.MESSAGES_TOGGLE_OVERRIDE.permission())) {
+            switch (receiver.messageSetting()) {
+                case NOBODY:
+                    sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+                    return;
+                case FRIENDS:
+                    if (!this.friendHook.areFriends(sender.uuid(), receiver.uuid())) {
+                        sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+                        return;
+                    }
             }
         }
 
@@ -48,9 +52,9 @@ public final class MessageService {
         Component senderComponent = componentProvider.messageSenderComponent(receiver.name(), message);
         Component receiverComponent = componentProvider.messageReceiverComponent(sender.name(), message);
         Component spyComponent = componentProvider.messageSpyComponent(
-                sender.name(),
-                receiver.name(),
-                message
+            sender.name(),
+            receiver.name(),
+            message
         );
 
         // Send components
@@ -91,7 +95,7 @@ public final class MessageService {
 
         List<Component> lines = new ArrayList<>();
         rawLines.forEach(line -> lines.add(miniMessage.deserialize(line, TagResolver.resolver(
-                Placeholder.unparsed("name", user.name())
+            Placeholder.unparsed("name", user.name())
         ))));
 
         user.sendMessage(Component.join(JoinConfiguration.newlines(), lines));

@@ -13,9 +13,11 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
+import fi.fabianadrian.proxychat.common.hook.HookManager;
 import fi.fabianadrian.proxychat.common.platform.Platform;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.velocity.command.VelocityConsoleCommander;
+import fi.fabianadrian.proxychat.velocity.hook.VelocityHookManager;
 import fi.fabianadrian.proxychat.velocity.listener.LoginDisconnectListener;
 import net.kyori.adventure.audience.Audience;
 import org.bstats.velocity.Metrics;
@@ -41,6 +43,7 @@ public final class ProxyChatVelocity implements Platform {
     private final Logger logger;
     private ProxyChat proxyChat;
     private CommandManager<Commander> commandManager;
+    private VelocityHookManager hookManager;
 
     @Inject
     public ProxyChatVelocity(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory, Metrics.Factory metricsFactory) {
@@ -79,6 +82,8 @@ public final class ProxyChatVelocity implements Platform {
             }
         );
 
+        this.hookManager = new VelocityHookManager();
+
         this.proxyChat = new ProxyChat(this);
 
         registerListeners();
@@ -107,6 +112,11 @@ public final class ProxyChatVelocity implements Platform {
     @Override
     public CommandManager<Commander> commandManager() {
         return this.commandManager;
+    }
+
+    @Override
+    public HookManager hookManager() {
+        return this.hookManager;
     }
 
     @Override
