@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.Player;
@@ -34,7 +35,10 @@ import java.util.stream.Stream;
     version = "0.1.0",
     url = "https://github.com/fabianmakila/ProxyChat",
     description = "A simple chat plugin for Velocity.",
-    authors = {"FabianAdrian"}
+    authors = {"FabianAdrian"},
+    dependencies = {
+        @Dependency(id = "partyandfriends", optional = true)
+    }
 )
 public final class ProxyChatVelocity implements Platform {
     private final Path dataDirectory;

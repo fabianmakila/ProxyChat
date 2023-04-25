@@ -6,11 +6,7 @@ import fi.fabianadrian.proxychat.common.hook.FriendHook;
 import java.util.UUID;
 
 public class PAFVelocityFriendHook implements FriendHook {
-    final PAFPlayerManager playerManager;
-
-    public PAFVelocityFriendHook(PAFPlayerManager playerManager) {
-        this.playerManager = playerManager;
-    }
+    final PAFPlayerManager playerManager = PAFPlayerManager.getInstance();
 
     @Override
     public boolean areFriends(UUID uuid1, UUID uuid2) {
