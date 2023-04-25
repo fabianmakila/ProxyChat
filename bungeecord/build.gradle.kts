@@ -16,6 +16,27 @@ dependencies {
     compileOnly(libs.partyAndFriends.bungeecord)
 }
 
+tasks {
+    build {
+        dependsOn(shadowJar)
+    }
+    shadowJar {
+        minimize()
+        sequenceOf(
+            "cloud.commandframework",
+            "net.kyori.adventure.text.minimessage",
+            "space.arim",
+            "org.bstats",
+            "com.google.code.gson"
+        ).forEach { pkg ->
+            relocate(pkg, "${rootProject.group}.${rootProject.name.lowercase()}.dependency.$pkg")
+        }
+        destinationDirectory.set(file("${rootProject.rootDir}/dist"))
+        archiveBaseName.set(rootProject.name + "-Bungeecord")
+        archiveClassifier.set("")
+    }
+}
+
 bungee {
     main = "fi.fabianadrian.proxychat.bungeecord.ProxyChatBungeecord"
     name = rootProject.name
