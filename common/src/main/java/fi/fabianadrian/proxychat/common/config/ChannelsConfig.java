@@ -13,6 +13,7 @@ public interface ChannelsConfig {
         channelsList.add(Channel.of(
             "example",
             "[Example] <sender>: <receiver>",
+            "examplecommand",
             List.of(
                 "examplealias1",
                 "examplealias2"

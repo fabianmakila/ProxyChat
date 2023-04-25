@@ -40,7 +40,7 @@ public final class ChannelRegistry {
     private void registerChannelCommand(Channel channel) {
         CommandManager<Commander> commandManager = this.proxyChat.platform().commandManager();
         var builder = commandManager.commandBuilder(
-                channel.name(),
+                channel.command(),
                 channel.commandAliases(),
                 commandManager.createDefaultCommandMeta()
             )

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 public interface Channel {
-    static Channel of(String name, String format, List<String> commandAliases) {
+    static Channel of(String name, String format, String command, List<String> commandAliases) {
         return new Channel() {
             @Override
             public String name() {
@@ -17,6 +17,11 @@ public interface Channel {
             }
 
             @Override
+            public String command() {
+                return command;
+            }
+
+            @Override
             public List<String> commandAliases() {
                 return commandAliases;
             }
@@ -26,6 +31,8 @@ public interface Channel {
     String name();
 
     String format();
+
+    String command();
 
     List<String> commandAliases();
 
