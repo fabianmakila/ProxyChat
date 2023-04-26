@@ -14,9 +14,8 @@ Installation instructions and other documentation can be found in the [Wiki][wik
 - Network welcome messages
 
 ## Supported proxies
+- Bungeecord / Waterfall
 - Velocity
-
-**Bungeecord/Waterfall won't be getting support due to very outdated and hard to work with API.**
 
 ## Support
 Can't find what you're looking for in the wiki? Join the [Discord server][discord-link] to ask for help in the `#support-proxychat` channel and hangout with the community.
