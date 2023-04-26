@@ -3,10 +3,6 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-group = rootProject.group
-version = rootProject.version
-description = rootProject.description
-
 dependencies {
     implementation(projects.common)
 

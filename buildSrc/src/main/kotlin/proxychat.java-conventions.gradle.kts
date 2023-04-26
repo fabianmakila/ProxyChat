@@ -5,14 +5,9 @@ plugins {
     id("net.kyori.indra")
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        name = "papermc"
-        url = uri("https://papermc.io/repo/repository/maven-public/")
-    }
-    maven("https://simonsator.de/repo")
-}
+group = rootProject.group
+version = rootProject.version
+description = rootProject.description
 
 indra {
     javaVersions {
