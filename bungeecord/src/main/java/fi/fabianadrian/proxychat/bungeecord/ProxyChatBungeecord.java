@@ -4,6 +4,7 @@ import cloud.commandframework.CommandManager;
 import cloud.commandframework.bungee.BungeeCommandManager;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import fi.fabianadrian.proxychat.bungeecord.command.BungeecordConsoleCommander;
+import fi.fabianadrian.proxychat.bungeecord.hook.BungeecordHookManager;
 import fi.fabianadrian.proxychat.bungeecord.listener.LoginDisconnectListener;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
@@ -26,6 +27,7 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
     private BungeeAudiences adventure;
     private CommandManager<Commander> commandManager;
     private ProxyChat proxyChat;
+    private BungeecordHookManager hookManager;
 
     public BungeeAudiences adventure() {
         if (this.adventure == null) {
@@ -65,6 +67,8 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
             }
         );
 
+        this.hookManager = new BungeecordHookManager();
+
         this.proxyChat = new ProxyChat(this);
 
         registerListeners();
@@ -95,7 +99,7 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
 
     @Override
     public HookManager hookManager() {
-        return null;
+        return this.hookManager;
     }
 
     @Override
