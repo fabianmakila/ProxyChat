@@ -21,12 +21,12 @@ public final class AnnouncementsCommand extends ProxyChatCommand {
         var builder = this.builder()
             .argument(BooleanArgument.optional("visible"))
             .senderType(User.class)
-            .handler(this::executeBroadcast);
+            .handler(this::executeAnnouncement);
 
         this.manager.command(builder);
     }
 
-    private void executeBroadcast(CommandContext<Commander> ctx) {
+    private void executeAnnouncement(CommandContext<Commander> ctx) {
         Optional<Boolean> visibleOptional = ctx.getOptional("visible");
         User user = (User) ctx.getSender();
         boolean visible = visibleOptional.orElseGet(() -> !user.announcements());
