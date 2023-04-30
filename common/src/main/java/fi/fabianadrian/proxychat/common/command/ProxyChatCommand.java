@@ -4,8 +4,6 @@ import cloud.commandframework.Command;
 import cloud.commandframework.CommandManager;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 
-import java.util.Arrays;
-
 public abstract class ProxyChatCommand {
     protected final ProxyChat proxyChat;
     protected final CommandManager<Commander> manager;
