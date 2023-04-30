@@ -3,7 +3,6 @@ package fi.fabianadrian.proxychat.common.command.commands;
 import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.locale.Messages;
@@ -14,13 +13,17 @@ import java.util.Optional;
 public final class AnnouncementsCommand extends ProxyChatCommand {
 
     public AnnouncementsCommand(ProxyChat proxyChat) {
-        super(proxyChat);
+        super(proxyChat, "announcements");
     }
 
     @Override
     public void register() {
-        var builder = this.commandManager.commandBuilder("announcements").permission(CommandPermission.ANNOUNCEMENTS.permission());
-        this.commandManager.command(builder.argument(BooleanArgument.optional("visible")).senderType(User.class).handler(this::executeBroadcast));
+        var builder = this.builder()
+            .argument(BooleanArgument.optional("visible"))
+            .senderType(User.class)
+            .handler(this::executeBroadcast);
+
+        this.manager.command(builder);
     }
 
     private void executeBroadcast(CommandContext<Commander> ctx) {

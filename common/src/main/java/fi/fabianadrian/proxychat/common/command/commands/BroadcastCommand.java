@@ -3,7 +3,6 @@ package fi.fabianadrian.proxychat.common.command.commands;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.format.FormatComponentProvider;
@@ -12,18 +11,17 @@ public final class BroadcastCommand extends ProxyChatCommand {
     private final FormatComponentProvider componentProvider;
 
     public BroadcastCommand(ProxyChat proxyChat) {
-        super(proxyChat);
+        super(proxyChat, "broadcast", "bc");
         this.componentProvider = proxyChat.formatComponentProvider();
     }
 
     @Override
     public void register() {
-        var builder = this.commandManager.commandBuilder("broadcast", "bc")
-            .permission(CommandPermission.BROADCAST.permission())
+        var builder = this.builder()
             .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
             .handler(this::executeBroadcast);
 
-        this.commandManager.command(builder);
+        this.manager.command(builder);
     }
 
     private void executeBroadcast(CommandContext<Commander> ctx) {

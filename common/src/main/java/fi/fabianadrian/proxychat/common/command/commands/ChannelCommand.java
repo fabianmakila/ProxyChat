@@ -3,7 +3,6 @@ package fi.fabianadrian.proxychat.common.command.commands;
 import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.channel.Channel;
-import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.argument.ChannelArgument;
@@ -19,31 +18,28 @@ import java.util.stream.Stream;
 
 public final class ChannelCommand extends ProxyChatCommand {
     public ChannelCommand(ProxyChat proxyChat) {
-        super(proxyChat);
+        super(proxyChat, "channel", "ch");
     }
 
     @Override
     public void register() {
-        var builder = this.commandManager.commandBuilder("channel", "ch")
-            .permission(CommandPermission.CHANNEL.permission());
-
-        this.commandManager.command(builder.literal("list")
-            .permission(CommandPermission.CHANNEL_LIST.permission())
-            .handler(this::executeList)
+        this.manager.command(
+            this.subCommand("list")
+                .handler(this::executeList)
         );
 
-        this.commandManager.command(builder.literal("mute")
-            .argument(ChannelArgument.of("channel"))
-            .permission(CommandPermission.CHANNEL_MUTE.permission())
-            .senderType(User.class)
-            .handler(this::executeMute)
+        this.manager.command(
+            this.subCommand("mute")
+                .argument(ChannelArgument.of("channel"))
+                .senderType(User.class)
+                .handler(this::executeMute)
         );
 
-        this.commandManager.command(builder.literal("unmute")
-            .argument(ChannelArgument.of("channel"))
-            .permission(CommandPermission.CHANNEL_MUTE.permission())
-            .senderType(User.class)
-            .handler(this::executeUnmute)
+        this.manager.command(
+            this.subCommand("unmute")
+                .argument(ChannelArgument.of("channel"))
+                .senderType(User.class)
+                .handler(this::executeUnmute)
         );
     }
 

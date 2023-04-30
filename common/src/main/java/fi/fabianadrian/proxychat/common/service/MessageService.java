@@ -2,7 +2,6 @@ package fi.fabianadrian.proxychat.common.service;
 
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.channel.Channel;
-import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.format.FormatComponentProvider;
 import fi.fabianadrian.proxychat.common.hook.FriendHook;
 import fi.fabianadrian.proxychat.common.locale.Messages;
@@ -22,6 +21,7 @@ public final class MessageService {
     private final FormatComponentProvider componentProvider;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private final FriendHook friendHook;
+    private final String BYPASS_PERMISSION = "proxychat.command.message.bypass";
 
     public MessageService(ProxyChat proxyChat) {
         this.proxyChat = proxyChat;
@@ -35,7 +35,7 @@ public final class MessageService {
             return;
         }
 
-        if (!sender.hasPermission(CommandPermission.MESSAGES_TOGGLE_OVERRIDE.permission())) {
+        if (!sender.hasPermission(BYPASS_PERMISSION)) {
             switch (receiver.messageSetting()) {
                 case NOBODY:
                     sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);

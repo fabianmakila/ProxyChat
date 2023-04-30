@@ -4,7 +4,6 @@ import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.arguments.standard.EnumArgument;
 import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.locale.Messages;
@@ -15,21 +14,19 @@ import java.util.Optional;
 public class MessagesCommand extends ProxyChatCommand {
 
     public MessagesCommand(ProxyChat proxyChat) {
-        super(proxyChat);
+        super(proxyChat, "messages", "msgs");
     }
 
     @Override
     public void register() {
-        var builder = this.commandManager.commandBuilder("messages", "msgs").permission(CommandPermission.MESSAGES.permission()).senderType(User.class);
-
-        this.commandManager.command(builder.literal("spy")
-            .permission(CommandPermission.MESSAGES_SPY.permission())
+        this.manager.command(subCommand("spy")
+            .senderType(User.class)
             .argument(BooleanArgument.optional("enabled"))
             .handler(this::executeSpy)
         );
 
-        this.commandManager.command(builder.literal("allow")
-            .permission(CommandPermission.MESSAGES_ALLOW.permission())
+        this.manager.command(subCommand("allow")
+            .senderType(User.class)
             .argument(EnumArgument.of(User.MessageSetting.class, "messageSetting"))
             .handler(this::executeAllow)
         );

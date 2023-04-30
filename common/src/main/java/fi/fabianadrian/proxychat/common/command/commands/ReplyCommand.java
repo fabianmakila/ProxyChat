@@ -3,7 +3,6 @@ package fi.fabianadrian.proxychat.common.command.commands;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.command.CommandPermission;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.locale.Messages;
@@ -14,18 +13,17 @@ import java.util.UUID;
 
 public final class ReplyCommand extends ProxyChatCommand {
     public ReplyCommand(ProxyChat proxyChat) {
-        super(proxyChat);
+        super(proxyChat, "reply", "r");
     }
 
     @Override
     public void register() {
-        var builder = this.commandManager.commandBuilder("reply", "r")
-            .permission(CommandPermission.MESSAGE.permission())
+        var builder = this.builder()
             .senderType(User.class)
             .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
             .handler(this::executeReply);
 
-        this.commandManager.command(builder);
+        this.manager.command(builder);
     }
 
     private void executeReply(CommandContext<Commander> ctx) {
