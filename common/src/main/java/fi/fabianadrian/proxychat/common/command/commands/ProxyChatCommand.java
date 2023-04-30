@@ -12,15 +12,23 @@ public final class ProxyChatCommand extends fi.fabianadrian.proxychat.common.com
 
     @Override
     public void register() {
-        var builder = this.builder()
-            .literal("reload")
-            .handler(this::executeReload);
+        this.manager.command(
+            subCommand("reload").handler(this::executeReload)
+        );
 
-        this.manager.command(builder);
+        var debugBuilder = subCommand("debug");
+        this.manager.command(
+            debugBuilder.literal("announcement")
+                .handler(this::executeDebugAnnouncement)
+        );
     }
 
     private void executeReload(CommandContext<Commander> ctx) {
         this.proxyChat.reload();
         ctx.getSender().sendMessage(Messages.COMMAND_PROXYCHAT_RELOAD_SUCCESS);
+    }
+
+    private void executeDebugAnnouncement(CommandContext<Commander> ctx) {
+        this.proxyChat.announcementService().sendAnnouncement();
     }
 }

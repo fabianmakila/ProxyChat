@@ -39,7 +39,7 @@ public final class AnnouncementService {
         }
     }
 
-    private void sendAnnouncement() {
+    public void sendAnnouncement() {
         this.index = this.config.random() ?
             ThreadLocalRandom.current().nextInt(this.config.announcements().size()) :
             (this.index >= this.config.announcements().size() - 1) ? 0 : this.index + 1;

@@ -88,4 +88,8 @@ public final class ProxyChat {
     public ChannelRegistry channelRegistry() {
         return this.channelRegistry;
     }
+
+    public AnnouncementService announcementService() {
+        return this.announcementService;
+    }
 }
