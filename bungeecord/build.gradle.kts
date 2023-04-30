@@ -24,10 +24,11 @@ tasks {
         minimize()
         sequenceOf(
             "cloud.commandframework",
-            "net.kyori.adventure.text.minimessage",
+            "io.leangen",
+            "net.kyori",
             "space.arim",
             "org.bstats",
-            "com.google.code.gson"
+            "com.google.gson",
         ).forEach { pkg ->
             relocate(pkg, "${rootProject.group}.${rootProject.name.lowercase()}.dependency.$pkg")
         }

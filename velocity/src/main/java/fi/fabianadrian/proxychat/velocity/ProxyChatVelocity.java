@@ -32,9 +32,9 @@ import java.util.stream.Stream;
 @Plugin(
     id = "proxychat",
     name = "ProxyChat",
-    version = "0.1.0",
+    version = Constants.VERSION,
     url = "https://github.com/fabianmakila/ProxyChat",
-    description = "A simple chat plugin for Velocity.",
+    description = Constants.DESCRIPTION,
     authors = {"FabianAdrian"},
     dependencies = {
         @Dependency(id = "partyandfriends", optional = true)
