@@ -6,7 +6,6 @@ import fi.fabianadrian.proxychat.common.command.commands.*;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandPreprocessor;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandSuggestionProcessor;
 import fi.fabianadrian.proxychat.common.config.ConfigManager;
-import fi.fabianadrian.proxychat.common.format.FormatComponentProvider;
 import fi.fabianadrian.proxychat.common.locale.TranslationManager;
 import fi.fabianadrian.proxychat.common.platform.Platform;
 import fi.fabianadrian.proxychat.common.service.AnnouncementService;
@@ -18,7 +17,6 @@ import java.util.stream.Stream;
 public final class ProxyChat {
     private final Platform platform;
     private final ConfigManager configManager;
-    private final FormatComponentProvider formatComponentProvider;
     private final UserManager userManager;
     private final TranslationManager translationManager;
     private final MessageService messageService;
@@ -36,8 +34,6 @@ public final class ProxyChat {
 
         this.translationManager = new TranslationManager(this);
         this.translationManager.reload();
-
-        this.formatComponentProvider = new FormatComponentProvider(this);
 
         this.messageService = new MessageService(this);
 
@@ -73,15 +69,12 @@ public final class ProxyChat {
         return configManager;
     }
 
-    public FormatComponentProvider formatComponentProvider() {
-        return formatComponentProvider;
-    }
-
     public void reload() {
         this.configManager.reload();
+        this.translationManager.reload();
         this.userManager.reload();
         this.announcementService.reload();
-        this.translationManager.reload();
+        this.messageService.reload();
     }
 
     public UserManager userManager() {

@@ -5,14 +5,17 @@ import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
-import fi.fabianadrian.proxychat.common.format.FormatComponentProvider;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 public final class BroadcastCommand extends ProxyChatCommand {
-    private final FormatComponentProvider componentProvider;
+    private final MiniMessage miniMessage;
 
     public BroadcastCommand(ProxyChat proxyChat) {
         super(proxyChat, "broadcast", "bc");
-        this.componentProvider = proxyChat.formatComponentProvider();
+        this.miniMessage = MiniMessage.miniMessage();
     }
 
     @Override
@@ -27,7 +30,17 @@ public final class BroadcastCommand extends ProxyChatCommand {
     private void executeBroadcast(CommandContext<Commander> ctx) {
         String message = ctx.get("message");
         this.proxyChat.platform().sendMessage(
-            this.componentProvider.broadcastComponent(message)
+            broadcastComponent(message)
+        );
+    }
+
+    private Component broadcastComponent(String message) {
+        String format = this.proxyChat.configManager().mainConfig().formats().broadcast();
+        return this.miniMessage.deserialize(
+            format,
+            TagResolver.resolver(
+                Placeholder.unparsed("message", message)
+            )
         );
     }
 }

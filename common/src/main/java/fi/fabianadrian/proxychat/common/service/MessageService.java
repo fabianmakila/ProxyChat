@@ -2,7 +2,7 @@ package fi.fabianadrian.proxychat.common.service;
 
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.channel.Channel;
-import fi.fabianadrian.proxychat.common.format.FormatComponentProvider;
+import fi.fabianadrian.proxychat.common.config.ProxyChatConfig;
 import fi.fabianadrian.proxychat.common.hook.FriendHook;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.User;
@@ -18,15 +18,19 @@ import java.util.List;
 public final class MessageService {
 
     private final ProxyChat proxyChat;
-    private final FormatComponentProvider componentProvider;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private final FriendHook friendHook;
     private final String BYPASS_PERMISSION = "proxychat.command.message.bypass";
+    private ProxyChatConfig.FormatSection formats;
 
     public MessageService(ProxyChat proxyChat) {
         this.proxyChat = proxyChat;
-        this.componentProvider = proxyChat.formatComponentProvider();
         this.friendHook = proxyChat.platform().hookManager().friendHook();
+        this.formats = proxyChat.configManager().mainConfig().formats();
+    }
+
+    public void reload() {
+        this.formats = proxyChat.configManager().mainConfig().formats();
     }
 
     public void sendPrivateMessage(User sender, User receiver, String message) {
@@ -49,9 +53,9 @@ public final class MessageService {
         }
 
         // Message components
-        Component senderComponent = componentProvider.messageSenderComponent(receiver.name(), message);
-        Component receiverComponent = componentProvider.messageReceiverComponent(sender.name(), message);
-        Component spyComponent = componentProvider.messageSpyComponent(
+        Component senderComponent = messageSenderComponent(receiver.name(), message);
+        Component receiverComponent = messageReceiverComponent(sender.name(), message);
+        Component spyComponent = messageSpyComponent(
             sender.name(),
             receiver.name(),
             message
@@ -99,5 +103,38 @@ public final class MessageService {
         ))));
 
         user.sendMessage(Component.join(JoinConfiguration.newlines(), lines));
+    }
+
+    private Component messageSenderComponent(String receiverName, String message) {
+        return this.miniMessage.deserialize(
+            this.formats.msg(),
+            TagResolver.resolver(
+                Placeholder.component("sender", Messages.GENERAL_ME),
+                Placeholder.unparsed("receiver", receiverName),
+                Placeholder.unparsed("message", message)
+            )
+        );
+    }
+
+    private Component messageReceiverComponent(String senderName, String message) {
+        return this.miniMessage.deserialize(
+            this.formats.msg(),
+            TagResolver.resolver(
+                Placeholder.unparsed("sender", senderName),
+                Placeholder.component("receiver", Messages.GENERAL_ME),
+                Placeholder.unparsed("message", message)
+            )
+        );
+    }
+
+    private Component messageSpyComponent(String senderName, String receiverName, String message) {
+        return this.miniMessage.deserialize(
+            this.formats.msgSpy(),
+            TagResolver.resolver(
+                Placeholder.unparsed("sender", senderName),
+                Placeholder.unparsed("receiver", receiverName),
+                Placeholder.unparsed("message", message)
+            )
+        );
     }
 }
