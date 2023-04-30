@@ -20,7 +20,7 @@ public final class MessageService {
     private final ProxyChat proxyChat;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private final FriendHook friendHook;
-    private final String BYPASS_PERMISSION = "proxychat.command.message.bypass";
+    private static final String BYPASS_PERMISSION = "proxychat.command.message.bypass";
     private ProxyChatConfig.FormatSection formats;
 
     public MessageService(ProxyChat proxyChat) {
