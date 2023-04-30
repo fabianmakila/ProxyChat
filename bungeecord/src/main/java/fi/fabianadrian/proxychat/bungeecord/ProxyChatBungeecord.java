@@ -89,7 +89,7 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
 
     @Override
     public Path dataDirectory() {
-        return getProxy().getPluginsFolder().toPath();
+        return getDataFolder().toPath();
     }
 
     @Override
