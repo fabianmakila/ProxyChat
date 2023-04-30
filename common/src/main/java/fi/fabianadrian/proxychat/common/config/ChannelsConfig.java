@@ -12,7 +12,7 @@ public interface ChannelsConfig {
         List<Channel> channelsList = new ArrayList<>();
         channelsList.add(Channel.of(
             "example",
-            "[Example] <sender>: <receiver>",
+            "[Example] <sender>: <message>",
             "examplecommand",
             List.of(
                 "examplealias1",
