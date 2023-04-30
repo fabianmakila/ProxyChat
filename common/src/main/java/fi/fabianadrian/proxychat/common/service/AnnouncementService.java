@@ -25,13 +25,18 @@ public final class AnnouncementService {
     public void reload() {
         this.config = this.proxyChat.configManager().announcementsConfig();
 
-        cancelTask();
-
+        // No need to run the task if there are no announcements
         if (config.announcements().isEmpty()) {
+            if (this.scheduledTask != null) {
+                this.scheduledTask.cancel(false);
+            }
             return;
         }
 
-        this.scheduledTask = this.scheduler.scheduleAtFixedRate(this::sendAnnouncement, 0, config.interval(), TimeUnit.MINUTES);
+        // Only create the task if it does not already exist
+        if (this.scheduledTask == null) {
+            this.scheduledTask = this.scheduler.scheduleAtFixedRate(this::sendAnnouncement, 0, config.interval(), TimeUnit.MINUTES);
+        }
     }
 
     private void sendAnnouncement() {
@@ -44,12 +49,6 @@ public final class AnnouncementService {
             if (user.announcements()) {
                 user.sendMessage(announcement);
             }
-        }
-    }
-
-    private void cancelTask() {
-        if (this.scheduledTask != null) {
-            this.scheduledTask.cancel(false);
         }
     }
 }
