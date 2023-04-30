@@ -1,21 +1,19 @@
 package fi.fabianadrian.proxychat.bungeecord.hook;
 
-import de.simonsator.partyandfriends.api.pafplayers.PAFPlayerManager;
 import fi.fabianadrian.proxychat.common.hook.FriendHook;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
 import org.slf4j.Logger;
 
 public class BungeecordHookManager extends HookManager {
-    private final FriendHook friendHook;
+    private FriendHook friendHook;
 
     public BungeecordHookManager(Logger logger) {
         super(logger);
 
-        PAFPlayerManager pafPlayerManager = PAFPlayerManager.getInstance();
-        if (pafPlayerManager != null) {
-            this.friendHook = new PAFBungeecordFriendHook(pafPlayerManager);
+        try {
+            this.friendHook = new PAFBungeecordFriendHook();
             this.logger.info("PartyAndFriends hook enabled!");
-        } else {
+        } catch (NoClassDefFoundError e) {
             this.friendHook = FriendHook.empty();
         }
     }
