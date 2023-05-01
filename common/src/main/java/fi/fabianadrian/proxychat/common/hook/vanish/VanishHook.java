@@ -6,6 +6,6 @@ public interface VanishHook {
     boolean canSee(User user1, User user2);
 
     static VanishHook empty() {
-        return (user1, user2) -> false;
+        return (user1, user2) -> true;
     }
 }
