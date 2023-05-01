@@ -9,6 +9,7 @@ import cloud.commandframework.captions.CaptionVariable;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import cloud.commandframework.exceptions.parsing.ParserException;
+import fi.fabianadrian.proxychat.common.hook.HookManager;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.common.user.UserManager;
 import io.leangen.geantyref.TypeToken;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Argument parse for {@link User channels}
@@ -78,23 +80,38 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 
     public static final class UserParser<C> implements ArgumentParser<C, User> {
         @Override
-        public @NotNull ArgumentParseResult<@NotNull User> parse(final @NotNull CommandContext<@NotNull C> commandContext, final @NotNull Queue<@NotNull String> inputQueue) {
+        public @NotNull ArgumentParseResult<@NotNull User> parse(final @NotNull CommandContext<@NotNull C> ctx, final @NotNull Queue<@NotNull String> inputQueue) {
             final String input = inputQueue.peek();
             if (input == null) {
-                return ArgumentParseResult.failure(new NoInputProvidedException(UserParser.class, commandContext));
+                return ArgumentParseResult.failure(new NoInputProvidedException(UserParser.class, ctx));
             }
-            final Optional<User> userOptional = commandContext.<UserManager>get("UserManager").user(input);
+            final Optional<User> userOptional = ctx.<UserManager>get("UserManager").user(input);
             if (userOptional.isEmpty()) {
-                return ArgumentParseResult.failure(new UserParseException(input, commandContext));
+                return ArgumentParseResult.failure(new UserParseException(input, ctx));
             }
+
+            User user = userOptional.get();
+
+            final List<UUID> vanished = ctx.<HookManager>get("HookManager").vanishHook().vanished();
+            if (!ctx.hasPermission("proxychat.vanished") && vanished.contains(user.uuid())) {
+                return ArgumentParseResult.failure(new UserParseException(input, ctx));
+            }
+
             inputQueue.remove();
-            return ArgumentParseResult.success(userOptional.get());
+            return ArgumentParseResult.success(user);
         }
 
         @Override
         public @NotNull List<@NotNull String> suggestions(final @NotNull CommandContext<C> ctx, final @NotNull String input) {
-            UserManager userManager = ctx.get("UserManager");
-            return userManager.users().stream().map(User::name).collect(Collectors.toList());
+            Collection<User> users = ctx.<UserManager>get("UserManager").users();
+            Stream<User> userStream = users.stream();
+
+            if (!ctx.hasPermission("proxychat.vanished")) {
+                List<UUID> vanished = ctx.<HookManager>get("HookManager").vanishHook().vanished();
+                userStream = userStream.filter(user -> vanished.contains(user.uuid()));
+            }
+
+            return userStream.map(User::name).collect(Collectors.toList());
         }
     }
 
@@ -103,7 +120,7 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
         private static final long serialVersionUID = -3171394255739625192L;
 
         private UserParseException(final @NotNull String input, final @NotNull CommandContext<?> context) {
-            super(UserParser.class, context, Caption.of("argument.parse.failure.channel"), CaptionVariable.of("input", input));
+            super(UserParser.class, context, Caption.of("argument.parse.failure.user"), CaptionVariable.of("input", input));
         }
     }
 }

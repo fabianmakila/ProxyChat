@@ -42,5 +42,5 @@ bungee {
     main = "fi.fabianadrian.proxychat.bungeecord.ProxyChatBungeecord"
     name = rootProject.name
     author = "FabianAdrian"
-    softDepends = setOf("PartyAndFriends")
+    softDepends = setOf("PartyAndFriends", "PremiumVanish")
 }

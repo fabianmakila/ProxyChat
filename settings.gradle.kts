@@ -14,5 +14,6 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://papermc.io/repo/repository/maven-public/")
         maven("https://simonsator.de/repo")
+        maven("https://jitpack.io")
     }
 }

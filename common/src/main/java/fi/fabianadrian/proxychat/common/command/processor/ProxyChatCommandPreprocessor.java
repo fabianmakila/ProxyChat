@@ -1,5 +1,6 @@
 package fi.fabianadrian.proxychat.common.command.processor;
 
+import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.execution.preprocessor.CommandPreprocessingContext;
 import cloud.commandframework.execution.preprocessor.CommandPreprocessor;
 import fi.fabianadrian.proxychat.common.ProxyChat;
@@ -14,7 +15,9 @@ public final class ProxyChatCommandPreprocessor<C> implements CommandPreprocesso
 
     @Override
     public void accept(@NonNull CommandPreprocessingContext<C> context) {
-        context.getCommandContext().store("ChannelRegistry", this.proxyChat.channelRegistry());
-        context.getCommandContext().store("UserManager", this.proxyChat.userManager());
+        CommandContext<C> commandContext = context.getCommandContext();
+        commandContext.store("ChannelRegistry", this.proxyChat.channelRegistry());
+        commandContext.store("UserManager", this.proxyChat.userManager());
+        commandContext.store("HookManager", this.proxyChat.platform().hookManager());
     }
 }

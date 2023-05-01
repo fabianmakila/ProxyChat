@@ -37,7 +37,8 @@ import java.util.stream.Stream;
     description = Constants.DESCRIPTION,
     authors = {"FabianAdrian"},
     dependencies = {
-        @Dependency(id = "partyandfriends", optional = true)
+        @Dependency(id = "partyandfriends", optional = true),
+        @Dependency(id = "premiumvanish", optional = true)
     }
 )
 public final class ProxyChatVelocity implements Platform {
