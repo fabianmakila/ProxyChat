@@ -23,7 +23,7 @@ public interface ProxyChatConfig {
         @ConfDefault.DefaultString("<gold>[<red><sender> -> <receiver></red>]</gold> <message>")
         String msg();
 
-        @ConfDefault.DefaultString("<gold>[<aqua><sender> -> <receiver></aqua>]</gold> <message>")
+        @ConfDefault.DefaultString("<gold>[<aqua><sender> -> <receiver></aqua>]</gold> <gray><message>")
         String msgSpy();
 
         @ConfDefault.DefaultString("<white>[<green>Broadcast</green>]</white> <message>")
