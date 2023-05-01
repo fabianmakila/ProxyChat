@@ -2,10 +2,12 @@ package fi.fabianadrian.proxychat.velocity.hook;
 
 import fi.fabianadrian.proxychat.common.hook.FriendHook;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
+import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
 import org.slf4j.Logger;
 
 public class VelocityHookManager extends HookManager {
     private FriendHook friendHook;
+    private VanishHook vanishHook = VanishHook.empty();
 
     public VelocityHookManager(Logger logger) {
         super(logger);
@@ -21,5 +23,10 @@ public class VelocityHookManager extends HookManager {
     @Override
     public FriendHook friendHook() {
         return this.friendHook;
+    }
+
+    @Override
+    public VanishHook vanishHook() {
+        return this.vanishHook;
     }
 }

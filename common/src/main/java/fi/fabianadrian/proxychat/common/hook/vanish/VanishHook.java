@@ -1,12 +1,11 @@
 package fi.fabianadrian.proxychat.common.hook.vanish;
 
-import java.util.List;
-import java.util.UUID;
+import fi.fabianadrian.proxychat.common.user.User;
 
 public interface VanishHook {
-    List<UUID> vanished();
+    boolean canSee(User user1, User user2);
 
     static VanishHook empty() {
-        return List::of;
+        return (user1, user2) -> false;
     }
 }

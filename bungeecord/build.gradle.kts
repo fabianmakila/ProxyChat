@@ -14,6 +14,7 @@ dependencies {
 
     // Plugin hooks
     compileOnly(libs.partyAndFriends.bungeecord)
+    compileOnly(libs.premiumvanish)
 }
 
 tasks {

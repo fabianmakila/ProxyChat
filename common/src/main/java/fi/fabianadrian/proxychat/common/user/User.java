@@ -31,6 +31,10 @@ public final class User implements Commander {
         this.mutedChannels = deserialized.mutedChannels;
     }
 
+    public PlatformPlayer player() {
+        return this.player;
+    }
+
     public UUID uuid() {
         return this.player.uuid();
     }

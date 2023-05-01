@@ -36,4 +36,8 @@ public class BungeecordPlatformPlayer implements PlatformPlayer {
     public @NotNull Audience audience() {
         return this.audience;
     }
+
+    public ProxiedPlayer player() {
+        return this.player;
+    }
 }

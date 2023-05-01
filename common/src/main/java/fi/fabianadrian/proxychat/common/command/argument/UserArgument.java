@@ -10,6 +10,7 @@ import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import cloud.commandframework.exceptions.parsing.ParserException;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
+import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.common.user.UserManager;
 import io.leangen.geantyref.TypeToken;
@@ -92,8 +93,7 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 
             User user = userOptional.get();
 
-            final List<UUID> vanished = ctx.<HookManager>get("HookManager").vanishHook().vanished();
-            if (!ctx.hasPermission("proxychat.vanished") && vanished.contains(user.uuid())) {
+            if (ctx.getSender() instanceof User && !ctx.<HookManager>get("HookManager").vanishHook().canSee((User) ctx.getSender(), user)) {
                 return ArgumentParseResult.failure(new UserParseException(input, ctx));
             }
 
@@ -103,15 +103,14 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 
         @Override
         public @NotNull List<@NotNull String> suggestions(final @NotNull CommandContext<C> ctx, final @NotNull String input) {
-            Collection<User> users = ctx.<UserManager>get("UserManager").users();
-            Stream<User> userStream = users.stream();
+            Stream<User> users = ctx.<UserManager>get("UserManager").users().stream();
+            VanishHook vanishHook = ctx.<HookManager>get("HookManager").vanishHook();
 
-            if (!ctx.hasPermission("proxychat.vanished")) {
-                List<UUID> vanished = ctx.<HookManager>get("HookManager").vanishHook().vanished();
-                userStream = userStream.filter(user -> vanished.contains(user.uuid()));
+            if (ctx.getSender() instanceof User) {
+                users = users.filter(user -> vanishHook.canSee((User) ctx.getSender(), user));
             }
 
-            return userStream.map(User::name).collect(Collectors.toList());
+            return users.map(User::name).collect(Collectors.toList());
         }
     }
 

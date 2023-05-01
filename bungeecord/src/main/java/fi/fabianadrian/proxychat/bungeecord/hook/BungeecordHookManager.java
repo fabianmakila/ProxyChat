@@ -1,14 +1,17 @@
 package fi.fabianadrian.proxychat.bungeecord.hook;
 
+import fi.fabianadrian.proxychat.bungeecord.ProxyChatBungeecord;
+import fi.fabianadrian.proxychat.bungeecord.hook.vanish.PremiumVanishHook;
 import fi.fabianadrian.proxychat.common.hook.FriendHook;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
-import org.slf4j.Logger;
+import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
 
 public class BungeecordHookManager extends HookManager {
+    private final VanishHook vanishHook;
     private FriendHook friendHook;
 
-    public BungeecordHookManager(Logger logger) {
-        super(logger);
+    public BungeecordHookManager(ProxyChatBungeecord plugin) {
+        super(plugin.logger());
 
         try {
             this.friendHook = new PAFBungeecordFriendHook();
@@ -16,10 +19,21 @@ public class BungeecordHookManager extends HookManager {
         } catch (NoClassDefFoundError e) {
             this.friendHook = FriendHook.empty();
         }
+
+        if (plugin.getProxy().getPluginManager().getPlugin("PremiumVanish") != null) {
+            this.vanishHook = new PremiumVanishHook();
+        } else {
+            this.vanishHook = VanishHook.empty();
+        }
     }
 
     @Override
     public FriendHook friendHook() {
         return this.friendHook;
+    }
+
+    @Override
+    public VanishHook vanishHook() {
+        return this.vanishHook;
     }
 }
