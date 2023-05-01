@@ -21,6 +21,7 @@ public class BungeecordHookManager extends HookManager {
         }
 
         if (plugin.getProxy().getPluginManager().getPlugin("PremiumVanish") != null) {
+            this.logger.info("PremiumVanish hook enabled!");
             this.vanishHook = new PremiumVanishHook();
         } else {
             this.vanishHook = VanishHook.empty();
