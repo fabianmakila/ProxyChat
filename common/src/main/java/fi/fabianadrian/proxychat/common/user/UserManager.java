@@ -66,7 +66,7 @@ public final class UserManager {
 
     public Optional<User> user(String name) {
         for (User user : this.userMap.values()) {
-            if (user.name().equals(name)) {
+            if (user.name().equalsIgnoreCase(name)) {
                 return Optional.of(user);
             }
         }
