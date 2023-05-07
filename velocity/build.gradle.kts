@@ -37,7 +37,7 @@ tasks {
             "org.bstats",
             "com.google.gson"
         ).forEach { pkg ->
-            relocate(pkg, "${rootProject.group}.${rootProject.name.lowercase()}.dependency.$pkg")
+            relocate(pkg, "${project.group}.${rootProject.name.lowercase()}.dependency.$pkg")
         }
         destinationDirectory.set(file("${rootProject.rootDir}/dist"))
         archiveBaseName.set("${rootProject.name}-Velocity")
