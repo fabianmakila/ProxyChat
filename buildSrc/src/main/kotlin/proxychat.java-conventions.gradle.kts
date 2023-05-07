@@ -5,9 +5,9 @@ plugins {
     id("net.kyori.indra")
 }
 
-group = rootProject.group
-version = rootProject.version
-description = rootProject.description
+group = "fi.fabianadrian"
+version = "1.0.0-SNAPSHOT"
+description = "A simple chat plugin for Minecraft proxies."
 
 indra {
     javaVersions {
@@ -17,7 +17,6 @@ indra {
 
 spotless {
     java {
-        //importOrder() - Broken currently
         indentWithSpaces(4)
         trimTrailingWhitespace()
         removeUnusedImports()

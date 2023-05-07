@@ -37,5 +37,7 @@ premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = 
 
 [plugins]
 blossom = { id = "net.kyori.blossom", version = "1.3.1" }
+indra = { id = "net.kyori:indra-common", version = "3.0.1" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.18.0" }
 pluginYml-bungee = { id = "net.minecrell.plugin-yml.bungee", version = "0.5.3" }
