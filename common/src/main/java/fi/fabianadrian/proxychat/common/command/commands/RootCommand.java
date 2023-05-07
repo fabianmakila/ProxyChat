@@ -5,8 +5,8 @@ import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 
-public final class ProxyChatCommand extends fi.fabianadrian.proxychat.common.command.ProxyChatCommand {
-    public ProxyChatCommand(ProxyChat proxyChat) {
+public final class RootCommand extends fi.fabianadrian.proxychat.common.command.ProxyChatCommand {
+    public RootCommand(ProxyChat proxyChat) {
         super(proxyChat, "proxychat");
     }
 

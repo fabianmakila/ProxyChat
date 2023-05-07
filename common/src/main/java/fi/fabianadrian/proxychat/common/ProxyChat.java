@@ -60,7 +60,7 @@ public final class ProxyChat {
             new ChannelCommand(this),
             new MessageCommand(this),
             new MessagesCommand(this),
-            new fi.fabianadrian.proxychat.common.command.commands.ProxyChatCommand(this),
+            new RootCommand(this),
             new ReplyCommand(this)
         ).forEach(ProxyChatCommand::register);
     }
