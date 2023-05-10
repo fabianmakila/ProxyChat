@@ -73,7 +73,7 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
         registerListeners();
 
         // bStats
-        new Metrics(this, 15557);
+        new Metrics(this, 18435);
     }
 
     @Override
