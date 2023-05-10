@@ -8,17 +8,18 @@ Installation instructions and other documentation can be found in the [Wiki][wik
 
 ## Features
 - Private messaging
-- Custom chat channels
-- Announcement system
-- Customizable join/quit messages
-- Network welcome messages
+- Chat channels
+- Automated messages
+- Welcome message
+- Broadcast command
 
 ## Supported proxies
 - Bungeecord / Waterfall
 - Velocity
 
-## Support
-Can't find what you're looking for in the wiki? Join the [Discord server][discord-link] to ask for help in the `#support-proxychat` channel and hangout with the community.
+## Discord
+Can't find what you're looking for in the wiki?
+Join the [Discord server][discord-link] where you can get support or just hangout with the community.
 
 ## Metrics
 [bStats](https://bstats.org) is used to collect anonymous usage data which is used to make decisions concerning the future of the plugin.
