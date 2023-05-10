@@ -5,12 +5,7 @@ import space.arim.dazzleconf.annote.ConfDefault;
 import java.util.List;
 
 public interface AnnouncementsConfig {
-
-    static List<String> emptyList() {
-        return List.of();
-    }
-
-    @ConfDefault.DefaultObject("emptyList")
+    @ConfDefault.DefaultStrings({})
     List<String> announcements();
 
     @ConfDefault.DefaultInteger(30)
