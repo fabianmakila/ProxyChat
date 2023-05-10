@@ -4,7 +4,7 @@
 
 A chat plugin for Minecraft proxies providing proxy-wide private messaging, chat channels and more!
 
-Installation instructions and other documentation can be found in the [Wiki][wiki-link].
+Installation instructions and other documentation can be found in the [Wiki](https://github.com/fabianmakila/ProxyChat/wiki).
 
 ## Features
 - Private messaging
