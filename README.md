@@ -26,4 +26,6 @@ Join the [Discord server](https://discord.gg/hNMvqruCuK) where you can get suppo
 
 ## Metrics
 [bStats](https://bstats.org) is used to collect anonymous usage data which is used to make decisions concerning the future of the plugin.
-The collected data is publicly available and can be viewed [here](https://bstats.org/plugin/velocity/ProxyChat/15557).
+The collected data is publicly available and can be viewed here:
+- [Bungeecord](https://bstats.org/plugin/bungeecord/ProxyChatBungee/18435)
+- [Velocity](https://bstats.org/plugin/velocity/ProxyChat/15557)
