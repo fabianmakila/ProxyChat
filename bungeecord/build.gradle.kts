@@ -9,6 +9,7 @@ dependencies {
 
     compileOnly(libs.waterfall.api)
 
+    implementation(libs.bstats.bungeecord)
     implementation(libs.cloud.bungeecord)
     implementation(libs.adventure.platform.bungeecord)
 

@@ -16,6 +16,7 @@ import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
+import org.bstats.bungeecord.Metrics;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -68,10 +69,11 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
         );
 
         this.hookManager = new BungeecordHookManager(this);
-
         this.proxyChat = new ProxyChat(this);
-
         registerListeners();
+
+        // bStats
+        new Metrics(this, 15557);
     }
 
     @Override

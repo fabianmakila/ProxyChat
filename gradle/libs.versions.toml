@@ -6,6 +6,7 @@ cloud = "1.8.3"
 [libraries]
 # Bstats
 bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats" }
+bstats-bungeecord = { module = "org.bstats:bstats-bungeecord", version.ref = "bstats" }
 
 # Cloud
 cloud-core = { module = "cloud.commandframework:cloud-core", version.ref = "cloud" }

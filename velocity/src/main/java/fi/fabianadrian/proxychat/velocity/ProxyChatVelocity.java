@@ -88,9 +88,7 @@ public final class ProxyChatVelocity implements Platform {
         );
 
         this.hookManager = new VelocityHookManager(this.logger);
-
         this.proxyChat = new ProxyChat(this);
-
         registerListeners();
 
         // bStats
