@@ -13,6 +13,9 @@ Installation instructions and other documentation can be found in the [Wiki][wik
 - Welcome message
 - Broadcast command
 
+ProxyChat also supports hooking into most popular Friends and Vanish plugins to further extend the functionality.
+See the [wiki page](https://github.com/fabianmakila/ProxyChat/wiki/plugin-hooks) for more information.
+
 ## Supported proxies
 - Bungeecord / Waterfall
 - Velocity
