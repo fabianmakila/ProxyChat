@@ -1,6 +1,6 @@
-# ProxyChat
-
 ![ProxyChatBanner](/assets/proxychat-banner.png)
+
+# ProxyChat
 
 A chat plugin for Minecraft proxies providing proxy-wide private messaging, chat channels and more!
 
