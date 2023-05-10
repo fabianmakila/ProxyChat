@@ -22,7 +22,7 @@ See the [wiki page](https://github.com/fabianmakila/ProxyChat/wiki/plugin-hooks)
 
 ## Discord
 Can't find what you're looking for in the wiki?
-Join the [Discord server][discord-link] where you can get support or just hangout with the community.
+Join the [Discord server](https://discord.gg/hNMvqruCuK) where you can get support or just hangout with the community.
 
 ## Metrics
 [bStats](https://bstats.org) is used to collect anonymous usage data which is used to make decisions concerning the future of the plugin.
