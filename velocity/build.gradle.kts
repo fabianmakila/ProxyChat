@@ -25,9 +25,7 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
-        minimize{
-            //exclude(dependency("org.bstats:bstats-velocity:.*"))
-        }
+        minimize()
         sequenceOf(
             "cloud.commandframework",
             "io.leangen",
