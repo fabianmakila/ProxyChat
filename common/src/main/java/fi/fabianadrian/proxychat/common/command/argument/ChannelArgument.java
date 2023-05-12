@@ -12,6 +12,7 @@ import cloud.commandframework.exceptions.parsing.ParserException;
 import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
 import fi.fabianadrian.proxychat.common.command.Commander;
+import fi.fabianadrian.proxychat.common.command.ProxyChatContextKeys;
 import io.leangen.geantyref.TypeToken;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -87,7 +88,7 @@ public final class ChannelArgument<C> extends CommandArgument<C, Channel> {
             if (input == null) {
                 return ArgumentParseResult.failure(new NoInputProvidedException(ChannelParser.class, commandContext));
             }
-            final Channel channel = commandContext.<ChannelRegistry>get("ChannelRegistry").channel(input);
+            final Channel channel = commandContext.get(ProxyChatContextKeys.CHANNEL_REGISTRY_KEY).channel(input);
             if (channel == null) {
                 return ArgumentParseResult.failure(new ChannelParseException(input, commandContext));
             }
@@ -98,7 +99,7 @@ public final class ChannelArgument<C> extends CommandArgument<C, Channel> {
         @Override
         public @NotNull List<@NotNull String> suggestions(final @NotNull CommandContext<C> ctx, final @NotNull String input) {
             Commander commander = (Commander) ctx.getSender();
-            ChannelRegistry registry = ctx.get("ChannelRegistry");
+            ChannelRegistry registry = ctx.get(ProxyChatContextKeys.CHANNEL_REGISTRY_KEY);
 
             return registry.channels().stream().filter(channel -> commander.hasPermission(channel.permission())).map(Channel::name).collect(Collectors.toList());
         }

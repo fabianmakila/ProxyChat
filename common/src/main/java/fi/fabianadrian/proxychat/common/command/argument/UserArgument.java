@@ -9,7 +9,7 @@ import cloud.commandframework.captions.CaptionVariable;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import cloud.commandframework.exceptions.parsing.ParserException;
-import fi.fabianadrian.proxychat.common.hook.HookManager;
+import fi.fabianadrian.proxychat.common.command.ProxyChatContextKeys;
 import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.common.user.UserManager;
@@ -93,7 +93,7 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 
             User user = userOptional.get();
 
-            if (ctx.getSender() instanceof User && !ctx.<HookManager>get("HookManager").vanishHook().canSee((User) ctx.getSender(), user)) {
+            if (ctx.getSender() instanceof User && !ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook().canSee((User) ctx.getSender(), user)) {
                 return ArgumentParseResult.failure(new UserParseException(input, ctx));
             }
 
@@ -103,8 +103,8 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 
         @Override
         public @NotNull List<@NotNull String> suggestions(final @NotNull CommandContext<C> ctx, final @NotNull String input) {
-            Stream<User> users = ctx.<UserManager>get("UserManager").users().stream();
-            VanishHook vanishHook = ctx.<HookManager>get("HookManager").vanishHook();
+            Stream<User> users = ctx.get(ProxyChatContextKeys.USER_MANAGER_KEY).users().stream();
+            VanishHook vanishHook = ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook();
 
             if (ctx.getSender() instanceof User) {
                 users = users.filter(user -> vanishHook.canSee((User) ctx.getSender(), user));
