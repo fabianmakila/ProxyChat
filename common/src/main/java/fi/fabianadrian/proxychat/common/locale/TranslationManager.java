@@ -6,39 +6,31 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.translation.Translator;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class TranslationManager {
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
     public static final List<Locale> BUNDLED_LOCALES = List.of(new Locale("fi", "FI"));
 
-    private final ProxyChat proxyChat;
     private final Set<Locale> installed = ConcurrentHashMap.newKeySet();
     private final Path translationsDirectory;
+    private final Logger logger;
     private TranslationRegistry registry;
 
     public TranslationManager(ProxyChat proxyChat) {
-        this.proxyChat = proxyChat;
-        this.translationsDirectory = this.proxyChat.platform().dataDirectory().resolve("translations");
+        this.logger = proxyChat.platform().logger();
+        this.translationsDirectory = proxyChat.platform().dataDirectory().resolve("translations");
 
-        try {
-            createDirectoryIfNotExists(this.translationsDirectory);
-        } catch (IOException ignored) {
-        }
-    }
-
-    public static boolean isTranslationFile(Path path) {
-        return path.getFileName().toString().endsWith(".properties");
+        createDirectoryIfNotExists(this.translationsDirectory);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -61,7 +53,7 @@ public final class TranslationManager {
         this.registry.defaultLocale(DEFAULT_LOCALE);
 
         // load custom translations first, then the base (built-in) translations after.
-        loadFromFileSystem(translationsDirectory, false);
+        loadFromFileSystem(this.translationsDirectory, false);
         loadFromResourceBundle();
 
         // register it to the global source, so our translations can be picked up by adventure-platform
@@ -80,48 +72,38 @@ public final class TranslationManager {
                 this.registry.registerAll(locale, bundle, false);
             });
         } catch (IllegalArgumentException e) {
-            this.proxyChat.platform().logger().warn("Error loading default locale file", e);
+            this.logger.warn("Error loading default locale file", e);
         }
     }
 
-    /**
-     * Loads any custom translations from the plugin configuration folder.
-     */
     public void loadFromFileSystem(Path directory, boolean suppressDuplicatesError) {
-        List<Path> translationFiles;
-        try (Stream<Path> stream = Files.list(directory)) {
-            translationFiles = stream.filter(TranslationManager::isTranslationFile).collect(Collectors.toList());
-        } catch (IOException e) {
-            translationFiles = Collections.emptyList();
-        }
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory, "*.properties")) {
+            Map<Locale, ResourceBundle> loaded = new HashMap<>();
 
-        if (translationFiles.isEmpty()) {
-            return;
-        }
-
-        Map<Locale, ResourceBundle> loaded = new HashMap<>();
-        for (Path translationFile : translationFiles) {
-            try {
-                Map.Entry<Locale, ResourceBundle> result = loadTranslationFile(translationFile);
-                loaded.put(result.getKey(), result.getValue());
-            } catch (Exception e) {
-                if (!suppressDuplicatesError || !isAdventureDuplicatesException(e)) {
-                    this.proxyChat.platform().logger().warn("Error loading locale file: " + translationFile.getFileName(), e);
-                }
-            }
-        }
-
-        // try registering the locale without a country code - if we don't already have a registration for that
-        loaded.forEach((locale, bundle) -> {
-            Locale localeWithoutCountry = new Locale(locale.getLanguage());
-            if (!locale.equals(localeWithoutCountry) && !localeWithoutCountry.equals(DEFAULT_LOCALE) && this.installed.add(localeWithoutCountry)) {
+            for (Path translationFile : stream) {
                 try {
-                    this.registry.registerAll(localeWithoutCountry, bundle, false);
-                } catch (IllegalArgumentException e) {
-                    // ignore
+                    Map.Entry<Locale, ResourceBundle> result = loadTranslationFile(translationFile);
+                    loaded.put(result.getKey(), result.getValue());
+                } catch (Exception e) {
+                    if (!suppressDuplicatesError || !isAdventureDuplicatesException(e)) {
+                        this.logger.warn("Error loading locale file: " + translationFile.getFileName(), e);
+                    }
                 }
             }
-        });
+
+            // try registering the locale without a country code - if we don't already have a registration for that
+            loaded.forEach((locale, bundle) -> {
+                Locale localeWithoutCountry = new Locale(locale.getLanguage());
+                if (!locale.equals(localeWithoutCountry) && !localeWithoutCountry.equals(DEFAULT_LOCALE) && this.installed.add(localeWithoutCountry)) {
+                    try {
+                        this.registry.registerAll(localeWithoutCountry, bundle, false);
+                    } catch (IllegalArgumentException ignored) {
+                    }
+                }
+            });
+        } catch (IOException e) {
+            this.logger.warn("Error reading the translations directory", e);
+        }
     }
 
     private Map.Entry<Locale, ResourceBundle> loadTranslationFile(Path translationFile) throws IOException {
@@ -143,17 +125,15 @@ public final class TranslationManager {
         return Maps.immutableEntry(locale, bundle);
     }
 
-    private Path createDirectoryIfNotExists(Path path) throws IOException {
+    private void createDirectoryIfNotExists(Path path) {
         if (Files.exists(path) && (Files.isDirectory(path) || Files.isSymbolicLink(path))) {
-            return path;
+            return;
         }
 
         try {
             Files.createDirectory(path);
-        } catch (FileAlreadyExistsException e) {
-            // ignore
+        } catch (IOException ignored) {
         }
 
-        return path;
     }
 }
