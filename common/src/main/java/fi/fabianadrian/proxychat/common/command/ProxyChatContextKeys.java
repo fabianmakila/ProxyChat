@@ -20,7 +20,7 @@ public class ProxyChatContextKeys {
         TypeToken.get(HookManager.class)
     );
     public static final CloudKey<UserManager> USER_MANAGER_KEY = SimpleCloudKey.of(
-        "ProxyServer",
+        "UserManager",
         TypeToken.get(UserManager.class)
     );
 }
