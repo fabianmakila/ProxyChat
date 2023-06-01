@@ -86,7 +86,7 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
             if (input == null) {
                 return ArgumentParseResult.failure(new NoInputProvidedException(UserParser.class, ctx));
             }
-            final Optional<User> userOptional = ctx.<UserManager>get("UserManager").user(input);
+            final Optional<User> userOptional = ctx.get(ProxyChatContextKeys.USER_MANAGER_KEY).user(input);
             if (userOptional.isEmpty()) {
                 return ArgumentParseResult.failure(new UserParseException(input, ctx));
             }
