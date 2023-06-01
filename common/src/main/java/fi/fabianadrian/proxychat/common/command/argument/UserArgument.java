@@ -12,7 +12,6 @@ import cloud.commandframework.exceptions.parsing.ParserException;
 import fi.fabianadrian.proxychat.common.command.ProxyChatContextKeys;
 import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
 import fi.fabianadrian.proxychat.common.user.User;
-import fi.fabianadrian.proxychat.common.user.UserManager;
 import io.leangen.geantyref.TypeToken;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
