@@ -105,7 +105,6 @@ public final class ChannelArgument<C> extends CommandArgument<C, Channel> {
         }
     }
 
-    //TODO How do caption keys work????
     public static final class ChannelParseException extends ParserException {
         private static final long serialVersionUID = -2318348844932495100L;
 

@@ -113,7 +113,6 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
         }
     }
 
-    //TODO How do caption keys work????
     public static final class UserParseException extends ParserException {
         private static final long serialVersionUID = -3171394255739625192L;
 
