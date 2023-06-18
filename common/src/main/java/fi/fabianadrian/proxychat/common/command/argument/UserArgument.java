@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Argument parse for {@link User channels}
+ * Argument parse for {@link User users}
  *
  * @param <C> Command sender type
  */
