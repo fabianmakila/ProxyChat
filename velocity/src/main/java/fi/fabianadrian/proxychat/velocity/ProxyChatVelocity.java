@@ -32,9 +32,9 @@ import java.util.stream.Stream;
 @Plugin(
     id = "proxychat",
     name = "ProxyChat",
-    version = Constants.VERSION,
+    version = "1.0.0-beta.2",
     url = "https://github.com/fabianmakila/ProxyChat",
-    description = Constants.DESCRIPTION,
+    description = "A simple chat plugin for Minecraft proxies.",
     authors = {"FabianAdrian"},
     dependencies = {
         @Dependency(id = "partyandfriends", optional = true),

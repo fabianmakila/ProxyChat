@@ -1,6 +1,5 @@
 plugins {
     id("proxychat.java-conventions")
-    alias(libs.plugins.blossom)
     alias(libs.plugins.shadow)
 }
 
@@ -41,10 +40,4 @@ tasks {
         archiveBaseName.set("${rootProject.name}-Velocity")
         archiveClassifier.set("")
     }
-}
-
-blossom {
-    val constants = "src/main/java/fi/fabianadrian/proxychat/velocity/Constants.java"
-    replaceToken("@DESCRIPTION@", description, constants)
-    replaceToken("@VERSION@", version, constants)
 }
