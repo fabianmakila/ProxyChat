@@ -1,6 +1,6 @@
 plugins {
-    id("proxychat.java-conventions")
-    alias(libs.plugins.shadow)
+    id("proxychat.platform-conventions")
+
     alias(libs.plugins.pluginYml.bungee)
 }
 
@@ -19,9 +19,6 @@ dependencies {
 }
 
 tasks {
-    build {
-        dependsOn(shadowJar)
-    }
     shadowJar {
         minimize()
         sequenceOf(
@@ -34,9 +31,7 @@ tasks {
         ).forEach { pkg ->
             relocate(pkg, "${project.group}.${rootProject.name.lowercase()}.dependency.$pkg")
         }
-        destinationDirectory.set(file("${rootProject.rootDir}/dist"))
         archiveBaseName.set(rootProject.name + "-Bungeecord")
-        archiveClassifier.set("")
     }
 }
 
@@ -45,4 +40,9 @@ bungee {
     name = rootProject.name
     author = "FabianAdrian"
     softDepends = setOf("PartyAndFriends", "PremiumVanish")
+}
+
+modrinth {
+    uploadFile.set(tasks.shadowJar)
+    loaders.add("bungeecord")
 }

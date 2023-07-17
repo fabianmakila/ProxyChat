@@ -1,6 +1,5 @@
 plugins {
-    id("proxychat.java-conventions")
-    alias(libs.plugins.shadow)
+    id("proxychat.platform-conventions")
 }
 
 dependencies {
@@ -20,9 +19,6 @@ dependencies {
 }
 
 tasks {
-    build {
-        dependsOn(shadowJar)
-    }
     shadowJar {
         minimize()
         sequenceOf(
@@ -36,8 +32,12 @@ tasks {
         ).forEach { pkg ->
             relocate(pkg, "${project.group}.${rootProject.name.lowercase()}.dependency.$pkg")
         }
-        destinationDirectory.set(file("${rootProject.rootDir}/dist"))
         archiveBaseName.set("${rootProject.name}-Velocity")
-        archiveClassifier.set("")
+
     }
+}
+
+modrinth {
+    uploadFile.set(tasks.shadowJar)
+    loaders.add("velocity")
 }
