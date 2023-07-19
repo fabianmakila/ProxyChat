@@ -59,7 +59,7 @@ public final class ProxyChat {
             new BroadcastCommand(this),
             new ChannelCommand(this),
             new MessageCommand(this),
-            new MessagesCommand(this),
+            new MessageSettingsCommand(this),
             new RootCommand(this),
             new ReplyCommand(this)
         ).forEach(ProxyChatCommand::register);

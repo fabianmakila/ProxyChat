@@ -11,10 +11,10 @@ import fi.fabianadrian.proxychat.common.user.User;
 
 import java.util.Optional;
 
-public class MessagesCommand extends ProxyChatCommand {
+public class MessageSettingsCommand extends ProxyChatCommand {
 
-    public MessagesCommand(ProxyChat proxyChat) {
-        super(proxyChat, "messages", "msgs");
+    public MessageSettingsCommand(ProxyChat proxyChat) {
+        super(proxyChat, "messagesettings", "msgs");
     }
 
     @Override
