@@ -4,6 +4,10 @@
 
 A chat plugin for Minecraft proxies providing proxy-wide private messaging, chat channels and more!
 
+ProxyChat is part of my proxy plugin suite. You can find all my proxy plugins below:
+- [ProxyChat](https://github.com/fabianmakila/ProxyChat)
+- [ProxyUtils](https://github.com/fabianmakila/ProxyUtils)
+
 Installation instructions and other documentation can be found in the [Wiki](https://github.com/fabianmakila/ProxyChat/wiki).
 
 ## Features
