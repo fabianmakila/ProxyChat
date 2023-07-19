@@ -19,16 +19,15 @@ public class MessagesCommand extends ProxyChatCommand {
 
     @Override
     public void register() {
+        this.manager.command(subCommand("allow")
+                .senderType(User.class)
+                .argument(EnumArgument.of(User.MessageSetting.class, "messageSetting"))
+                .handler(this::executeAllow)
+        );
         this.manager.command(subCommand("spy")
             .senderType(User.class)
             .argument(BooleanArgument.optional("enabled"))
             .handler(this::executeSpy)
-        );
-
-        this.manager.command(subCommand("allow")
-            .senderType(User.class)
-            .argument(EnumArgument.of(User.MessageSetting.class, "messageSetting"))
-            .handler(this::executeAllow)
         );
     }
 
