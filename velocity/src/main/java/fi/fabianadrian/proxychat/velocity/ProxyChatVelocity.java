@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 @Plugin(
     id = "proxychat",
     name = "ProxyChat",
-    version = "1.0.0-beta.2",
+    version = "1.0.0-beta.3",
     url = "https://github.com/fabianmakila/ProxyChat",
     description = "A simple chat plugin for Minecraft proxies.",
     authors = {"FabianAdrian"},
