@@ -25,7 +25,7 @@ public abstract class ProxyChatCommand {
     public abstract void register();
 
     protected Command.Builder<Commander> builder() {
-        return this.builder;
+        return this.builder.permission(this.permission);
     }
 
     protected Command.Builder<Commander> subCommand(String literal) {
