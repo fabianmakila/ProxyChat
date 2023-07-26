@@ -5,8 +5,6 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.common)
-
     compileOnly(libs.waterfall.api)
 
     implementation(libs.bstats.bungeecord)

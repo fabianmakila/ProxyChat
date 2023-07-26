@@ -3,8 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.common)
-
     // Velocity
     compileOnly(libs.velocity.api)
     annotationProcessor(libs.velocity.api)

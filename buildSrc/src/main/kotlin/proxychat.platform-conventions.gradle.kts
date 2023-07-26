@@ -4,6 +4,10 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
+dependencies {
+    implementation(project(":common"))
+}
+
 tasks {
     build {
         dependsOn(shadowJar)

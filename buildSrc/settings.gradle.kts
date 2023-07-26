@@ -1,3 +1,5 @@
+rootProject.name = "proxychat-conventions"
+
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
