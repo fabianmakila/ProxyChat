@@ -1,17 +1,17 @@
 rootProject.name = "ProxyChat"
 
 include(
-    "common",
-    "bungeecord",
-    "velocity"
+	"common",
+	"bungeecord",
+	"velocity"
 )
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        mavenCentral()
-        maven("https://papermc.io/repo/repository/maven-public/")
-        maven("https://simonsator.de/repo")
-        maven("https://jitpack.io")
-    }
+	repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+	repositories {
+		mavenCentral()
+		maven("https://papermc.io/repo/repository/maven-public/")
+		maven("https://simonsator.de/repo")
+		maven("https://jitpack.io")
+	}
 }

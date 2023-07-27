@@ -25,98 +25,98 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ProxyChatBungeecord extends Plugin implements Platform {
-    private BungeeAudiences adventure;
-    private CommandManager<Commander> commandManager;
-    private ProxyChat proxyChat;
-    private BungeecordHookManager hookManager;
+	private BungeeAudiences adventure;
+	private CommandManager<Commander> commandManager;
+	private ProxyChat proxyChat;
+	private BungeecordHookManager hookManager;
 
-    public BungeeAudiences adventure() {
-        if (this.adventure == null) {
-            throw new IllegalStateException("Cannot retrieve audience provider while plugin is not enabled");
-        }
-        return this.adventure;
-    }
+	public BungeeAudiences adventure() {
+		if (this.adventure == null) {
+			throw new IllegalStateException("Cannot retrieve audience provider while plugin is not enabled");
+		}
+		return this.adventure;
+	}
 
-    @Override
-    public void onEnable() {
-        this.adventure = BungeeAudiences.create(this);
+	@Override
+	public void onEnable() {
+		this.adventure = BungeeAudiences.create(this);
 
-        this.commandManager = new BungeeCommandManager<>(
-            this,
-            CommandExecutionCoordinator.simpleCoordinator(),
-            commandSource -> {
-                if (commandSource instanceof ProxiedPlayer) {
-                    Optional<User> userOptional = this.proxyChat.userManager().user(((ProxiedPlayer) commandSource).getUniqueId());
-                    if (userOptional.isPresent()) {
-                        return userOptional.get();
-                    }
-                    throw new IllegalStateException("User was not loaded");
-                }
-                return new BungeecordConsoleCommander(commandSource, this.adventure.sender(commandSource));
-            },
-            commander -> {
-                if (commander instanceof BungeecordConsoleCommander) {
-                    return ((BungeecordConsoleCommander) commander).commandSender();
-                }
+		this.commandManager = new BungeeCommandManager<>(
+				this,
+				CommandExecutionCoordinator.simpleCoordinator(),
+				commandSource -> {
+					if (commandSource instanceof ProxiedPlayer) {
+						Optional<User> userOptional = this.proxyChat.userManager().user(((ProxiedPlayer) commandSource).getUniqueId());
+						if (userOptional.isPresent()) {
+							return userOptional.get();
+						}
+						throw new IllegalStateException("User was not loaded");
+					}
+					return new BungeecordConsoleCommander(commandSource, this.adventure.sender(commandSource));
+				},
+				commander -> {
+					if (commander instanceof BungeecordConsoleCommander) {
+						return ((BungeecordConsoleCommander) commander).commandSender();
+					}
 
-                ProxiedPlayer player = this.getProxy().getPlayer(((User) commander).uuid());
-                if (player == null) {
-                    throw new IllegalArgumentException();
-                }
+					ProxiedPlayer player = this.getProxy().getPlayer(((User) commander).uuid());
+					if (player == null) {
+						throw new IllegalArgumentException();
+					}
 
-                return player;
-            }
-        );
+					return player;
+				}
+		);
 
-        this.hookManager = new BungeecordHookManager(this);
-        this.proxyChat = new ProxyChat(this);
-        registerListeners();
+		this.hookManager = new BungeecordHookManager(this);
+		this.proxyChat = new ProxyChat(this);
+		registerListeners();
 
-        // bStats
-        new Metrics(this, 18435);
-    }
+		// bStats
+		new Metrics(this, 18435);
+	}
 
-    @Override
-    public void onDisable() {
-        if (this.adventure != null) {
-            this.adventure.close();
-            this.adventure = null;
-        }
-    }
+	@Override
+	public void onDisable() {
+		if (this.adventure != null) {
+			this.adventure.close();
+			this.adventure = null;
+		}
+	}
 
-    @Override
-    public Logger logger() {
-        return getSLF4JLogger();
-    }
+	@Override
+	public Logger logger() {
+		return getSLF4JLogger();
+	}
 
-    @Override
-    public Path dataDirectory() {
-        return getDataFolder().toPath();
-    }
+	@Override
+	public Path dataDirectory() {
+		return getDataFolder().toPath();
+	}
 
-    @Override
-    public CommandManager<Commander> commandManager() {
-        return this.commandManager;
-    }
+	@Override
+	public CommandManager<Commander> commandManager() {
+		return this.commandManager;
+	}
 
-    @Override
-    public HookManager hookManager() {
-        return this.hookManager;
-    }
+	@Override
+	public HookManager hookManager() {
+		return this.hookManager;
+	}
 
-    @Override
-    public @NotNull Audience audience() {
-        return this.adventure.all();
-    }
+	@Override
+	public @NotNull Audience audience() {
+		return this.adventure.all();
+	}
 
-    private void registerListeners() {
-        PluginManager manager = this.getProxy().getPluginManager();
-        Stream.of(
-            new LoginDisconnectListener(this)
-        ).forEach(listener -> manager.registerListener(this, listener));
-    }
+	private void registerListeners() {
+		PluginManager manager = this.getProxy().getPluginManager();
+		Stream.of(
+				new LoginDisconnectListener(this)
+		).forEach(listener -> manager.registerListener(this, listener));
+	}
 
-    public ProxyChat proxyChat() {
-        return this.proxyChat;
-    }
+	public ProxyChat proxyChat() {
+		return this.proxyChat;
+	}
 }

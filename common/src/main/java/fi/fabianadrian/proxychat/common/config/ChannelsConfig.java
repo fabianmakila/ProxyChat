@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ChannelsConfig {
-    static List<Channel> defaultChannels() {
-        List<Channel> channelsList = new ArrayList<>();
-        channelsList.add(Channel.of(
-            "example",
-            "[Example] <sender>: <message>",
-            "examplecommand",
-            List.of(
-                "examplealias1",
-                "examplealias2"
-            )
-        ));
-        return channelsList;
-    }
+	static List<Channel> defaultChannels() {
+		List<Channel> channelsList = new ArrayList<>();
+		channelsList.add(Channel.of(
+				"example",
+				"[Example] <sender>: <message>",
+				"examplecommand",
+				List.of(
+						"examplealias1",
+						"examplealias2"
+				)
+		));
+		return channelsList;
+	}
 
-    @ConfDefault.DefaultObject("defaultChannels")
-    List<@SubSection Channel> channels();
+	@ConfDefault.DefaultObject("defaultChannels")
+	List<@SubSection Channel> channels();
 }

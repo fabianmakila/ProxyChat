@@ -6,27 +6,27 @@ import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
 import org.slf4j.Logger;
 
 public class VelocityHookManager extends HookManager {
-    private FriendHook friendHook;
-    private VanishHook vanishHook = VanishHook.empty();
+	private FriendHook friendHook;
+	private VanishHook vanishHook = VanishHook.empty();
 
-    public VelocityHookManager(Logger logger) {
-        super(logger);
+	public VelocityHookManager(Logger logger) {
+		super(logger);
 
-        try {
-            this.friendHook = new PAFVelocityFriendHook();
-            this.logger.info("PartyAndFriends hook enabled!");
-        } catch (NoClassDefFoundError e) {
-            this.friendHook = FriendHook.empty();
-        }
-    }
+		try {
+			this.friendHook = new PAFVelocityFriendHook();
+			this.logger.info("PartyAndFriends hook enabled!");
+		} catch (NoClassDefFoundError e) {
+			this.friendHook = FriendHook.empty();
+		}
+	}
 
-    @Override
-    public FriendHook friendHook() {
-        return this.friendHook;
-    }
+	@Override
+	public FriendHook friendHook() {
+		return this.friendHook;
+	}
 
-    @Override
-    public VanishHook vanishHook() {
-        return this.vanishHook;
-    }
+	@Override
+	public VanishHook vanishHook() {
+		return this.vanishHook;
+	}
 }

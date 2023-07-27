@@ -9,35 +9,35 @@ import java.util.UUID;
 
 public class BungeecordPlatformPlayer implements PlatformPlayer {
 
-    private final ProxiedPlayer player;
-    private final Audience audience;
+	private final ProxiedPlayer player;
+	private final Audience audience;
 
-    public BungeecordPlatformPlayer(ProxiedPlayer player, Audience audience) {
-        this.player = player;
-        this.audience = audience;
-    }
+	public BungeecordPlatformPlayer(ProxiedPlayer player, Audience audience) {
+		this.player = player;
+		this.audience = audience;
+	}
 
-    @Override
-    public UUID uuid() {
-        return this.player.getUniqueId();
-    }
+	@Override
+	public UUID uuid() {
+		return this.player.getUniqueId();
+	}
 
-    @Override
-    public String name() {
-        return this.player.getName();
-    }
+	@Override
+	public String name() {
+		return this.player.getName();
+	}
 
-    @Override
-    public boolean hasPermission(String permission) {
-        return this.player.hasPermission(permission);
-    }
+	@Override
+	public boolean hasPermission(String permission) {
+		return this.player.hasPermission(permission);
+	}
 
-    @Override
-    public @NotNull Audience audience() {
-        return this.audience;
-    }
+	@Override
+	public @NotNull Audience audience() {
+		return this.audience;
+	}
 
-    public ProxiedPlayer player() {
-        return this.player;
-    }
+	public ProxiedPlayer player() {
+		return this.player;
+	}
 }

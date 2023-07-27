@@ -17,112 +17,112 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
 public final class ConfigManager {
-    private final Logger logger;
-    private final ConfigurationHelper<ProxyChatConfig> mainConfigHelper;
-    private final ConfigurationHelper<AnnouncementsConfig> announcementsConfigHelper;
-    private final ConfigurationHelper<ChannelsConfig> channelsConfigHelper;
+	private final Logger logger;
+	private final ConfigurationHelper<ProxyChatConfig> mainConfigHelper;
+	private final ConfigurationHelper<AnnouncementsConfig> announcementsConfigHelper;
+	private final ConfigurationHelper<ChannelsConfig> channelsConfigHelper;
 
-    private volatile ProxyChatConfig mainConfigData;
-    private volatile AnnouncementsConfig announcementsConfigData;
-    private volatile ChannelsConfig channelsConfigData;
+	private volatile ProxyChatConfig mainConfigData;
+	private volatile AnnouncementsConfig announcementsConfigData;
+	private volatile ChannelsConfig channelsConfigData;
 
-    public ConfigManager(ProxyChat proxyChat) {
-        this.logger = proxyChat.platform().logger();
+	public ConfigManager(ProxyChat proxyChat) {
+		this.logger = proxyChat.platform().logger();
 
-        SnakeYamlOptions yamlOptions = new SnakeYamlOptions.Builder()
-            .yamlSupplier(() -> {
-                DumperOptions dumperOptions = new DumperOptions();
-                // Enables comments
-                dumperOptions.setProcessComments(true);
-                dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-                return new Yaml(dumperOptions);
-            })
-            .commentMode(CommentMode.fullComments())
-            .build();
+		SnakeYamlOptions yamlOptions = new SnakeYamlOptions.Builder()
+				.yamlSupplier(() -> {
+					DumperOptions dumperOptions = new DumperOptions();
+					// Enables comments
+					dumperOptions.setProcessComments(true);
+					dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+					return new Yaml(dumperOptions);
+				})
+				.commentMode(CommentMode.fullComments())
+				.build();
 
-        Path dataDirectory = proxyChat.platform().dataDirectory();
+		Path dataDirectory = proxyChat.platform().dataDirectory();
 
-        this.mainConfigHelper = new ConfigurationHelper<>(
-            dataDirectory,
-            "config.yml",
-            SnakeYamlConfigurationFactory.create(
-                ProxyChatConfig.class,
-                ConfigurationOptions.defaults(),
-                yamlOptions
-            )
-        );
+		this.mainConfigHelper = new ConfigurationHelper<>(
+				dataDirectory,
+				"config.yml",
+				SnakeYamlConfigurationFactory.create(
+						ProxyChatConfig.class,
+						ConfigurationOptions.defaults(),
+						yamlOptions
+				)
+		);
 
-        this.announcementsConfigHelper = new ConfigurationHelper<>(
-            dataDirectory,
-            "announcements.yml",
-            SnakeYamlConfigurationFactory.create(
-                AnnouncementsConfig.class,
-                ConfigurationOptions.defaults(),
-                yamlOptions
-            )
-        );
+		this.announcementsConfigHelper = new ConfigurationHelper<>(
+				dataDirectory,
+				"announcements.yml",
+				SnakeYamlConfigurationFactory.create(
+						AnnouncementsConfig.class,
+						ConfigurationOptions.defaults(),
+						yamlOptions
+				)
+		);
 
-        this.channelsConfigHelper = new ConfigurationHelper<>(
-            dataDirectory,
-            "channels.yml",
-            SnakeYamlConfigurationFactory.create(
-                ChannelsConfig.class,
-                ConfigurationOptions.defaults(),
-                yamlOptions
-            )
-        );
-    }
+		this.channelsConfigHelper = new ConfigurationHelper<>(
+				dataDirectory,
+				"channels.yml",
+				SnakeYamlConfigurationFactory.create(
+						ChannelsConfig.class,
+						ConfigurationOptions.defaults(),
+						yamlOptions
+				)
+		);
+	}
 
-    public void reload() {
-        try {
-            this.mainConfigData = this.mainConfigHelper.reloadConfigData();
-            this.announcementsConfigData = this.announcementsConfigHelper.reloadConfigData();
-            this.channelsConfigData = this.channelsConfigHelper.reloadConfigData();
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+	public void reload() {
+		try {
+			this.mainConfigData = this.mainConfigHelper.reloadConfigData();
+			this.announcementsConfigData = this.announcementsConfigHelper.reloadConfigData();
+			this.channelsConfigData = this.channelsConfigHelper.reloadConfigData();
+		} catch (IOException ex) {
+			throw new UncheckedIOException(ex);
 
-        } catch (ConfigFormatSyntaxException ex) {
-            this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
-            this.announcementsConfigData = this.announcementsConfigHelper.getFactory().loadDefaults();
-            this.channelsConfigData = this.channelsConfigHelper.getFactory().loadDefaults();
-            this.logger.error(
-                "The yaml syntax in your configuration is invalid. " +
-                    "Check your YAML syntax with a tool such as https://yaml-online-parser.appspot.com/",
-                ex
-            );
-        } catch (InvalidConfigException ex) {
-            this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
-            this.announcementsConfigData = this.announcementsConfigHelper.getFactory().loadDefaults();
-            this.channelsConfigData = this.channelsConfigHelper.getFactory().loadDefaults();
-            this.logger.error(
-                "One of the values in your configuration is not valid. " +
-                    "Check to make sure you have specified the right data types.",
-                ex
-            );
-        }
-    }
+		} catch (ConfigFormatSyntaxException ex) {
+			this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
+			this.announcementsConfigData = this.announcementsConfigHelper.getFactory().loadDefaults();
+			this.channelsConfigData = this.channelsConfigHelper.getFactory().loadDefaults();
+			this.logger.error(
+					"The yaml syntax in your configuration is invalid. " +
+							"Check your YAML syntax with a tool such as https://yaml-online-parser.appspot.com/",
+					ex
+			);
+		} catch (InvalidConfigException ex) {
+			this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
+			this.announcementsConfigData = this.announcementsConfigHelper.getFactory().loadDefaults();
+			this.channelsConfigData = this.channelsConfigHelper.getFactory().loadDefaults();
+			this.logger.error(
+					"One of the values in your configuration is not valid. " +
+							"Check to make sure you have specified the right data types.",
+					ex
+			);
+		}
+	}
 
-    public ProxyChatConfig mainConfig() {
-        ProxyChatConfig configData = this.mainConfigData;
-        if (configData == null) {
-            throw new IllegalStateException("Configuration has not been loaded yet");
-        }
-        return configData;
-    }
+	public ProxyChatConfig mainConfig() {
+		ProxyChatConfig configData = this.mainConfigData;
+		if (configData == null) {
+			throw new IllegalStateException("Configuration has not been loaded yet");
+		}
+		return configData;
+	}
 
-    public AnnouncementsConfig announcementsConfig() {
-        AnnouncementsConfig configData = this.announcementsConfigData;
-        if (configData == null) {
-            throw new IllegalStateException("Configuration has not been loaded yet");
-        }
-        return configData;
-    }
+	public AnnouncementsConfig announcementsConfig() {
+		AnnouncementsConfig configData = this.announcementsConfigData;
+		if (configData == null) {
+			throw new IllegalStateException("Configuration has not been loaded yet");
+		}
+		return configData;
+	}
 
-    public ChannelsConfig channelsConfig() {
-        ChannelsConfig configData = this.channelsConfigData;
-        if (configData == null) {
-            throw new IllegalStateException("Configuration has not been loaded yet");
-        }
-        return configData;
-    }
+	public ChannelsConfig channelsConfig() {
+		ChannelsConfig configData = this.channelsConfigData;
+		if (configData == null) {
+			throw new IllegalStateException("Configuration has not been loaded yet");
+		}
+		return configData;
+	}
 }

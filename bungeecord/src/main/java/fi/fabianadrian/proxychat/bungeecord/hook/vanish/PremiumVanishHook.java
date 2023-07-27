@@ -8,10 +8,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class PremiumVanishHook implements VanishHook {
 
-    @Override
-    public boolean canSee(User user1, User user2) {
-        ProxiedPlayer player1 = ((BungeecordPlatformPlayer) user1.player()).player();
-        ProxiedPlayer player2 = ((BungeecordPlatformPlayer) user2.player()).player();
-        return BungeeVanishAPI.canSee(player1, player2);
-    }
+	@Override
+	public boolean canSee(User user1, User user2) {
+		ProxiedPlayer player1 = ((BungeecordPlatformPlayer) user1.player()).player();
+		ProxiedPlayer player2 = ((BungeecordPlatformPlayer) user2.player()).player();
+		return BungeeVanishAPI.canSee(player1, player2);
+	}
 }

@@ -15,81 +15,81 @@ import fi.fabianadrian.proxychat.common.user.UserManager;
 import java.util.stream.Stream;
 
 public final class ProxyChat {
-    private final Platform platform;
-    private final ConfigManager configManager;
-    private final UserManager userManager;
-    private final TranslationManager translationManager;
-    private final MessageService messageService;
-    private final ChannelRegistry channelRegistry;
-    private final AnnouncementService announcementService;
+	private final Platform platform;
+	private final ConfigManager configManager;
+	private final UserManager userManager;
+	private final TranslationManager translationManager;
+	private final MessageService messageService;
+	private final ChannelRegistry channelRegistry;
+	private final AnnouncementService announcementService;
 
-    public ProxyChat(Platform platform) {
-        this.platform = platform;
+	public ProxyChat(Platform platform) {
+		this.platform = platform;
 
-        this.configManager = new ConfigManager(this);
-        this.configManager.reload();
+		this.configManager = new ConfigManager(this);
+		this.configManager.reload();
 
-        this.userManager = new UserManager(this);
-        this.userManager.reload();
+		this.userManager = new UserManager(this);
+		this.userManager.reload();
 
-        this.translationManager = new TranslationManager(this);
-        this.translationManager.reload();
+		this.translationManager = new TranslationManager(this);
+		this.translationManager.reload();
 
-        this.messageService = new MessageService(this);
+		this.messageService = new MessageService(this);
 
-        this.platform.commandManager().commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
-        this.platform.commandManager().registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
+		this.platform.commandManager().commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
+		this.platform.commandManager().registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
 
-        registerCommands();
+		registerCommands();
 
-        // Channel registry registers commands for channels so this must be after command manager is defined.
-        this.channelRegistry = new ChannelRegistry(this);
+		// Channel registry registers commands for channels so this must be after command manager is defined.
+		this.channelRegistry = new ChannelRegistry(this);
 
-        this.announcementService = new AnnouncementService(this);
-        this.announcementService.reload();
-    }
+		this.announcementService = new AnnouncementService(this);
+		this.announcementService.reload();
+	}
 
-    public Platform platform() {
-        return platform;
-    }
+	public Platform platform() {
+		return platform;
+	}
 
-    private void registerCommands() {
-        Stream.of(
-            new AnnouncementsCommand(this),
-            new BroadcastCommand(this),
-            new ChannelCommand(this),
-            new MessageCommand(this),
-            new MessageSettingsCommand(this),
-            new RootCommand(this),
-            new ReplyCommand(this)
-        ).forEach(ProxyChatCommand::register);
-    }
+	private void registerCommands() {
+		Stream.of(
+				new AnnouncementsCommand(this),
+				new BroadcastCommand(this),
+				new ChannelCommand(this),
+				new MessageCommand(this),
+				new MessageSettingsCommand(this),
+				new RootCommand(this),
+				new ReplyCommand(this)
+		).forEach(ProxyChatCommand::register);
+	}
 
-    public ConfigManager configManager() {
-        return configManager;
-    }
+	public ConfigManager configManager() {
+		return configManager;
+	}
 
-    public void reload() {
-        this.configManager.reload();
-        this.translationManager.reload();
-        this.userManager.reload();
-        this.announcementService.reload();
-        this.messageService.reload();
-    }
+	public void reload() {
+		this.configManager.reload();
+		this.translationManager.reload();
+		this.userManager.reload();
+		this.announcementService.reload();
+		this.messageService.reload();
+	}
 
-    public UserManager userManager() {
-        return userManager;
-    }
+	public UserManager userManager() {
+		return userManager;
+	}
 
-    public MessageService messageService() {
-        return messageService;
-    }
+	public MessageService messageService() {
+		return messageService;
+	}
 
-    public ChannelRegistry channelRegistry() {
-        return this.channelRegistry;
-    }
+	public ChannelRegistry channelRegistry() {
+		return this.channelRegistry;
+	}
 
-    public AnnouncementService announcementService() {
-        return this.announcementService;
-    }
+	public AnnouncementService announcementService() {
+		return this.announcementService;
+	}
 }

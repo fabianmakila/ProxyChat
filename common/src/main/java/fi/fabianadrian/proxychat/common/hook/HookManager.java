@@ -5,13 +5,13 @@ import org.slf4j.Logger;
 
 public abstract class HookManager {
 
-    protected final Logger logger;
+	protected final Logger logger;
 
-    public HookManager(Logger logger) {
-        this.logger = logger;
-    }
+	public HookManager(Logger logger) {
+		this.logger = logger;
+	}
 
-    public abstract FriendHook friendHook();
+	public abstract FriendHook friendHook();
 
-    public abstract VanishHook vanishHook();
+	public abstract VanishHook vanishHook();
 }

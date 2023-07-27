@@ -7,34 +7,34 @@ import fi.fabianadrian.proxychat.common.hook.HookManager;
 import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
 
 public class BungeecordHookManager extends HookManager {
-    private final VanishHook vanishHook;
-    private FriendHook friendHook;
+	private final VanishHook vanishHook;
+	private FriendHook friendHook;
 
-    public BungeecordHookManager(ProxyChatBungeecord plugin) {
-        super(plugin.logger());
+	public BungeecordHookManager(ProxyChatBungeecord plugin) {
+		super(plugin.logger());
 
-        try {
-            this.friendHook = new PAFBungeecordFriendHook();
-            this.logger.info("PartyAndFriends hook enabled!");
-        } catch (NoClassDefFoundError e) {
-            this.friendHook = FriendHook.empty();
-        }
+		try {
+			this.friendHook = new PAFBungeecordFriendHook();
+			this.logger.info("PartyAndFriends hook enabled!");
+		} catch (NoClassDefFoundError e) {
+			this.friendHook = FriendHook.empty();
+		}
 
-        if (plugin.getProxy().getPluginManager().getPlugin("PremiumVanish") != null) {
-            this.logger.info("PremiumVanish hook enabled!");
-            this.vanishHook = new PremiumVanishHook();
-        } else {
-            this.vanishHook = VanishHook.empty();
-        }
-    }
+		if (plugin.getProxy().getPluginManager().getPlugin("PremiumVanish") != null) {
+			this.logger.info("PremiumVanish hook enabled!");
+			this.vanishHook = new PremiumVanishHook();
+		} else {
+			this.vanishHook = VanishHook.empty();
+		}
+	}
 
-    @Override
-    public FriendHook friendHook() {
-        return this.friendHook;
-    }
+	@Override
+	public FriendHook friendHook() {
+		return this.friendHook;
+	}
 
-    @Override
-    public VanishHook vanishHook() {
-        return this.vanishHook;
-    }
+	@Override
+	public VanishHook vanishHook() {
+		return this.vanishHook;
+	}
 }

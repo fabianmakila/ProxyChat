@@ -12,27 +12,27 @@ import java.util.Optional;
 
 public final class AnnouncementsCommand extends ProxyChatCommand {
 
-    public AnnouncementsCommand(ProxyChat proxyChat) {
-        super(proxyChat, "announcements");
-    }
+	public AnnouncementsCommand(ProxyChat proxyChat) {
+		super(proxyChat, "announcements");
+	}
 
-    @Override
-    public void register() {
-        var builder = this.builder()
-            .argument(BooleanArgument.optional("visible"))
-            .senderType(User.class)
-            .handler(this::executeAnnouncement);
+	@Override
+	public void register() {
+		var builder = this.builder()
+				.argument(BooleanArgument.optional("visible"))
+				.senderType(User.class)
+				.handler(this::executeAnnouncement);
 
-        this.manager.command(builder);
-    }
+		this.manager.command(builder);
+	}
 
-    private void executeAnnouncement(CommandContext<Commander> ctx) {
-        Optional<Boolean> visibleOptional = ctx.getOptional("visible");
-        User user = (User) ctx.getSender();
-        boolean visible = visibleOptional.orElseGet(() -> !user.announcements());
+	private void executeAnnouncement(CommandContext<Commander> ctx) {
+		Optional<Boolean> visibleOptional = ctx.getOptional("visible");
+		User user = (User) ctx.getSender();
+		boolean visible = visibleOptional.orElseGet(() -> !user.announcements());
 
-        user.announcements(visible);
+		user.announcements(visible);
 
-        ctx.getSender().sendMessage(visible ? Messages.COMMAND_ANNOUNCEMENTS_ON : Messages.COMMAND_ANNOUNCEMENTS_OFF);
-    }
+		ctx.getSender().sendMessage(visible ? Messages.COMMAND_ANNOUNCEMENTS_ON : Messages.COMMAND_ANNOUNCEMENTS_OFF);
+	}
 }

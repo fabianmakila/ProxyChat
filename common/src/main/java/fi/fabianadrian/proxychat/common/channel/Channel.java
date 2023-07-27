@@ -4,39 +4,39 @@ import java.util.List;
 import java.util.Locale;
 
 public interface Channel {
-    static Channel of(String name, String format, String command, List<String> commandAliases) {
-        return new Channel() {
-            @Override
-            public String name() {
-                return name;
-            }
+	static Channel of(String name, String format, String command, List<String> commandAliases) {
+		return new Channel() {
+			@Override
+			public String name() {
+				return name;
+			}
 
-            @Override
-            public String format() {
-                return format;
-            }
+			@Override
+			public String format() {
+				return format;
+			}
 
-            @Override
-            public String command() {
-                return command;
-            }
+			@Override
+			public String command() {
+				return command;
+			}
 
-            @Override
-            public List<String> commandAliases() {
-                return commandAliases;
-            }
-        };
-    }
+			@Override
+			public List<String> commandAliases() {
+				return commandAliases;
+			}
+		};
+	}
 
-    String name();
+	String name();
 
-    String format();
+	String format();
 
-    String command();
+	String command();
 
-    List<String> commandAliases();
+	List<String> commandAliases();
 
-    default String permission() {
-        return "proxychat.channel." + name().toLowerCase(Locale.ROOT);
-    }
+	default String permission() {
+		return "proxychat.channel." + name().toLowerCase(Locale.ROOT);
+	}
 }

@@ -9,22 +9,22 @@ import fi.fabianadrian.proxychat.common.command.argument.UserArgument;
 import fi.fabianadrian.proxychat.common.user.User;
 
 public final class MessageCommand extends ProxyChatCommand {
-    public MessageCommand(ProxyChat proxyChat) {
-        super(proxyChat, "message", "msg", "dm");
-    }
+	public MessageCommand(ProxyChat proxyChat) {
+		super(proxyChat, "message", "msg", "dm");
+	}
 
-    @Override
-    public void register() {
-        var builder = this.builder()
-            .senderType(User.class)
-            .argument(UserArgument.of("receiver"))
-            .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
-            .handler(this::executeMessage);
+	@Override
+	public void register() {
+		var builder = this.builder()
+				.senderType(User.class)
+				.argument(UserArgument.of("receiver"))
+				.argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
+				.handler(this::executeMessage);
 
-        this.manager.command(builder);
-    }
+		this.manager.command(builder);
+	}
 
-    private void executeMessage(CommandContext<Commander> ctx) {
-        this.proxyChat.messageService().sendPrivateMessage((User) ctx.getSender(), ctx.get("receiver"), ctx.get("message"));
-    }
+	private void executeMessage(CommandContext<Commander> ctx) {
+		this.proxyChat.messageService().sendPrivateMessage((User) ctx.getSender(), ctx.get("receiver"), ctx.get("message"));
+	}
 }

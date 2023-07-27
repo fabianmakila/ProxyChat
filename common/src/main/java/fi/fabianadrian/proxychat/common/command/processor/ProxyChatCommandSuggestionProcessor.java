@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 
 public final class ProxyChatCommandSuggestionProcessor<C> implements CommandSuggestionProcessor<C> {
 
-    @Override
-    public @NonNull List<String> apply(
-        @NonNull CommandPreprocessingContext<C> context,
-        @NonNull List<String> strings
-    ) {
-        final String input = context.getInputQueue().isEmpty() ? "" : context.getInputQueue().peek().toLowerCase(Locale.ROOT);
-        return strings.stream()
-            .filter(suggestion -> suggestion.toLowerCase(Locale.ROOT).startsWith(input))
-            .collect(Collectors.toList());
-    }
+	@Override
+	public @NonNull List<String> apply(
+			@NonNull CommandPreprocessingContext<C> context,
+			@NonNull List<String> strings
+	) {
+		final String input = context.getInputQueue().isEmpty() ? "" : context.getInputQueue().peek().toLowerCase(Locale.ROOT);
+		return strings.stream()
+				.filter(suggestion -> suggestion.toLowerCase(Locale.ROOT).startsWith(input))
+				.collect(Collectors.toList());
+	}
 }

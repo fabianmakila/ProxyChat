@@ -5,9 +5,9 @@ import net.kyori.adventure.audience.ForwardingAudience;
 import java.util.UUID;
 
 public interface PlatformPlayer extends ForwardingAudience.Single {
-    UUID uuid();
+	UUID uuid();
 
-    String name();
+	String name();
 
-    boolean hasPermission(String permission);
+	boolean hasPermission(String permission);
 }

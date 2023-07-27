@@ -9,29 +9,29 @@ import java.util.UUID;
 
 public class VelocityPlatformPlayer implements PlatformPlayer {
 
-    private final Player player;
+	private final Player player;
 
-    public VelocityPlatformPlayer(Player player) {
-        this.player = player;
-    }
+	public VelocityPlatformPlayer(Player player) {
+		this.player = player;
+	}
 
-    @Override
-    public UUID uuid() {
-        return this.player.getUniqueId();
-    }
+	@Override
+	public UUID uuid() {
+		return this.player.getUniqueId();
+	}
 
-    @Override
-    public String name() {
-        return this.player.getUsername();
-    }
+	@Override
+	public String name() {
+		return this.player.getUsername();
+	}
 
-    @Override
-    public boolean hasPermission(String permission) {
-        return this.player.hasPermission(permission);
-    }
+	@Override
+	public boolean hasPermission(String permission) {
+		return this.player.hasPermission(permission);
+	}
 
-    @Override
-    public @NotNull Audience audience() {
-        return this.player;
-    }
+	@Override
+	public @NotNull Audience audience() {
+		return this.player;
+	}
 }

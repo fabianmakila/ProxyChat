@@ -8,25 +8,25 @@ import java.util.List;
 
 public interface ProxyChatConfig {
 
-    FormatSection formats();
+	FormatSection formats();
 
-    @ConfComments("Placeholders: <name>")
-    @ConfDefault.DefaultStrings({
-        "<rainbow>----------------------------------------</rainbow>",
-        "        Welcome to our network, <name>!",
-        "<rainbow>----------------------------------------</rainbow>"
-    })
-    List<String> welcomeMessage();
+	@ConfComments("Placeholders: <name>")
+	@ConfDefault.DefaultStrings({
+			"<rainbow>----------------------------------------</rainbow>",
+			"        Welcome to our network, <name>!",
+			"<rainbow>----------------------------------------</rainbow>"
+	})
+	List<String> welcomeMessage();
 
-    @SubSection
-    interface FormatSection {
-        @ConfDefault.DefaultString("<gold>[<red><sender> -> <receiver></red>]</gold> <message>")
-        String msg();
+	@SubSection
+	interface FormatSection {
+		@ConfDefault.DefaultString("<gold>[<red><sender> -> <receiver></red>]</gold> <message>")
+		String msg();
 
-        @ConfDefault.DefaultString("<gold>[<aqua><sender> -> <receiver></aqua>]</gold> <gray><message>")
-        String msgSpy();
+		@ConfDefault.DefaultString("<gold>[<aqua><sender> -> <receiver></aqua>]</gold> <gray><message>")
+		String msgSpy();
 
-        @ConfDefault.DefaultString("<white>[<green>Broadcast</green>]</white> <message>")
-        String broadcast();
-    }
+		@ConfDefault.DefaultString("<white>[<green>Broadcast</green>]</white> <message>")
+		String broadcast();
+	}
 }

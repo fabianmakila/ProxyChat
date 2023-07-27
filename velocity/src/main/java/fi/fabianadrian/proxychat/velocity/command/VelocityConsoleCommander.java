@@ -7,23 +7,23 @@ import org.jetbrains.annotations.NotNull;
 
 public class VelocityConsoleCommander implements Commander {
 
-    private final CommandSource commandSource;
+	private final CommandSource commandSource;
 
-    public VelocityConsoleCommander(CommandSource commandSource) {
-        this.commandSource = commandSource;
-    }
+	public VelocityConsoleCommander(CommandSource commandSource) {
+		this.commandSource = commandSource;
+	}
 
-    public CommandSource commandSource() {
-        return this.commandSource;
-    }
+	public CommandSource commandSource() {
+		return this.commandSource;
+	}
 
-    @Override
-    public boolean hasPermission(String permission) {
-        return this.commandSource.hasPermission(permission);
-    }
+	@Override
+	public boolean hasPermission(String permission) {
+		return this.commandSource.hasPermission(permission);
+	}
 
-    @Override
-    public @NotNull Audience audience() {
-        return this.commandSource;
-    }
+	@Override
+	public @NotNull Audience audience() {
+		return this.commandSource;
+	}
 }

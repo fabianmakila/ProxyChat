@@ -9,11 +9,11 @@ import org.slf4j.Logger;
 import java.nio.file.Path;
 
 public interface Platform extends ForwardingAudience.Single {
-    Logger logger();
+	Logger logger();
 
-    Path dataDirectory();
+	Path dataDirectory();
 
-    CommandManager<Commander> commandManager();
+	CommandManager<Commander> commandManager();
 
-    HookManager hookManager();
+	HookManager hookManager();
 }

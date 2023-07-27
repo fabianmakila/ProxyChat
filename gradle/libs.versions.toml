@@ -23,7 +23,7 @@ guava = { module = "com.google.guava:guava", version = "32.1.1-jre" }
 
 # Adventure
 adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version = "4.3.0" }
-adventure-api = { module = "net.kyori:adventure-api", version.ref= "adventure" }
+adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 
 # Platforms
@@ -37,7 +37,7 @@ partyAndFriends-velocity = { module = "de.simonsator:VelocityPoweredPartyAndFrie
 premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = "2.8.8" }
 
 [plugins]
-minotaur = { id = "com.modrinth.minotaur", version = "2.8.2"}
+minotaur = { id = "com.modrinth.minotaur", version = "2.8.2" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.18.0" }
 pluginYml-bungee = { id = "net.minecrell.plugin-yml.bungee", version = "0.6.0" }
