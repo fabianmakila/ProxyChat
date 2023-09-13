@@ -2,6 +2,7 @@ package fi.fabianadrian.proxychat.common.user;
 
 import com.google.gson.Gson;
 import fi.fabianadrian.proxychat.common.ProxyChat;
+import fi.fabianadrian.proxychat.common.platform.PlatformPlayer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

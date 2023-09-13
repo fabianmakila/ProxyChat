@@ -1,4 +1,4 @@
-package fi.fabianadrian.proxychat.common.user;
+package fi.fabianadrian.proxychat.common.platform;
 
 import net.kyori.adventure.audience.ForwardingAudience;
 

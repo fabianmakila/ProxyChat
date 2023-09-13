@@ -1,7 +1,7 @@
 package fi.fabianadrian.proxychat.velocity;
 
 import com.velocitypowered.api.proxy.Player;
-import fi.fabianadrian.proxychat.common.user.PlatformPlayer;
+import fi.fabianadrian.proxychat.common.platform.PlatformPlayer;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 

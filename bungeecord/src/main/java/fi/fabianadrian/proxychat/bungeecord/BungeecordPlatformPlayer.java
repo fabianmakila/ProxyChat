@@ -1,6 +1,6 @@
 package fi.fabianadrian.proxychat.bungeecord;
 
-import fi.fabianadrian.proxychat.common.user.PlatformPlayer;
+import fi.fabianadrian.proxychat.common.platform.PlatformPlayer;
 import net.kyori.adventure.audience.Audience;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
