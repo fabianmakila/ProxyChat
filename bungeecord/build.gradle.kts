@@ -18,7 +18,6 @@ dependencies {
 
 tasks {
 	shadowJar {
-		minimize()
 		sequenceOf(
 			"cloud.commandframework",
 			"io.leangen",
@@ -26,10 +25,9 @@ tasks {
 			"space.arim",
 			"org.bstats",
 			"com.google.gson",
-		).forEach { pkg ->
-			relocate(pkg, "${project.group}.${rootProject.name.lowercase()}.dependency.$pkg")
+		).forEach {
+			relocate(it, "${project.group}.${rootProject.name.lowercase()}.dependency.$it")
 		}
-		archiveBaseName.set(rootProject.name + "-Bungeecord")
 	}
 }
 
