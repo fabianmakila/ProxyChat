@@ -40,7 +40,7 @@ public final class MessageService {
 		}
 
 		if (!sender.hasPermission(BYPASS_PERMISSION)) {
-			switch (receiver.messageSetting()) {
+			switch (receiver.messageSettings().privacySetting()) {
 				case NOBODY:
 					sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
 					return;
@@ -67,12 +67,9 @@ public final class MessageService {
 
 		receiver.lastMessaged(sender.uuid());
 
-		//TODO Send spy component to console if configured
-
-		//TODO Optimize this?
 		//Sends message spy component to every online user that has spy true
 		for (User user : this.proxyChat.userManager().users()) {
-			if (user == sender || user == receiver || !user.spying()) continue;
+			if (user == sender || user == receiver || !user.messageSettings().spy()) continue;
 			user.sendMessage(spyComponent);
 		}
 	}

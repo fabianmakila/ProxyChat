@@ -7,6 +7,7 @@ import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.locale.Messages;
+import fi.fabianadrian.proxychat.common.user.MessageSettings;
 import fi.fabianadrian.proxychat.common.user.User;
 
 import java.util.Optional;
@@ -19,9 +20,9 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 
 	@Override
 	public void register() {
-		this.manager.command(subCommand("allow")
+		this.manager.command(subCommand("privacy")
 				.senderType(User.class)
-				.argument(EnumArgument.of(User.MessageSetting.class, "messageSetting"))
+				.argument(EnumArgument.of(MessageSettings.PrivacySetting.class, "privacySetting"))
 				.handler(this::executeAllow)
 		);
 		this.manager.command(subCommand("spy")
@@ -34,19 +35,19 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 	private void executeSpy(CommandContext<Commander> ctx) {
 		Optional<Boolean> enabledOptional = ctx.getOptional("enabled");
 		User user = (User) ctx.getSender();
-		boolean value = enabledOptional.orElseGet(() -> !user.spying());
+		boolean value = enabledOptional.orElseGet(() -> !user.messageSettings().spy());
 
-		user.spying(value);
+		user.messageSettings().spy(value);
 		ctx.getSender().sendMessage(value ? Messages.COMMAND_MESSAGES_SPY_ENABLE : Messages.COMMAND_MESSAGES_SPY_DISABLE);
 	}
 
 	private void executeAllow(CommandContext<Commander> ctx) {
 		User user = (User) ctx.getSender();
-		User.MessageSetting setting = ctx.get("messageSetting");
+		MessageSettings.PrivacySetting privacySetting = ctx.get("privacySetting");
 
-		user.messageSetting(setting);
+		user.messageSettings().privacySetting(privacySetting);
 
-		switch (setting) {
+		switch (privacySetting) {
 			case NOBODY:
 				user.sendMessage(Messages.COMMAND_MESSAGES_ALLOW_NOBODY);
 				break;
