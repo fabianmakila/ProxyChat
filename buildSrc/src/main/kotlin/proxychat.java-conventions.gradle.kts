@@ -19,8 +19,10 @@ tasks {
 
 spotless {
 	java {
+		endWithNewline()
+		formatAnnotations()
 		indentWithTabs()
-		trimTrailingWhitespace()
 		removeUnusedImports()
+		trimTrailingWhitespace()
 	}
 }
