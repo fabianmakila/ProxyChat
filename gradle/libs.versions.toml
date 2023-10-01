@@ -1,7 +1,7 @@
 [versions]
 adventure = "4.14.0"
 bstats = "3.0.2"
-cloud = "1.8.3"
+cloud = "1.8.4"
 
 [libraries]
 # Bstats
