@@ -32,7 +32,7 @@ public class UnblockCommand extends ProxyChatCommand {
 			).args(Component.text(target.name())));
 		} else {
 			sender.sendMessage(Component.translatable(
-					"proxychat.command.unblock.error.not-blocked",
+					"proxychat.command.unblock.not-blocked",
 					NamedTextColor.RED
 			).args(Component.text(target.name())));
 		}

@@ -40,7 +40,7 @@ public class BlockCommand extends ProxyChatCommand {
 			).args(Component.text(target.name())));
 		} else {
 			sender.sendMessage(Component.translatable(
-					"proxychat.command.block.error.already-blocked",
+					"proxychat.command.block.already-blocked",
 					NamedTextColor.RED
 			).args(Component.text(target.name())));
 		}

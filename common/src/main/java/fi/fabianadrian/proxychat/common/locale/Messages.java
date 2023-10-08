@@ -16,11 +16,11 @@ public interface Messages {
 			GREEN
 	);
 	Component COMMAND_CHANNEL_ERROR_ALREADY_MUTED = translatable(
-			"proxychat.command.channel.error.already-muted",
+			"proxychat.command.channel.already-muted",
 			RED
 	);
 	Component COMMAND_CHANNEL_ERROR_NOT_MUTED = translatable(
-			"proxychat.command.channel.error.not-muted",
+			"proxychat.command.channel.not-muted",
 			RED
 	);
 	Component COMMAND_CHANNEL_LIST = translatable(
@@ -36,23 +36,23 @@ public interface Messages {
 			GREEN
 	);
 	Component COMMAND_MESSAGE_ERROR_SELF = translatable(
-			"proxychat.command.message.error.self",
+			"proxychat.command.message.self",
 			RED
 	);
 	Component COMMAND_MESSAGE_ERROR_DISALLOWED = translatable(
-			"proxychat.command.message.error.disallowed",
+			"proxychat.command.message.disallowed",
 			RED
 	);
 	Component COMMAND_MESSAGES_ALLOW_NOBODY = translatable(
-			"proxychat.command.messages.allow.nobody",
+			"proxychat.command.messages.privacy.nobody",
 			GREEN
 	);
 	Component COMMAND_MESSAGES_ALLOW_FRIENDS = translatable(
-			"proxychat.command.messages.allow.friends",
+			"proxychat.command.messages.privacy.friends",
 			GREEN
 	);
 	Component COMMAND_MESSAGES_ALLOW_EVERYONE = translatable(
-			"proxychat.command.messages.allow.everyone",
+			"proxychat.command.messages.privacy.everyone",
 			GREEN
 	);
 	Component COMMAND_MESSAGES_SPY_DISABLE = translatable(
@@ -68,11 +68,11 @@ public interface Messages {
 			Color.PRIMARY.textColor
 	);
 	Component COMMAND_REPLY_ERROR_NO_LAST_MESSAGED = translatable(
-			"proxychat.command.reply.error.no-last-messaged",
+			"proxychat.command.reply.no-last-messaged",
 			RED
 	);
 	Component COMMAND_REPLY_ERROR_LAST_MESSAGED_OFFLINE = translatable(
-			"proxychat.command.reply.error.last-messaged-offline",
+			"proxychat.command.reply.offline",
 			RED
 	);
 
