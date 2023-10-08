@@ -22,7 +22,7 @@ public class NameService {
 
 	public NameService(ProxyChat proxyChat) {
 		this.proxyChat = proxyChat;
-		this.databasePath = proxyChat.platform().dataDirectory().resolve("usernames.json");
+		this.databasePath = proxyChat.platform().dataDirectory().resolve("data/usernames.json");
 	}
 
 	public void reload() {
