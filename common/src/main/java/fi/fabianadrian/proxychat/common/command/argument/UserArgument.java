@@ -108,7 +108,7 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 			VanishHook vanishHook = ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook();
 
 			if (ctx.getSender() instanceof User) {
-				users = users.filter(user -> !user.equals(ctx.getSender()) && vanishHook.canSee((User) ctx.getSender(), user));
+				users = users.filter(user -> user != ctx.getSender() && vanishHook.canSee((User) ctx.getSender(), user));
 			}
 
 			return users.map(User::name).collect(Collectors.toList());
