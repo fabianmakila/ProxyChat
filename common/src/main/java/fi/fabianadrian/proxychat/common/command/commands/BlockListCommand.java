@@ -47,6 +47,6 @@ public class BlockListCommand extends ProxyChatCommand {
 			}
 		});
 
-		user.sendMessage(Component.translatable("proxychat.command.blocklist.header", NamedTextColor.GREEN).appendNewline().append(Component.join(JoinConfiguration.commas(true), resolvedNameComponents)));
+		user.sendMessage(Component.translatable("proxychat.command.blocklist.header", NamedTextColor.RED).appendNewline().color(NamedTextColor.WHITE).append(Component.join(JoinConfiguration.commas(true), resolvedNameComponents)));
 	}
 }
