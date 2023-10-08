@@ -17,13 +17,13 @@ public class BlockCommand extends ProxyChatCommand {
 	@Override
 	public void register() {
 		this.manager.command(
-				builder().argument(UserArgument.of("user")).handler(this::executeBlock)
+				builder().argument(UserArgument.of("player")).handler(this::executeBlock)
 		);
 	}
 
 	public void executeBlock(CommandContext<Commander> ctx) {
 		User sender = (User) ctx.getSender();
-		User target = ctx.get("user");
+		User target = ctx.get("player");
 
 		if (target == sender) {
 			sender.sendMessage(Component.translatable(
