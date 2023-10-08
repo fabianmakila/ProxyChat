@@ -17,13 +17,13 @@ public class UnblockCommand extends ProxyChatCommand {
 	@Override
 	public void register() {
 		this.manager.command(
-				builder().argument(UserArgument.of("user")).handler(this::executeUnblock)
+				builder().argument(UserArgument.of("player")).handler(this::executeUnblock)
 		);
 	}
 
 	private void executeUnblock(CommandContext<Commander> ctx) {
 		User sender = (User) ctx.getSender();
-		User target = ctx.get("user");
+		User target = ctx.get("player");
 
 		if (target == sender) {
 			sender.sendMessage(Component.translatable(
