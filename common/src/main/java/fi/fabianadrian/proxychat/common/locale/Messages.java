@@ -35,10 +35,6 @@ public interface Messages {
 			"proxychat.command.channel.unmuted",
 			GREEN
 	);
-	Component COMMAND_MESSAGE_ERROR_SELF = translatable(
-			"proxychat.command.message.self",
-			RED
-	);
 	Component COMMAND_MESSAGE_ERROR_DISALLOWED = translatable(
 			"proxychat.command.message.disallowed",
 			RED

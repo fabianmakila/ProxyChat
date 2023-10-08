@@ -25,14 +25,6 @@ public class BlockCommand extends ProxyChatCommand {
 		User sender = (User) ctx.getSender();
 		User target = ctx.get("player");
 
-		if (target == sender) {
-			sender.sendMessage(Component.translatable(
-					"proxychat.command.block.self",
-					NamedTextColor.RED
-			));
-			return;
-		}
-
 		if (sender.addBlockedUser(target)) {
 			sender.sendMessage(Component.translatable(
 					"proxychat.command.block.success",

@@ -34,11 +34,6 @@ public final class MessageService {
 	}
 
 	public void sendPrivateMessage(User sender, User receiver, String message) {
-		if (sender == receiver) {
-			sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_SELF);
-			return;
-		}
-
 		if (!sender.hasPermission(BYPASS_PERMISSION)) {
 			switch (receiver.messageSettings().privacySetting()) {
 				case NOBODY:
