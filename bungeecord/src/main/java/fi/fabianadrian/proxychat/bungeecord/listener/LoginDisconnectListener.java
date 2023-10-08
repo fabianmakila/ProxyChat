@@ -3,7 +3,6 @@ package fi.fabianadrian.proxychat.bungeecord.listener;
 import fi.fabianadrian.proxychat.bungeecord.BungeecordPlatformPlayer;
 import fi.fabianadrian.proxychat.bungeecord.ProxyChatBungeecord;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.user.User;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
