@@ -56,12 +56,14 @@ public final class ProxyChat {
 	private void registerCommands() {
 		Stream.of(
 				new AnnouncementsCommand(this),
+				new BlockCommand(this),
 				new BroadcastCommand(this),
 				new ChannelCommand(this),
 				new MessageCommand(this),
 				new MessageSettingsCommand(this),
+				new ReplyCommand(this),
 				new RootCommand(this),
-				new ReplyCommand(this)
+				new UnblockCommand(this)
 		).forEach(ProxyChatCommand::register);
 	}
 

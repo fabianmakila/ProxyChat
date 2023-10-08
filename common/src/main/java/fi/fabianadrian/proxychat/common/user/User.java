@@ -19,6 +19,7 @@ public final class User implements Commander {
 	private MessageSettings messageSettings = new MessageSettings();
 	private Set<String> mutedChannels = new HashSet<>();
 	private transient UUID lastMessaged;
+	private Set<UUID> blockedUsers = new HashSet<>();
 
 	public User(PlatformPlayer player) {
 		this.player = player;
@@ -28,6 +29,7 @@ public final class User implements Commander {
 		this.announcements = deserialized.announcements;
 		this.messageSettings = deserialized.messageSettings;
 		this.mutedChannels = deserialized.mutedChannels;
+		this.blockedUsers = deserialized.blockedUsers;
 	}
 
 	public PlatformPlayer player() {
@@ -76,6 +78,18 @@ public final class User implements Commander {
 
 	public void lastMessaged(UUID uuid) {
 		this.lastMessaged = uuid;
+	}
+
+	public boolean addBlockedUser(User user) {
+		return this.blockedUsers.add(user.uuid());
+	}
+
+	public boolean removeBlockedUser(User user) {
+		return this.blockedUsers.remove(user.uuid());
+	}
+
+	public Set<UUID> blockedUsers() {
+		return Set.copyOf(blockedUsers);
 	}
 
 	@Override
