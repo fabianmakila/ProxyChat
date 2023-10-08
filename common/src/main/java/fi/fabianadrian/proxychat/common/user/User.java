@@ -27,9 +27,15 @@ public final class User implements Commander {
 
 	public void populate(User deserialized) {
 		this.announcements = deserialized.announcements;
-		this.messageSettings = deserialized.messageSettings;
-		this.mutedChannels = deserialized.mutedChannels;
-		this.blockedUsers = deserialized.blockedUsers;
+		if (deserialized.messageSettings != null) {
+			this.messageSettings = deserialized.messageSettings;
+		}
+		if (deserialized.mutedChannels != null) {
+			this.mutedChannels = deserialized.mutedChannels;
+		}
+		if (deserialized.blockedUsers != null) {
+			this.blockedUsers = deserialized.blockedUsers;
+		}
 	}
 
 	public PlatformPlayer player() {
