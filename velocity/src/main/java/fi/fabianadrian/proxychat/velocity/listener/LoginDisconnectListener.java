@@ -4,7 +4,6 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.velocity.VelocityPlatformPlayer;
 
 public final class LoginDisconnectListener {
@@ -18,13 +17,12 @@ public final class LoginDisconnectListener {
 	@Subscribe
 	public void onLogin(PostLoginEvent event) {
 		VelocityPlatformPlayer platformPlayer = new VelocityPlatformPlayer(event.getPlayer());
-		User user = this.proxyChat.userManager().loadUser(platformPlayer);
-		this.proxyChat.messageService().sendWelcomeMessage(user);
+		this.proxyChat.handleLogin(platformPlayer);
 	}
 
 	@Subscribe
 	public void onDisconnect(DisconnectEvent event) {
 		if (event.getLoginStatus() != DisconnectEvent.LoginStatus.SUCCESSFUL_LOGIN) return;
-		this.proxyChat.userManager().unloadUser(event.getPlayer().getUniqueId());
+		this.proxyChat.handleDisconnect(event.getPlayer().getUniqueId());
 	}
 }

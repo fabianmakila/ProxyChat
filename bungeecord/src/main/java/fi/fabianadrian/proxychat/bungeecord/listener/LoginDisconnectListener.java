@@ -22,12 +22,11 @@ public class LoginDisconnectListener implements Listener {
 	@EventHandler
 	public void onPostLogin(PostLoginEvent event) {
 		BungeecordPlatformPlayer platformPlayer = new BungeecordPlatformPlayer(event.getPlayer(), this.plugin.adventure().player(event.getPlayer()));
-		User user = this.proxyChat.userManager().loadUser(platformPlayer);
-		this.proxyChat.messageService().sendWelcomeMessage(user);
+		this.proxyChat.handleLogin(platformPlayer);
 	}
 
 	@EventHandler
 	public void onDisconnect(PlayerDisconnectEvent event) {
-		this.proxyChat.userManager().unloadUser(event.getPlayer().getUniqueId());
+		this.proxyChat.handleDisconnect(event.getPlayer().getUniqueId());
 	}
 }

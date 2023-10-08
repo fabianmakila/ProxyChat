@@ -8,10 +8,14 @@ import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandSugges
 import fi.fabianadrian.proxychat.common.config.ConfigManager;
 import fi.fabianadrian.proxychat.common.locale.TranslationManager;
 import fi.fabianadrian.proxychat.common.platform.Platform;
+import fi.fabianadrian.proxychat.common.platform.PlatformPlayer;
 import fi.fabianadrian.proxychat.common.service.AnnouncementService;
 import fi.fabianadrian.proxychat.common.service.MessageService;
+import fi.fabianadrian.proxychat.common.service.NameService;
+import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.common.user.UserManager;
 
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public final class ProxyChat {
@@ -22,6 +26,7 @@ public final class ProxyChat {
 	private final MessageService messageService;
 	private final ChannelRegistry channelRegistry;
 	private final AnnouncementService announcementService;
+	private final NameService nameService;
 
 	public ProxyChat(Platform platform) {
 		this.platform = platform;
@@ -36,6 +41,7 @@ public final class ProxyChat {
 		this.translationManager.reload();
 
 		this.messageService = new MessageService(this);
+		this.nameService = new NameService(this);
 
 		this.platform.commandManager().commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
 		this.platform.commandManager().registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
@@ -57,6 +63,7 @@ public final class ProxyChat {
 		Stream.of(
 				new AnnouncementsCommand(this),
 				new BlockCommand(this),
+				new BlockListCommand(this),
 				new BroadcastCommand(this),
 				new ChannelCommand(this),
 				new MessageCommand(this),
@@ -77,6 +84,22 @@ public final class ProxyChat {
 		this.userManager.reload();
 		this.announcementService.reload();
 		this.messageService.reload();
+		this.nameService.reload();
+	}
+
+	public void handleLogin(PlatformPlayer player) {
+		User user = this.userManager.loadUser(player);
+
+		this.messageService.sendWelcomeMessage(user);
+		this.nameService.update(user);
+	}
+
+	public void handleDisconnect(UUID uuid) {
+		this.userManager.unloadUser(uuid);
+	}
+
+	public void shutdown() {
+		this.nameService.save();
 	}
 
 	public UserManager userManager() {
@@ -93,5 +116,9 @@ public final class ProxyChat {
 
 	public AnnouncementService announcementService() {
 		return this.announcementService;
+	}
+
+	public NameService nameService() {
+		return this.nameService;
 	}
 }

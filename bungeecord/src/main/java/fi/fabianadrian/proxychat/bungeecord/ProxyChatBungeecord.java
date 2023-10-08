@@ -82,6 +82,7 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
 			this.adventure.close();
 			this.adventure = null;
 		}
+		this.proxyChat.shutdown();
 	}
 
 	@Override
