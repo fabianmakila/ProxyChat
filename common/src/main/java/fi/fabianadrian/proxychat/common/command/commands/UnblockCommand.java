@@ -25,6 +25,14 @@ public class UnblockCommand extends ProxyChatCommand {
 		User sender = (User) ctx.getSender();
 		User target = ctx.get("user");
 
+		if (target == sender) {
+			sender.sendMessage(Component.translatable(
+					"proxychat.command.unblock.self",
+					NamedTextColor.RED
+			));
+			return;
+		}
+
 		if (sender.removeBlockedUser(target)) {
 			sender.sendMessage(Component.translatable(
 					"proxychat.command.unblock.success",
