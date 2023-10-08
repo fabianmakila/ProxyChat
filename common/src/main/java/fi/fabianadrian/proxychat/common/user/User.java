@@ -98,6 +98,10 @@ public final class User implements Commander {
 		return Set.copyOf(blockedUsers);
 	}
 
+	public boolean hasBlockedUser(User user) {
+		return this.blockedUsers.contains(user.uuid());
+	}
+
 	@Override
 	public @NotNull Audience audience() {
 		return this.player;

@@ -5,6 +5,7 @@ import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.config.ProxyChatConfig;
 import fi.fabianadrian.proxychat.common.hook.FriendHook;
 import fi.fabianadrian.proxychat.common.locale.Messages;
+import fi.fabianadrian.proxychat.common.user.MessageSettings;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
@@ -35,15 +36,16 @@ public final class MessageService {
 
 	public void sendPrivateMessage(User sender, User receiver, String message) {
 		if (!sender.hasPermission(BYPASS_PERMISSION)) {
-			switch (receiver.messageSettings().privacySetting()) {
-				case NOBODY:
-					sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
-					return;
-				case FRIENDS:
-					if (!this.friendHook.areFriends(sender.uuid(), receiver.uuid())) {
-						sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
-						return;
-					}
+			MessageSettings.PrivacySetting receiverPrivacySetting = receiver.messageSettings().privacySetting();
+
+			if (receiver.hasBlockedUser(sender) || receiverPrivacySetting == MessageSettings.PrivacySetting.NOBODY) {
+				sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+				return;
+			}
+
+			if (receiverPrivacySetting == MessageSettings.PrivacySetting.FRIENDS && !this.friendHook.areFriends(sender.uuid(), receiver.uuid())) {
+				sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+				return;
 			}
 		}
 
