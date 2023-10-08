@@ -2,6 +2,7 @@ package fi.fabianadrian.proxychat.common;
 
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
+import fi.fabianadrian.proxychat.common.command.ProxyChatExceptionHandler;
 import fi.fabianadrian.proxychat.common.command.commands.*;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandPreprocessor;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandSuggestionProcessor;
@@ -45,6 +46,7 @@ public final class ProxyChat {
 
 		this.platform.commandManager().commandSuggestionProcessor(new ProxyChatCommandSuggestionProcessor<>());
 		this.platform.commandManager().registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
+		new ProxyChatExceptionHandler(this);
 
 		registerCommands();
 
