@@ -80,7 +80,7 @@ public final class ProxyChatVelocity implements Platform {
 						return ((VelocityConsoleCommander) commander).commandSource();
 					}
 
-					Optional<Player> playerOptional = server.getPlayer(((User) commander).uuid());
+					Optional<Player> playerOptional = this.server.getPlayer(((User) commander).uuid());
 					if (playerOptional.isPresent()) {
 						return playerOptional.get();
 					}
