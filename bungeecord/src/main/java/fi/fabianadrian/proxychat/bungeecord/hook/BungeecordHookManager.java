@@ -1,9 +1,7 @@
 package fi.fabianadrian.proxychat.bungeecord.hook;
 
 import fi.fabianadrian.proxychat.bungeecord.ProxyChatBungeecord;
-import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
-import fi.fabianadrian.proxychat.common.hook.VanishPluginHook;
 
 public class BungeecordHookManager extends HookManager {
 	private final ProxyChatBungeecord plugin;

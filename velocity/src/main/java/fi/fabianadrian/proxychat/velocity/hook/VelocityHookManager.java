@@ -1,10 +1,7 @@
 package fi.fabianadrian.proxychat.velocity.hook;
 
-import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
-import fi.fabianadrian.proxychat.common.hook.VanishPluginHook;
 import fi.fabianadrian.proxychat.velocity.ProxyChatVelocity;
-import org.slf4j.Logger;
 
 public class VelocityHookManager extends HookManager {
 	private final ProxyChatVelocity plugin;
