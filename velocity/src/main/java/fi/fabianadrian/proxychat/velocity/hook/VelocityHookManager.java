@@ -5,6 +5,7 @@ import fi.fabianadrian.proxychat.velocity.ProxyChatVelocity;
 
 public class VelocityHookManager extends HookManager {
 	private final ProxyChatVelocity plugin;
+
 	public VelocityHookManager(ProxyChatVelocity plugin) {
 		super(plugin.logger());
 		this.plugin = plugin;

@@ -4,13 +4,15 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 public abstract class HookManager {
+	protected final Logger logger;
 	protected FriendPluginHook friendPluginHook;
 	protected VanishPluginHook vanishPluginHook;
-	protected final Logger logger;
 
 	public HookManager(Logger logger) {
 		this.logger = logger;
+	}
 
+	public void initialize() {
 		initializeFriendHook();
 		initializeVanishHook();
 

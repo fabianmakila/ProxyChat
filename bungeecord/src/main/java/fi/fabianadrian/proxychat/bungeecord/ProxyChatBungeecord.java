@@ -69,6 +69,7 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
 		);
 
 		this.hookManager = new BungeecordHookManager(this);
+		this.hookManager.initialize();
 		this.proxyChat = new ProxyChat(this);
 		registerListeners();
 
