@@ -34,4 +34,8 @@ public class VelocityPlatformPlayer implements PlatformPlayer {
 	public @NotNull Audience audience() {
 		return this.player;
 	}
+
+	public Player player() {
+		return this.player;
+	}
 }

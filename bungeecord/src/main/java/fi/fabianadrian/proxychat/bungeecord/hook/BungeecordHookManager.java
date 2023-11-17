@@ -1,40 +1,33 @@
 package fi.fabianadrian.proxychat.bungeecord.hook;
 
 import fi.fabianadrian.proxychat.bungeecord.ProxyChatBungeecord;
-import fi.fabianadrian.proxychat.bungeecord.hook.vanish.PremiumVanishHook;
-import fi.fabianadrian.proxychat.common.hook.FriendHook;
+import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
-import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
+import fi.fabianadrian.proxychat.common.hook.VanishPluginHook;
 
 public class BungeecordHookManager extends HookManager {
-	private final VanishHook vanishHook;
-	private FriendHook friendHook;
+	private final ProxyChatBungeecord plugin;
 
 	public BungeecordHookManager(ProxyChatBungeecord plugin) {
 		super(plugin.logger());
+		this.plugin = plugin;
+	}
 
-		try {
-			this.friendHook = new PAFBungeecordFriendHook();
-			this.logger.info("PartyAndFriends hook enabled!");
-		} catch (NoClassDefFoundError e) {
-			this.friendHook = FriendHook.empty();
-		}
-
-		if (plugin.getProxy().getPluginManager().getPlugin("PremiumVanish") != null) {
-			this.logger.info("PremiumVanish hook enabled!");
-			this.vanishHook = new PremiumVanishHook();
-		} else {
-			this.vanishHook = VanishHook.empty();
+	@Override
+	protected void initializeFriendHook() {
+		if (isPluginPresent("PartyAndFriends")) {
+			this.friendPluginHook = new PAFBungeecordFriendHook();
 		}
 	}
 
 	@Override
-	public FriendHook friendHook() {
-		return this.friendHook;
+	protected void initializeVanishHook() {
+		if (isPluginPresent("PremiumVanish")) {
+			this.vanishPluginHook = new PremiumVanishBungeecordHook();
+		}
 	}
 
-	@Override
-	public VanishHook vanishHook() {
-		return this.vanishHook;
+	private boolean isPluginPresent(String name) {
+		return this.plugin.getProxy().getPluginManager().getPlugin(name) != null;
 	}
 }

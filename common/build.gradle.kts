@@ -10,6 +10,8 @@ dependencies {
 	compileOnly(libs.guava)
 	compileOnly(libs.snakeyaml)
 
+	api(libs.premiumvanish)
+
 	implementation(libs.gson)
 	implementation(libs.minimessage) {
 		exclude("net.kyori")

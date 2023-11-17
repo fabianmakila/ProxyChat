@@ -3,7 +3,7 @@ package fi.fabianadrian.proxychat.common.service;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.config.ProxyChatConfig;
-import fi.fabianadrian.proxychat.common.hook.FriendHook;
+import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.MessageSettings;
 import fi.fabianadrian.proxychat.common.user.User;
@@ -21,7 +21,7 @@ public final class MessageService {
 	private static final String BYPASS_PERMISSION = "proxychat.command.message.bypass";
 	private final ProxyChat proxyChat;
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
-	private final FriendHook friendHook;
+	private final FriendPluginHook friendHook;
 	private ProxyChatConfig.FormatSection formats;
 
 	public MessageService(ProxyChat proxyChat) {

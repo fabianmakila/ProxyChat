@@ -88,7 +88,7 @@ public final class ProxyChatVelocity implements Platform {
 				}
 		);
 
-		this.hookManager = new VelocityHookManager(this.logger);
+		this.hookManager = new VelocityHookManager(this);
 		this.proxyChat = new ProxyChat(this);
 		registerListeners();
 
@@ -130,6 +130,10 @@ public final class ProxyChatVelocity implements Platform {
 
 	@Override
 	public @NotNull Audience audience() {
+		return this.server;
+	}
+
+	public ProxyServer server() {
 		return this.server;
 	}
 }

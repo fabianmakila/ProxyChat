@@ -1,32 +1,33 @@
 package fi.fabianadrian.proxychat.velocity.hook;
 
-import fi.fabianadrian.proxychat.common.hook.FriendHook;
+import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
-import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
+import fi.fabianadrian.proxychat.common.hook.VanishPluginHook;
+import fi.fabianadrian.proxychat.velocity.ProxyChatVelocity;
 import org.slf4j.Logger;
 
 public class VelocityHookManager extends HookManager {
-	private FriendHook friendHook;
-	private VanishHook vanishHook = VanishHook.empty();
+	private final ProxyChatVelocity plugin;
+	public VelocityHookManager(ProxyChatVelocity plugin) {
+		super(plugin.logger());
+		this.plugin = plugin;
+	}
 
-	public VelocityHookManager(Logger logger) {
-		super(logger);
-
-		try {
-			this.friendHook = new PAFVelocityFriendHook();
-			this.logger.info("PartyAndFriends hook enabled!");
-		} catch (NoClassDefFoundError e) {
-			this.friendHook = FriendHook.empty();
+	@Override
+	protected void initializeFriendHook() {
+		if (isPluginPresent("partyandfriends")) {
+			this.friendPluginHook = new PAFVelocityFriendHook();
 		}
 	}
 
 	@Override
-	public FriendHook friendHook() {
-		return this.friendHook;
+	protected void initializeVanishHook() {
+		if (isPluginPresent("premiumvanish")) {
+			this.vanishPluginHook = new PremiumVanishVelocityHook();
+		}
 	}
 
-	@Override
-	public VanishHook vanishHook() {
-		return this.vanishHook;
+	private boolean isPluginPresent(String id) {
+		return this.plugin.server().getPluginManager().isLoaded(id);
 	}
 }

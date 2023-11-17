@@ -10,7 +10,7 @@ import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import cloud.commandframework.exceptions.parsing.ParserException;
 import fi.fabianadrian.proxychat.common.command.ProxyChatContextKeys;
-import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
+import fi.fabianadrian.proxychat.common.hook.VanishPluginHook;
 import fi.fabianadrian.proxychat.common.user.User;
 import io.leangen.geantyref.TypeToken;
 import org.jetbrains.annotations.NotNull;
@@ -105,7 +105,7 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 		@Override
 		public @NotNull List<@NotNull String> suggestions(final @NotNull CommandContext<C> ctx, final @NotNull String input) {
 			Stream<User> users = ctx.get(ProxyChatContextKeys.USER_MANAGER_KEY).users().stream();
-			VanishHook vanishHook = ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook();
+			VanishPluginHook vanishHook = ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook();
 
 			if (ctx.getSender() instanceof User) {
 				users = users.filter(user -> user != ctx.getSender() && vanishHook.canSee((User) ctx.getSender(), user));

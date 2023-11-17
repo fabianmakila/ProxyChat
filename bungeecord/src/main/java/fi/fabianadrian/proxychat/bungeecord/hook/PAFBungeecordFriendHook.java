@@ -1,11 +1,11 @@
 package fi.fabianadrian.proxychat.bungeecord.hook;
 
 import de.simonsator.partyandfriends.api.pafplayers.PAFPlayerManager;
-import fi.fabianadrian.proxychat.common.hook.FriendHook;
+import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 
 import java.util.UUID;
 
-public class PAFBungeecordFriendHook implements FriendHook {
+public class PAFBungeecordFriendHook implements FriendPluginHook {
 	final PAFPlayerManager playerManager = PAFPlayerManager.getInstance();
 
 	@Override
@@ -13,5 +13,10 @@ public class PAFBungeecordFriendHook implements FriendHook {
 		return this.playerManager.getPlayer(uuid1).isAFriendOf(
 				this.playerManager.getPlayer(uuid2)
 		);
+	}
+
+	@Override
+	public String pluginName() {
+		return "PartyAndFriends";
 	}
 }

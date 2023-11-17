@@ -1,17 +1,36 @@
 package fi.fabianadrian.proxychat.common.hook;
 
-import fi.fabianadrian.proxychat.common.hook.vanish.VanishHook;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 public abstract class HookManager {
-
+	protected FriendPluginHook friendPluginHook;
+	protected VanishPluginHook vanishPluginHook;
 	protected final Logger logger;
 
 	public HookManager(Logger logger) {
 		this.logger = logger;
+
+		initializeFriendHook();
+		initializeVanishHook();
+
+		if (this.friendPluginHook != null) {
+			this.logger.info(String.format("Hooked into %s.", this.friendPluginHook.pluginName()));
+		}
+		if (this.vanishPluginHook != null) {
+			this.logger.info(String.format("Hooked into %s.", this.vanishPluginHook.pluginName()));
+		}
 	}
 
-	public abstract FriendHook friendHook();
+	public @Nullable FriendPluginHook friendHook() {
+		return this.friendPluginHook;
+	}
 
-	public abstract VanishHook vanishHook();
+	public @Nullable VanishPluginHook vanishHook() {
+		return this.vanishPluginHook;
+	}
+
+	protected abstract void initializeFriendHook();
+
+	protected abstract void initializeVanishHook();
 }
