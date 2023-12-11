@@ -85,15 +85,16 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 			if (input == null) {
 				return ArgumentParseResult.failure(new NoInputProvidedException(UserParser.class, ctx));
 			}
+
 			final Optional<User> userOptional = ctx.get(ProxyChatContextKeys.USER_MANAGER_KEY).user(input);
 			if (userOptional.isEmpty()) {
 				return ArgumentParseResult.failure(new UserParseException(input, ctx));
 			}
-
 			User user = userOptional.get();
 
-			if (ctx.getSender() instanceof User) {
-				if (ctx.getSender().equals(user) || !ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook().canSee((User) ctx.getSender(), user)) {
+			Optional<VanishPluginHook> vanishHookOptional = ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook();
+			if (vanishHookOptional.isPresent() && ctx.getSender() instanceof User) {
+				if (ctx.getSender().equals(user) || !vanishHookOptional.get().canSee((User) ctx.getSender(), user)) {
 					return ArgumentParseResult.failure(new UserParseException(input, ctx));
 				}
 			}
@@ -105,10 +106,14 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
 		@Override
 		public @NotNull List<@NotNull String> suggestions(final @NotNull CommandContext<C> ctx, final @NotNull String input) {
 			Stream<User> users = ctx.get(ProxyChatContextKeys.USER_MANAGER_KEY).users().stream();
-			VanishPluginHook vanishHook = ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook();
+			Optional<VanishPluginHook> vanishHookOptional = ctx.get(ProxyChatContextKeys.HOOK_MANAGER_KEY).vanishHook();
 
 			if (ctx.getSender() instanceof User) {
-				users = users.filter(user -> user != ctx.getSender() && vanishHook.canSee((User) ctx.getSender(), user));
+				users = users.filter(user -> user != ctx.getSender());
+
+				if (vanishHookOptional.isPresent()) {
+					users = users.filter(user -> vanishHookOptional.get().canSee((User) ctx.getSender(), user));
+				}
 			}
 
 			return users.map(User::name).collect(Collectors.toList());

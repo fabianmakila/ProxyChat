@@ -15,18 +15,19 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public final class MessageService {
 
 	private static final String BYPASS_PERMISSION = "proxychat.command.message.bypass";
 	private final ProxyChat proxyChat;
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
-	private final FriendPluginHook friendHook;
+	private final Optional<FriendPluginHook> friendHookOptional;
 	private ProxyChatConfig.FormatSection formats;
 
 	public MessageService(ProxyChat proxyChat) {
 		this.proxyChat = proxyChat;
-		this.friendHook = proxyChat.platform().hookManager().friendHook();
+		this.friendHookOptional = proxyChat.platform().hookManager().friendHook();
 		this.formats = proxyChat.configManager().mainConfig().formats();
 	}
 
@@ -38,14 +39,25 @@ public final class MessageService {
 		if (!sender.hasPermission(BYPASS_PERMISSION)) {
 			MessageSettings.PrivacySetting receiverPrivacySetting = receiver.messageSettings().privacySetting();
 
-			if (receiver.hasBlockedUser(sender) || receiverPrivacySetting == MessageSettings.PrivacySetting.NOBODY) {
-				sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+			if (receiver.hasBlockedUser(sender)) {
 				return;
 			}
 
-			if (receiverPrivacySetting == MessageSettings.PrivacySetting.FRIENDS && !this.friendHook.areFriends(sender.uuid(), receiver.uuid())) {
-				sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
-				return;
+			switch (receiverPrivacySetting) {
+				case NOBODY -> {
+					sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+					return;
+				}
+				case FRIENDS -> {
+					if (this.friendHookOptional.isEmpty()) {
+						break;
+					}
+
+					if (!this.friendHookOptional.get().areFriends(sender.uuid(), receiver.uuid())) {
+						sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+						return;
+					}
+				}
 			}
 		}
 
