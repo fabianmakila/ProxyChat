@@ -9,6 +9,7 @@ dependencies {
 	compileOnly(libs.slf4j)
 	compileOnly(libs.guava)
 	compileOnly(libs.snakeyaml)
+	compileOnly(libs.miniplaceholders)
 
 	api(libs.premiumvanish)
 

@@ -5,6 +5,7 @@ import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
+import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -35,12 +36,14 @@ public final class BroadcastCommand extends ProxyChatCommand {
 	}
 
 	private Component broadcastComponent(String message) {
+		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getGlobalPlaceholders();
 		String format = this.proxyChat.configManager().mainConfig().formats().broadcast();
 		return this.miniMessage.deserialize(
 				format,
 				TagResolver.resolver(
 						Placeholder.parsed("message", message)
-				)
+				),
+				miniPlaceholdersResolver
 		);
 	}
 }

@@ -7,6 +7,7 @@ import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.MessageSettings;
 import fi.fabianadrian.proxychat.common.user.User;
+import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -62,11 +63,11 @@ public final class MessageService {
 		}
 
 		// Message components
-		Component senderComponent = messageSenderComponent(receiver.name(), message);
-		Component receiverComponent = messageReceiverComponent(sender.name(), message);
+		Component senderComponent = messageSenderComponent(sender, receiver, message);
+		Component receiverComponent = messageReceiverComponent(sender, receiver, message);
 		Component spyComponent = messageSpyComponent(
-				sender.name(),
-				receiver.name(),
+				sender,
+				receiver,
 				message
 		);
 
@@ -84,12 +85,15 @@ public final class MessageService {
 	}
 
 	public void sendChannelMessage(Channel channel, User sender, String message) {
+		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getAudiencePlaceholders(sender);
+
 		Component component = miniMessage.deserialize(
 				channel.format(),
 				TagResolver.resolver(
 						Placeholder.unparsed("sender", sender.name()),
 						Placeholder.unparsed("message", message)
-				)
+				),
+				miniPlaceholdersResolver
 		);
 
 		for (User user : this.proxyChat.userManager().users()) {
@@ -104,43 +108,53 @@ public final class MessageService {
 		if (rawLines.isEmpty()) return;
 
 		List<Component> lines = new ArrayList<>();
+		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getAudiencePlaceholders(user);
 		rawLines.forEach(line -> lines.add(miniMessage.deserialize(line, TagResolver.resolver(
 				Placeholder.unparsed("name", user.name())
-		))));
+		), miniPlaceholdersResolver)));
 
 		user.sendMessage(Component.join(JoinConfiguration.newlines(), lines));
 	}
 
-	private Component messageSenderComponent(String receiverName, String message) {
+	private Component messageSenderComponent(User sender, User receiver, String message) {
+		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getRelationalPlaceholders(sender, receiver);
+
 		return this.miniMessage.deserialize(
 				this.formats.msg(),
 				TagResolver.resolver(
 						Placeholder.component("sender", Messages.GENERAL_ME),
-						Placeholder.unparsed("receiver", receiverName),
+						Placeholder.unparsed("receiver", receiver.name()),
 						Placeholder.unparsed("message", message)
-				)
+				),
+				miniPlaceholdersResolver
 		);
 	}
 
-	private Component messageReceiverComponent(String senderName, String message) {
+	private Component messageReceiverComponent(User sender, User receiver, String message) {
+		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getRelationalPlaceholders(sender, receiver);
+
 		return this.miniMessage.deserialize(
 				this.formats.msg(),
 				TagResolver.resolver(
-						Placeholder.unparsed("sender", senderName),
+						Placeholder.unparsed("sender", sender.name()),
 						Placeholder.component("receiver", Messages.GENERAL_ME),
 						Placeholder.unparsed("message", message)
-				)
+				),
+				miniPlaceholdersResolver
 		);
 	}
 
-	private Component messageSpyComponent(String senderName, String receiverName, String message) {
+	private Component messageSpyComponent(User sender, User receiver, String message) {
+		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getRelationalPlaceholders(sender, receiver);
+
 		return this.miniMessage.deserialize(
 				this.formats.msgSpy(),
 				TagResolver.resolver(
-						Placeholder.unparsed("sender", senderName),
-						Placeholder.unparsed("receiver", receiverName),
+						Placeholder.unparsed("sender", sender.name()),
+						Placeholder.unparsed("receiver", receiver.name()),
 						Placeholder.unparsed("message", message)
-				)
+				),
+				miniPlaceholdersResolver
 		);
 	}
 }
