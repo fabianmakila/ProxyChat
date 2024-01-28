@@ -36,8 +36,3 @@ bungee {
 	author = "FabianAdrian"
 	softDepends = setOf("PartyAndFriends", "PremiumVanish")
 }
-
-modrinth {
-	uploadFile.set(tasks.shadowJar)
-	loaders.add("bungeecord")
-}

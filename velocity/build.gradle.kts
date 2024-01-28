@@ -31,8 +31,3 @@ tasks {
 		}
 	}
 }
-
-modrinth {
-	uploadFile.set(tasks.shadowJar)
-	loaders.add("velocity")
-}
