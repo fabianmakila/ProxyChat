@@ -1,10 +1,10 @@
 package fi.fabianadrian.proxychat.common.command.commands;
 
-import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.locale.Messages;
+import org.incendo.cloud.context.CommandContext;
 
 public final class RootCommand extends ProxyChatCommand {
 	public RootCommand(ProxyChat proxyChat) {
@@ -26,7 +26,7 @@ public final class RootCommand extends ProxyChatCommand {
 
 	private void executeReload(CommandContext<Commander> ctx) {
 		this.proxyChat.reload();
-		ctx.getSender().sendMessage(Messages.COMMAND_PROXYCHAT_RELOAD_SUCCESS);
+		ctx.sender().sendMessage(Messages.COMMAND_PROXYCHAT_RELOAD_SUCCESS);
 	}
 
 	private void executeDebugAnnouncement(CommandContext<Commander> ctx) {

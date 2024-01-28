@@ -5,6 +5,8 @@ plugins {
 dependencies {
 	// Libraries
 	compileOnly(libs.cloud.core)
+	implementation(libs.cloud.minecraftExtras)
+
 	compileOnly(libs.adventure.api)
 	compileOnly(libs.slf4j)
 	compileOnly(libs.guava)

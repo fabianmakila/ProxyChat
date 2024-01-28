@@ -1,7 +1,5 @@
 package fi.fabianadrian.proxychat.common.command.commands;
 
-import cloud.commandframework.arguments.standard.StringArgument;
-import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
@@ -10,6 +8,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.parser.standard.StringParser;
 
 public final class BroadcastCommand extends ProxyChatCommand {
 	private final MiniMessage miniMessage;
@@ -22,7 +22,7 @@ public final class BroadcastCommand extends ProxyChatCommand {
 	@Override
 	public void register() {
 		var builder = this.builder()
-				.argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
+				.required("message", StringParser.greedyStringParser())
 				.handler(this::executeBroadcast);
 
 		this.manager.command(builder);

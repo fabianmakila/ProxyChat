@@ -1,7 +1,7 @@
 [versions]
 adventure = "4.15.0"
 bstats = "3.0.2"
-cloud = "1.8.4"
+cloud = "2.0.0-beta.1"
 
 [libraries]
 # Bstats
@@ -9,9 +9,10 @@ bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats
 bstats-bungeecord = { module = "org.bstats:bstats-bungeecord", version.ref = "bstats" }
 
 # Cloud
-cloud-core = { module = "cloud.commandframework:cloud-core", version.ref = "cloud" }
-cloud-bungeecord = { module = "cloud.commandframework:cloud-bungee", version.ref = "cloud" }
-cloud-velocity = { module = "cloud.commandframework:cloud-velocity", version.ref = "cloud" }
+cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
+cloud-bungeecord = { module = "org.incendo:cloud-bungee", version.ref = "cloud" }
+cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud" }
+cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud"}
 
 # Configuration
 dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", version = "1.3.0-M2" }
@@ -38,7 +39,6 @@ premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = 
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 
 [plugins]
-minotaur = { id = "com.modrinth.minotaur", version = "2.8.7" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.18.0" }
 pluginYml-bungee = { id = "net.minecrell.plugin-yml.bungee", version = "0.6.0" }

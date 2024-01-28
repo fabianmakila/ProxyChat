@@ -1,8 +1,8 @@
 package fi.fabianadrian.proxychat.common.command;
 
-import cloud.commandframework.Command;
-import cloud.commandframework.CommandManager;
 import fi.fabianadrian.proxychat.common.ProxyChat;
+import org.incendo.cloud.Command;
+import org.incendo.cloud.CommandManager;
 
 public abstract class ProxyChatCommand {
 	protected final ProxyChat proxyChat;
