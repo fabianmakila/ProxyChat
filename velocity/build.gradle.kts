@@ -9,7 +9,6 @@ dependencies {
 
 	// Libraries
 	implementation(libs.bstats.velocity)
-	implementation(libs.snakeyaml)
 	implementation(libs.cloud.velocity)
 
 	// Plugin hooks
@@ -21,9 +20,7 @@ tasks {
 		sequenceOf(
 			"cloud.commandframework",
 			"io.leangen",
-			"net.kyori.adventure.text.minimessage",
 			"space.arim",
-			"org.yaml",
 			"org.bstats",
 			"com.google.gson"
 		).forEach {

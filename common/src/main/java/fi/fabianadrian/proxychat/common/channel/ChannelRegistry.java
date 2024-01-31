@@ -1,8 +1,5 @@
 package fi.fabianadrian.proxychat.common.channel;
 
-import cloud.commandframework.CommandManager;
-import cloud.commandframework.arguments.standard.StringArgument;
-import com.sun.jdi.connect.Connector;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.user.User;

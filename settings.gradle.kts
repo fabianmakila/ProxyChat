@@ -2,7 +2,6 @@ rootProject.name = "ProxyChat"
 
 include(
 	"common",
-	"bungeecord",
 	"velocity"
 )
 
