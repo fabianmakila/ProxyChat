@@ -2,7 +2,7 @@ package fi.fabianadrian.proxychat.common.command.commands;
 
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
-import fi.fabianadrian.proxychat.common.command.argument.UserArgument;
+import fi.fabianadrian.proxychat.common.command.parser.UserParser;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,7 +17,7 @@ public class BlockCommand extends ProxyChatCommand {
 	public void register() {
 		this.manager.command(
 				//TODO Allow blocking offline players
-				builder().senderType(User.class).required(UserArgument.of("player")).handler(this::executeBlock)
+				builder().senderType(User.class).required("player", UserParser.userParser()).handler(this::executeBlock)
 		);
 	}
 

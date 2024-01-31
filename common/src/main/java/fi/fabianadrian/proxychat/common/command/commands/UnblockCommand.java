@@ -2,7 +2,7 @@ package fi.fabianadrian.proxychat.common.command.commands;
 
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
-import fi.fabianadrian.proxychat.common.command.argument.UserArgument;
+import fi.fabianadrian.proxychat.common.command.parser.UserParser;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,7 +16,7 @@ public class UnblockCommand extends ProxyChatCommand {
 	@Override
 	public void register() {
 		this.manager.command(
-				builder().senderType(User.class).argument(UserArgument.of("player")).handler(this::executeUnblock)
+				builder().senderType(User.class).required("player", UserParser.userParser()).handler(this::executeUnblock)
 		);
 	}
 

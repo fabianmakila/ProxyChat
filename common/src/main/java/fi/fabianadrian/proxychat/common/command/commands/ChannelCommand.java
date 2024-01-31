@@ -4,7 +4,7 @@ import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
-import fi.fabianadrian.proxychat.common.command.argument.ChannelArgument;
+import fi.fabianadrian.proxychat.common.command.parser.ChannelParser;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
@@ -30,14 +30,14 @@ public final class ChannelCommand extends ProxyChatCommand {
 
 		this.manager.command(
 				this.subCommand("mute")
-						.argument(ChannelArgument.of("channel"))
+						.required("channel", ChannelParser.channelParser())
 						.senderType(User.class)
 						.handler(this::executeMute)
 		);
 
 		this.manager.command(
 				this.subCommand("unmute")
-						.argument(ChannelArgument.of("channel"))
+						.required("channel", ChannelParser.channelParser())
 						.senderType(User.class)
 						.handler(this::executeUnmute)
 		);
