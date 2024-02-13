@@ -7,9 +7,11 @@ dependencies {
 	compileOnly(libs.velocity.api)
 	annotationProcessor(libs.velocity.api)
 
-	// Libraries
 	implementation(libs.bstats.velocity)
+
+	// Cloud
 	implementation(libs.cloud.velocity)
+	implementation(libs.cloud.translations.velocity)
 
 	// Plugin hooks
 	compileOnly(libs.partyAndFriends.velocity)

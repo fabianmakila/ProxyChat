@@ -6,6 +6,7 @@ dependencies {
 	// Libraries
 	compileOnly(libs.cloud.core)
 	implementation(libs.cloud.minecraftExtras)
+	implementation(libs.cloud.translations.core)
 
 	compileOnly(libs.adventure.api)
 	compileOnly(libs.minimessage)

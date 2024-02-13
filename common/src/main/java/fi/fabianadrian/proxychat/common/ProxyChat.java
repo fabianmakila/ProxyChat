@@ -1,6 +1,7 @@
 package fi.fabianadrian.proxychat.common;
 
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
+import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.commands.*;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandPreprocessor;
@@ -13,7 +14,11 @@ import fi.fabianadrian.proxychat.common.service.MessageService;
 import fi.fabianadrian.proxychat.common.service.NameService;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.common.user.UserManager;
+import net.kyori.adventure.identity.Identity;
+import org.incendo.cloud.translations.LocaleExtractor;
+import org.incendo.cloud.translations.TranslationBundle;
 
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -43,6 +48,10 @@ public final class ProxyChat {
 		this.nameService = new NameService(this);
 
 		this.platform.commandManager().registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
+
+		LocaleExtractor<Commander> extractor = commander -> commander.getOrDefault(Identity.LOCALE, Locale.ENGLISH);
+		TranslationBundle<Commander> bundle = TranslationBundle.core(extractor);
+		this.platform.commandManager().captionRegistry().registerProvider(bundle);
 
 		registerCommands();
 

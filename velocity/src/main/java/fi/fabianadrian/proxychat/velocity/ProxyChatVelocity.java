@@ -22,15 +22,20 @@ import fi.fabianadrian.proxychat.velocity.command.VelocityConsoleCommander;
 import fi.fabianadrian.proxychat.velocity.hook.VelocityHookManager;
 import fi.fabianadrian.proxychat.velocity.listener.LoginDisconnectListener;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.identity.Identity;
 import org.bstats.velocity.Metrics;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.translations.LocaleExtractor;
+import org.incendo.cloud.translations.TranslationBundle;
+import org.incendo.cloud.translations.velocity.VelocityTranslationBundle;
 import org.incendo.cloud.velocity.CloudInjectionModule;
 import org.incendo.cloud.velocity.VelocityCommandManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -67,7 +72,7 @@ public final class ProxyChatVelocity implements Platform {
 
 	@Subscribe
 	public void onProxyInitialization(ProxyInitializeEvent event) {
-		Injector childInjector = injector.createChildInjector(
+		Injector childInjector = this.injector.createChildInjector(
 				new CloudInjectionModule<>(
 						Commander.class,
 						ExecutionCoordinator.simpleCoordinator(),
@@ -101,6 +106,10 @@ public final class ProxyChatVelocity implements Platform {
 				Key.get(new TypeLiteral<>() {
 				})
 		);
+
+		LocaleExtractor<Commander> extractor = commander -> commander.getOrDefault(Identity.LOCALE, Locale.ENGLISH);
+		TranslationBundle<Commander> bundle = VelocityTranslationBundle.velocity(extractor);
+		this.commandManager.captionRegistry().registerProvider(bundle);
 
 		this.hookManager = new VelocityHookManager(this);
 		this.hookManager.initialize();
