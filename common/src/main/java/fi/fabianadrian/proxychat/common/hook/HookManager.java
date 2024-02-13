@@ -33,6 +33,10 @@ public abstract class HookManager {
 		return Optional.ofNullable(this.vanishPluginHook);
 	}
 
+	public boolean isMiniplaceholdersAvailable() {
+		return false;
+	}
+
 	protected abstract void initializeFriendHook();
 
 	protected abstract void initializeVanishHook();

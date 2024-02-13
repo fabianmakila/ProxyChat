@@ -30,20 +30,22 @@ public final class BroadcastCommand extends ProxyChatCommand {
 
 	private void executeBroadcast(CommandContext<Commander> ctx) {
 		String message = ctx.get("message");
-		this.proxyChat.platform().sendMessage(
-				broadcastComponent(message)
-		);
+		this.proxyChat.platform().sendMessage(broadcastComponent(message));
 	}
 
 	private Component broadcastComponent(String message) {
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getGlobalPlaceholders();
+		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
+				Placeholder.parsed("message", message)
+		);
+
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getGlobalPlaceholders());
+		}
+
 		String format = this.proxyChat.configManager().mainConfig().formats().broadcast();
 		return this.miniMessage.deserialize(
 				format,
-				TagResolver.resolver(
-						Placeholder.parsed("message", message)
-				),
-				miniPlaceholdersResolver
+				resolverBuilder.build()
 		);
 	}
 }

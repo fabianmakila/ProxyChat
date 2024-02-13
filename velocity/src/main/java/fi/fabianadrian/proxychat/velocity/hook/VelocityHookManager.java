@@ -12,6 +12,11 @@ public class VelocityHookManager extends HookManager {
 	}
 
 	@Override
+	public boolean isMiniplaceholdersAvailable() {
+		return isPluginPresent("miniplaceholders");
+	}
+
+	@Override
 	protected void initializeFriendHook() {
 		if (isPluginPresent("partyandfriends")) {
 			this.friendPluginHook = new PAFVelocityFriendHook();

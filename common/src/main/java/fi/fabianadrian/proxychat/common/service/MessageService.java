@@ -16,19 +16,18 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public final class MessageService {
 
 	private static final String BYPASS_PERMISSION = "proxychat.command.message.bypass";
 	private final ProxyChat proxyChat;
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
-	private final Optional<FriendPluginHook> friendHookOptional;
+	private final FriendPluginHook friendHook;
 	private ProxyChatConfig.FormatSection formats;
 
 	public MessageService(ProxyChat proxyChat) {
 		this.proxyChat = proxyChat;
-		this.friendHookOptional = proxyChat.platform().hookManager().friendHook();
+		this.friendHook = proxyChat.platform().hookManager().friendHook().orElse(null);
 		this.formats = proxyChat.configManager().mainConfig().formats();
 	}
 
@@ -50,11 +49,11 @@ public final class MessageService {
 					return;
 				}
 				case FRIENDS -> {
-					if (this.friendHookOptional.isEmpty()) {
+					if (this.friendHook == null) {
 						break;
 					}
 
-					if (!this.friendHookOptional.get().areFriends(sender.uuid(), receiver.uuid())) {
+					if (!this.friendHook.areFriends(sender.uuid(), receiver.uuid())) {
 						sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
 						return;
 					}
@@ -85,15 +84,18 @@ public final class MessageService {
 	}
 
 	public void sendChannelMessage(Channel channel, User sender, String message) {
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getAudiencePlaceholders(sender);
+		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
+				Placeholder.unparsed("sender", sender.name()),
+				Placeholder.unparsed("message", message)
+		);
 
-		Component component = miniMessage.deserialize(
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(sender));
+		}
+
+		Component component = this.miniMessage.deserialize(
 				channel.format(),
-				TagResolver.resolver(
-						Placeholder.unparsed("sender", sender.name()),
-						Placeholder.unparsed("message", message)
-				),
-				miniPlaceholdersResolver
+				resolverBuilder.build()
 		);
 
 		for (User user : this.proxyChat.userManager().users()) {
@@ -107,54 +109,60 @@ public final class MessageService {
 
 		if (rawLines.isEmpty()) return;
 
-		List<Component> lines = new ArrayList<>();
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getAudiencePlaceholders(user);
-		rawLines.forEach(line -> lines.add(miniMessage.deserialize(line, TagResolver.resolver(
+		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
 				Placeholder.unparsed("name", user.name())
-		), miniPlaceholdersResolver)));
+		);
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(user));
+		}
+
+		List<Component> lines = new ArrayList<>();
+		for (String line : rawLines) {
+			lines.add(this.miniMessage.deserialize(line, resolverBuilder.build()));
+		}
 
 		user.sendMessage(Component.join(JoinConfiguration.newlines(), lines));
 	}
 
 	private Component messageSenderComponent(User sender, User receiver, String message) {
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getRelationalPlaceholders(sender, receiver);
-
-		return this.miniMessage.deserialize(
-				this.formats.msg(),
-				TagResolver.resolver(
-						Placeholder.component("sender", Messages.GENERAL_ME),
-						Placeholder.unparsed("receiver", receiver.name()),
-						Placeholder.unparsed("message", message)
-				),
-				miniPlaceholdersResolver
+		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
+				Placeholder.component("sender", Messages.GENERAL_ME),
+				Placeholder.unparsed("receiver", receiver.name()),
+				Placeholder.unparsed("message", message)
 		);
+
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
+		}
+
+		return this.miniMessage.deserialize(this.formats.msg(), resolverBuilder.build());
 	}
 
 	private Component messageReceiverComponent(User sender, User receiver, String message) {
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getRelationalPlaceholders(sender, receiver);
-
-		return this.miniMessage.deserialize(
-				this.formats.msg(),
-				TagResolver.resolver(
-						Placeholder.unparsed("sender", sender.name()),
-						Placeholder.component("receiver", Messages.GENERAL_ME),
-						Placeholder.unparsed("message", message)
-				),
-				miniPlaceholdersResolver
+		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
+				Placeholder.unparsed("sender", sender.name()),
+				Placeholder.component("receiver", Messages.GENERAL_ME),
+				Placeholder.unparsed("message", message)
 		);
+
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
+		}
+
+		return this.miniMessage.deserialize(this.formats.msg(), resolverBuilder.build());
 	}
 
 	private Component messageSpyComponent(User sender, User receiver, String message) {
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getRelationalPlaceholders(sender, receiver);
-
-		return this.miniMessage.deserialize(
-				this.formats.msgSpy(),
-				TagResolver.resolver(
-						Placeholder.unparsed("sender", sender.name()),
-						Placeholder.unparsed("receiver", receiver.name()),
-						Placeholder.unparsed("message", message)
-				),
-				miniPlaceholdersResolver
+		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
+				Placeholder.unparsed("sender", sender.name()),
+				Placeholder.unparsed("receiver", receiver.name()),
+				Placeholder.unparsed("message", message)
 		);
+
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
+		}
+
+		return this.miniMessage.deserialize(this.formats.msgSpy(), resolverBuilder.build());
 	}
 }
