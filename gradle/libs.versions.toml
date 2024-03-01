@@ -31,7 +31,7 @@ waterfall-api = { module = "io.github.waterfallmc:waterfall-api", version = "1.2
 velocity-api = { module = "com.velocitypowered:velocity-api", version = "3.3.0-SNAPSHOT" }
 
 # Other
-slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.10" }
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.12" }
 partyAndFriends-bungeecord = { module = "de.simonsator:BungeecordPartyAndFriends", version = "1.0.89" }
 partyAndFriends-velocity = { module = "de.simonsator:VelocityPoweredPartyAndFriends", version = "1.0.89" }
 premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = "2.9.0-4" }
