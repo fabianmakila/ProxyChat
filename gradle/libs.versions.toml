@@ -27,7 +27,7 @@ adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" 
 minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 
 # Platforms
-waterfall-api = { module = "io.github.waterfallmc:waterfall-api", version = "1.20-R0.1-SNAPSHOT" }
+waterfall-api = { module = "io.github.waterfallmc:waterfall-api", version = "1.20-R0.3-SNAPSHOT" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version = "3.3.0-SNAPSHOT" }
 
 # Other
