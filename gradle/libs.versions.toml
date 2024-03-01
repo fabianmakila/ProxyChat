@@ -32,7 +32,7 @@ velocity-api = { module = "com.velocitypowered:velocity-api", version = "3.3.0-S
 
 # Other
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.10" }
-partyAndFriends-bungeecord = { module = "de.simonsator:BungeecordPartyAndFriends", version = "1.0.89" }
+partyAndFriends-bungeecord = { module = "de.simonsator:BungeecordPartyAndFriends", version = "1.0.93" }
 partyAndFriends-velocity = { module = "de.simonsator:VelocityPoweredPartyAndFriends", version = "1.0.89" }
 premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = "2.9.0-4" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
