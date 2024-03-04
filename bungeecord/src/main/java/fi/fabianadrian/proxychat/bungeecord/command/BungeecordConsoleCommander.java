@@ -5,19 +5,7 @@ import net.kyori.adventure.audience.Audience;
 import net.md_5.bungee.api.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-public class BungeecordConsoleCommander implements Commander {
-
-	private final CommandSender commandSender;
-	private final Audience audience;
-
-	public BungeecordConsoleCommander(CommandSender commandSender, Audience audience) {
-		this.commandSender = commandSender;
-		this.audience = audience;
-	}
-
-	public CommandSender commandSender() {
-		return this.commandSender;
-	}
+public record BungeecordConsoleCommander(CommandSender commandSender, Audience audience) implements Commander {
 
 	@Override
 	public boolean hasPermission(String permission) {

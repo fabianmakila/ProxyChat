@@ -7,10 +7,11 @@ dependencies {
 	compileOnly(libs.velocity.api)
 	annotationProcessor(libs.velocity.api)
 
-	// Libraries
 	implementation(libs.bstats.velocity)
-	implementation(libs.snakeyaml)
+
+	// Cloud
 	implementation(libs.cloud.velocity)
+	implementation(libs.cloud.translations.velocity)
 
 	// Plugin hooks
 	compileOnly(libs.partyAndFriends.velocity)
@@ -21,9 +22,7 @@ tasks {
 		sequenceOf(
 			"cloud.commandframework",
 			"io.leangen",
-			"net.kyori.adventure.text.minimessage",
 			"space.arim",
-			"org.yaml",
 			"org.bstats",
 			"com.google.gson"
 		).forEach {

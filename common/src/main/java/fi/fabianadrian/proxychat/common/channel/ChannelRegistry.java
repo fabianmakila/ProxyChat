@@ -1,10 +1,10 @@
 package fi.fabianadrian.proxychat.common.channel;
 
-import cloud.commandframework.CommandManager;
-import cloud.commandframework.arguments.standard.StringArgument;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.user.User;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.parser.standard.StringParser;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -45,11 +45,11 @@ public final class ChannelRegistry {
 						commandManager.createDefaultCommandMeta()
 				)
 				.permission(channel.permission())
-				.argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
+				.required("message", StringParser.greedyStringParser())
 				.senderType(User.class)
 				.handler(handler -> {
 					final String message = handler.get("message");
-					this.proxyChat.messageService().sendChannelMessage(channel, (User) handler.getSender(), message);
+					this.proxyChat.messageService().sendChannelMessage(channel, handler.sender(), message);
 				});
 
 		commandManager.command(builder);

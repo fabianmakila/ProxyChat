@@ -1,14 +1,13 @@
 package fi.fabianadrian.proxychat.common.command.commands;
 
-import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.service.NameService;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.incendo.cloud.context.CommandContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +24,12 @@ public class BlockListCommand extends ProxyChatCommand {
 	@Override
 	public void register() {
 		this.manager.command(
-				builder().handler(this::executeBlockList)
+				builder().senderType(User.class).handler(this::executeBlockList)
 		);
 	}
 
-	private void executeBlockList(CommandContext<Commander> ctx) {
-		User user = (User) ctx.getSender();
+	private void executeBlockList(CommandContext<User> ctx) {
+		User user = ctx.sender();
 
 		if (user.blockedUsers().isEmpty()) {
 			user.sendMessage(Component.translatable("proxychat.command.blocklist.empty", NamedTextColor.RED));

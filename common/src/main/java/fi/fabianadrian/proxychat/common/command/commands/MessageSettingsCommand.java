@@ -1,14 +1,13 @@
 package fi.fabianadrian.proxychat.common.command.commands;
 
-import cloud.commandframework.arguments.standard.BooleanArgument;
-import cloud.commandframework.arguments.standard.EnumArgument;
-import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
-import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.MessageSettings;
 import fi.fabianadrian.proxychat.common.user.User;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.parser.standard.BooleanParser;
+import org.incendo.cloud.parser.standard.EnumParser;
 
 import java.util.Optional;
 
@@ -22,27 +21,27 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 	public void register() {
 		this.manager.command(subCommand("privacy")
 				.senderType(User.class)
-				.argument(EnumArgument.of(MessageSettings.PrivacySetting.class, "privacySetting"))
+				.required("privacySetting", EnumParser.enumParser(MessageSettings.PrivacySetting.class))
 				.handler(this::executeAllow)
 		);
 		this.manager.command(subCommand("spy")
 				.senderType(User.class)
-				.argument(BooleanArgument.optional("enabled"))
+				.required("enabled", BooleanParser.booleanParser())
 				.handler(this::executeSpy)
 		);
 	}
 
-	private void executeSpy(CommandContext<Commander> ctx) {
-		Optional<Boolean> enabledOptional = ctx.getOptional("enabled");
-		User user = (User) ctx.getSender();
+	private void executeSpy(CommandContext<User> ctx) {
+		Optional<Boolean> enabledOptional = ctx.optional("enabled");
+		User user = ctx.sender();
 		boolean value = enabledOptional.orElseGet(() -> !user.messageSettings().spy());
 
 		user.messageSettings().spy(value);
-		ctx.getSender().sendMessage(value ? Messages.COMMAND_MESSAGES_SPY_ENABLE : Messages.COMMAND_MESSAGES_SPY_DISABLE);
+		ctx.sender().sendMessage(value ? Messages.COMMAND_MESSAGES_SPY_ENABLE : Messages.COMMAND_MESSAGES_SPY_DISABLE);
 	}
 
-	private void executeAllow(CommandContext<Commander> ctx) {
-		User user = (User) ctx.getSender();
+	private void executeAllow(CommandContext<User> ctx) {
+		User user = ctx.sender();
 		MessageSettings.PrivacySetting privacySetting = ctx.get("privacySetting");
 
 		user.messageSettings().privacySetting(privacySetting);

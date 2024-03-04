@@ -5,7 +5,11 @@ plugins {
 dependencies {
 	// Libraries
 	compileOnly(libs.cloud.core)
+	implementation(libs.cloud.minecraftExtras)
+	implementation(libs.cloud.translations.core)
+
 	compileOnly(libs.adventure.api)
+	compileOnly(libs.minimessage)
 	compileOnly(libs.slf4j)
 	compileOnly(libs.guava)
 	compileOnly(libs.snakeyaml)
@@ -14,9 +18,6 @@ dependencies {
 	api(libs.premiumvanish)
 
 	implementation(libs.gson)
-	implementation(libs.minimessage) {
-		exclude("net.kyori")
-	}
 
 	// Config
 	implementation(libs.dazzleconf) {

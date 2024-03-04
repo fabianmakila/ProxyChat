@@ -1,7 +1,5 @@
 package fi.fabianadrian.proxychat.common.command.commands;
 
-import cloud.commandframework.arguments.standard.StringArgument;
-import cloud.commandframework.context.CommandContext;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
@@ -10,6 +8,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.parser.standard.StringParser;
 
 public final class BroadcastCommand extends ProxyChatCommand {
 	private final MiniMessage miniMessage;
@@ -22,7 +22,7 @@ public final class BroadcastCommand extends ProxyChatCommand {
 	@Override
 	public void register() {
 		var builder = this.builder()
-				.argument(StringArgument.of("message", StringArgument.StringMode.GREEDY))
+				.required("message", StringParser.greedyStringParser())
 				.handler(this::executeBroadcast);
 
 		this.manager.command(builder);
@@ -30,20 +30,22 @@ public final class BroadcastCommand extends ProxyChatCommand {
 
 	private void executeBroadcast(CommandContext<Commander> ctx) {
 		String message = ctx.get("message");
-		this.proxyChat.platform().sendMessage(
-				broadcastComponent(message)
-		);
+		this.proxyChat.platform().sendMessage(broadcastComponent(message));
 	}
 
 	private Component broadcastComponent(String message) {
-		TagResolver miniPlaceholdersResolver = MiniPlaceholders.getGlobalPlaceholders();
+		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
+				Placeholder.parsed("message", message)
+		);
+
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getGlobalPlaceholders());
+		}
+
 		String format = this.proxyChat.configManager().mainConfig().formats().broadcast();
 		return this.miniMessage.deserialize(
 				format,
-				TagResolver.resolver(
-						Placeholder.parsed("message", message)
-				),
-				miniPlaceholdersResolver
+				resolverBuilder.build()
 		);
 	}
 }

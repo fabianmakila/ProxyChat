@@ -8,7 +8,11 @@ dependencies {
 	compileOnly(libs.waterfall.api)
 
 	implementation(libs.bstats.bungeecord)
+
+	// Cloud
 	implementation(libs.cloud.bungeecord)
+	implementation(libs.cloud.translations.bungeecord)
+
 	implementation(libs.adventure.platform.bungeecord)
 
 	// Plugin hooks

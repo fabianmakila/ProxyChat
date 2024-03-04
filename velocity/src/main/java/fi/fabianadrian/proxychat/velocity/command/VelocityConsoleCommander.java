@@ -5,18 +5,7 @@ import fi.fabianadrian.proxychat.common.command.Commander;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 
-public class VelocityConsoleCommander implements Commander {
-
-	private final CommandSource commandSource;
-
-	public VelocityConsoleCommander(CommandSource commandSource) {
-		this.commandSource = commandSource;
-	}
-
-	public CommandSource commandSource() {
-		return this.commandSource;
-	}
-
+public record VelocityConsoleCommander(CommandSource commandSource) implements Commander {
 	@Override
 	public boolean hasPermission(String permission) {
 		return this.commandSource.hasPermission(permission);

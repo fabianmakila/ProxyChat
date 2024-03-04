@@ -1,7 +1,9 @@
 [versions]
-adventure = "4.15.0"
+adventure = "4.16.0"
 bstats = "3.0.2"
-cloud = "1.8.4"
+cloud-minecraft = "2.0.0-beta.4"
+cloud-translations = "1.0.0-beta.2"
+partyAndFriends = "1.0.92"
 
 [libraries]
 # Bstats
@@ -9,9 +11,13 @@ bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats
 bstats-bungeecord = { module = "org.bstats:bstats-bungeecord", version.ref = "bstats" }
 
 # Cloud
-cloud-core = { module = "cloud.commandframework:cloud-core", version.ref = "cloud" }
-cloud-bungeecord = { module = "cloud.commandframework:cloud-bungee", version.ref = "cloud" }
-cloud-velocity = { module = "cloud.commandframework:cloud-velocity", version.ref = "cloud" }
+cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-beta.3" }
+cloud-bungeecord = { module = "org.incendo:cloud-bungee", version.ref = "cloud-minecraft" }
+cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-minecraft" }
+cloud-translations-core = { module = "org.incendo:cloud-translations-core", version.ref = "cloud-translations" }
+cloud-translations-bungeecord = { module = "org.incendo:cloud-translations-bungee", version.ref = "cloud-translations" }
+cloud-translations-velocity = { module = "org.incendo:cloud-translations-velocity", version.ref = "cloud-translations" }
+cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
 
 # Configuration
 dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", version = "1.3.0-M2" }
@@ -27,18 +33,17 @@ adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" 
 minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 
 # Platforms
-waterfall-api = { module = "io.github.waterfallmc:waterfall-api", version = "1.20-R0.1-SNAPSHOT" }
+waterfall-api = { module = "io.github.waterfallmc:waterfall-api", version = "1.20-R0.3-SNAPSHOT" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version = "3.3.0-SNAPSHOT" }
 
 # Other
-slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.10" }
-partyAndFriends-bungeecord = { module = "de.simonsator:BungeecordPartyAndFriends", version = "1.0.89" }
-partyAndFriends-velocity = { module = "de.simonsator:VelocityPoweredPartyAndFriends", version = "1.0.89" }
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.12" }
+partyAndFriends-bungeecord = { module = "de.simonsator:BungeecordPartyAndFriends", version.ref = "partyAndFriends" }
+partyAndFriends-velocity = { module = "de.simonsator:VelocityPoweredPartyAndFriends", version.ref = "partyAndFriends" }
 premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = "2.9.0-4" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 
 [plugins]
-minotaur = { id = "com.modrinth.minotaur", version = "2.8.7" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
-spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.18.0" }
+spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.25.0" }
 pluginYml-bungee = { id = "net.minecrell.plugin-yml.bungee", version = "0.6.0" }
