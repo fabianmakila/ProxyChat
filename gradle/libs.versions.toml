@@ -2,7 +2,7 @@
 adventure = "4.16.0"
 bstats = "3.0.2"
 cloud-minecraft = "2.0.0-beta.4"
-cloud-translations = "1.0.0-beta.2"
+cloud-translations = "1.0.0-SNAPSHOT"
 partyAndFriends = "1.0.92"
 
 [libraries]
