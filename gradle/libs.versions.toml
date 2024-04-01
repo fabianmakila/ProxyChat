@@ -11,7 +11,7 @@ bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats
 bstats-bungeecord = { module = "org.bstats:bstats-bungeecord", version.ref = "bstats" }
 
 # Cloud
-cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-beta.3" }
+cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-SNAPSHOT" }
 cloud-bungeecord = { module = "org.incendo:cloud-bungee", version.ref = "cloud-minecraft" }
 cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-minecraft" }
 cloud-translations-core = { module = "org.incendo:cloud-translations-core", version.ref = "cloud-translations" }
