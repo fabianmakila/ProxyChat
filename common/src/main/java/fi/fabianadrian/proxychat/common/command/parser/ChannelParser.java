@@ -18,7 +18,7 @@ import org.incendo.cloud.suggestion.BlockingSuggestionProvider;
 
 import java.util.stream.Collectors;
 
-public class ChannelParser implements ArgumentParser<Commander, Channel>, BlockingSuggestionProvider.Strings<Commander> {
+public final class ChannelParser implements ArgumentParser<Commander, Channel>, BlockingSuggestionProvider.Strings<Commander> {
 	public static @NonNull ParserDescriptor<Commander, Channel> channelParser() {
 		return ParserDescriptor.of(new ChannelParser(), Channel.class);
 	}

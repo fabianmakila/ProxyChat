@@ -6,7 +6,7 @@ import fi.fabianadrian.proxychat.common.user.UserManager;
 import io.leangen.geantyref.TypeToken;
 import org.incendo.cloud.key.CloudKey;
 
-public class ProxyChatContextKeys {
+public final class ProxyChatContextKeys {
 
 	public static final CloudKey<ChannelRegistry> CHANNEL_REGISTRY_KEY = CloudKey.of(
 			"ChannelRegistry",

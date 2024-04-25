@@ -3,6 +3,7 @@ package fi.fabianadrian.proxychat.common;
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
+import fi.fabianadrian.proxychat.common.command.ProxyChatComponentCaptionFormatter;
 import fi.fabianadrian.proxychat.common.command.commands.*;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandPreprocessor;
 import fi.fabianadrian.proxychat.common.config.ConfigManager;
@@ -14,11 +15,11 @@ import fi.fabianadrian.proxychat.common.service.MessageService;
 import fi.fabianadrian.proxychat.common.service.NameService;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.common.user.UserManager;
-import net.kyori.adventure.identity.Identity;
-import org.incendo.cloud.translations.LocaleExtractor;
-import org.incendo.cloud.translations.TranslationBundle;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.minecraft.extras.AudienceProvider;
+import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
+import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
 
-import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -47,12 +48,7 @@ public final class ProxyChat {
 		this.messageService = new MessageService(this);
 		this.nameService = new NameService(this);
 
-		this.platform.commandManager().registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
-
-		LocaleExtractor<Commander> extractor = commander -> commander.getOrDefault(Identity.LOCALE, Locale.ENGLISH);
-		TranslationBundle<Commander> bundle = TranslationBundle.core(extractor);
-		this.platform.commandManager().captionRegistry().registerProvider(bundle);
-
+		setupCommandManager();
 		registerCommands();
 
 		// Channel registry registers commands for channels so this must be after command manager is defined.
@@ -64,6 +60,15 @@ public final class ProxyChat {
 
 	public Platform platform() {
 		return platform;
+	}
+
+	private void setupCommandManager() {
+		CommandManager<Commander> manager = this.platform().commandManager();
+
+		manager.registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
+		manager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
+		AudienceProvider<Commander> audienceProvider = commander -> commander.audience();
+		MinecraftExceptionHandler.create(audienceProvider).defaultHandlers().captionFormatter(ProxyChatComponentCaptionFormatter.translatable()).registerTo(manager);
 	}
 
 	private void registerCommands() {

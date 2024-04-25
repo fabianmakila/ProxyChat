@@ -2,7 +2,6 @@
 adventure = "4.16.0"
 bstats = "3.0.2"
 cloud-minecraft = "2.0.0-beta.4"
-cloud-translations = "1.0.0-beta.2"
 partyAndFriends = "1.0.92"
 
 [libraries]
@@ -14,9 +13,6 @@ bstats-bungeecord = { module = "org.bstats:bstats-bungeecord", version.ref = "bs
 cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-beta.3" }
 cloud-bungeecord = { module = "org.incendo:cloud-bungee", version.ref = "cloud-minecraft" }
 cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-minecraft" }
-cloud-translations-core = { module = "org.incendo:cloud-translations-core", version.ref = "cloud-translations" }
-cloud-translations-bungeecord = { module = "org.incendo:cloud-translations-bungee", version.ref = "cloud-translations" }
-cloud-translations-velocity = { module = "org.incendo:cloud-translations-velocity", version.ref = "cloud-translations" }
 cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
 
 # Configuration

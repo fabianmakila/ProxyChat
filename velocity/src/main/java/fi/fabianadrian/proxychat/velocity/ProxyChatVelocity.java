@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
+import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -22,20 +23,15 @@ import fi.fabianadrian.proxychat.velocity.command.VelocityConsoleCommander;
 import fi.fabianadrian.proxychat.velocity.hook.VelocityHookManager;
 import fi.fabianadrian.proxychat.velocity.listener.LoginDisconnectListener;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.identity.Identity;
 import org.bstats.velocity.Metrics;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.execution.ExecutionCoordinator;
-import org.incendo.cloud.translations.LocaleExtractor;
-import org.incendo.cloud.translations.TranslationBundle;
-import org.incendo.cloud.translations.velocity.VelocityTranslationBundle;
 import org.incendo.cloud.velocity.CloudInjectionModule;
 import org.incendo.cloud.velocity.VelocityCommandManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -72,48 +68,12 @@ public final class ProxyChatVelocity implements Platform {
 
 	@Subscribe
 	public void onProxyInitialization(ProxyInitializeEvent event) {
-		Injector childInjector = this.injector.createChildInjector(
-				new CloudInjectionModule<>(
-						Commander.class,
-						ExecutionCoordinator.simpleCoordinator(),
-						SenderMapper.create(
-								commandSource -> {
-									if (commandSource instanceof Player) {
-										Optional<User> userOptional = this.proxyChat.userManager().user(((Player) commandSource).getUniqueId());
-										if (userOptional.isPresent()) {
-											return userOptional.get();
-										}
-										throw new IllegalStateException("User was not loaded");
-									}
-									return new VelocityConsoleCommander(commandSource);
-								},
-								commander -> {
-									if (commander instanceof VelocityConsoleCommander) {
-										return ((VelocityConsoleCommander) commander).commandSource();
-									}
-
-									Optional<Player> playerOptional = this.server.getPlayer(((User) commander).uuid());
-									if (playerOptional.isPresent()) {
-										return playerOptional.get();
-									}
-									throw new IllegalArgumentException();
-								}
-						)
-				)
-		);
-
-		this.commandManager = childInjector.getInstance(
-				Key.get(new TypeLiteral<>() {
-				})
-		);
-
-		LocaleExtractor<Commander> extractor = commander -> commander.getOrDefault(Identity.LOCALE, Locale.ENGLISH);
-		TranslationBundle<Commander> bundle = VelocityTranslationBundle.velocity(extractor);
-		this.commandManager.captionRegistry().registerProvider(bundle);
+		createCommandManager();
 
 		this.hookManager = new VelocityHookManager(this);
 		this.hookManager.initialize();
 		this.proxyChat = new ProxyChat(this);
+
 		registerListeners();
 
 		// bStats
@@ -123,6 +83,40 @@ public final class ProxyChatVelocity implements Platform {
 	@Subscribe
 	public void onProxyShutdown(ProxyShutdownEvent event) {
 		this.proxyChat.shutdown();
+	}
+
+	private void createCommandManager() {
+		SenderMapper<CommandSource, Commander> senderMapper = SenderMapper.create(
+				commandSource -> {
+					if (commandSource instanceof Player) {
+						Optional<User> userOptional = this.proxyChat.userManager().user(((Player) commandSource).getUniqueId());
+						if (userOptional.isPresent()) {
+							return userOptional.get();
+						}
+						throw new IllegalStateException("User was not loaded");
+					}
+					return new VelocityConsoleCommander(commandSource);
+				},
+				commander -> {
+					if (commander instanceof VelocityConsoleCommander) {
+						return ((VelocityConsoleCommander) commander).commandSource();
+					}
+
+					Optional<Player> playerOptional = this.server.getPlayer(((User) commander).uuid());
+					if (playerOptional.isPresent()) {
+						return playerOptional.get();
+					}
+					throw new IllegalArgumentException();
+				}
+		);
+
+		Injector childInjector = this.injector.createChildInjector(
+				new CloudInjectionModule<>(Commander.class, ExecutionCoordinator.simpleCoordinator(), senderMapper)
+		);
+		this.commandManager = childInjector.getInstance(
+				Key.get(new TypeLiteral<>() {
+				})
+		);
 	}
 
 	private void registerListeners() {

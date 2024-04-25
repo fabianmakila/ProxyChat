@@ -11,7 +11,7 @@ dependencies {
 
 	// Cloud
 	implementation(libs.cloud.velocity)
-	implementation(libs.cloud.translations.velocity)
+	implementation(libs.cloud.minecraftExtras)
 
 	// Plugin hooks
 	compileOnly(libs.partyAndFriends.velocity)

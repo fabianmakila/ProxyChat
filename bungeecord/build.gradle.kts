@@ -1,6 +1,5 @@
 plugins {
 	id("proxychat.platform-conventions")
-
 	alias(libs.plugins.pluginYml.bungee)
 }
 
@@ -11,7 +10,6 @@ dependencies {
 
 	// Cloud
 	implementation(libs.cloud.bungeecord)
-	implementation(libs.cloud.translations.bungeecord)
 
 	implementation(libs.adventure.platform.bungeecord)
 

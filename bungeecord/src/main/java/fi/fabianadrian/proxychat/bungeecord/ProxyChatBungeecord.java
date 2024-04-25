@@ -9,7 +9,6 @@ import fi.fabianadrian.proxychat.common.hook.HookManager;
 import fi.fabianadrian.proxychat.common.platform.Platform;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -18,14 +17,10 @@ import org.bstats.bungeecord.Metrics;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.bungee.BungeeCommandManager;
 import org.incendo.cloud.execution.ExecutionCoordinator;
-import org.incendo.cloud.translations.LocaleExtractor;
-import org.incendo.cloud.translations.TranslationBundle;
-import org.incendo.cloud.translations.bungee.BungeeTranslationBundle;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -75,13 +70,10 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
 				)
 		);
 
-		LocaleExtractor<Commander> extractor = commander -> commander.getOrDefault(Identity.LOCALE, Locale.ENGLISH);
-		TranslationBundle<Commander> bundle = BungeeTranslationBundle.bungee(extractor);
-		this.commandManager.captionRegistry().registerProvider(bundle);
-
 		this.hookManager = new BungeecordHookManager(this);
 		this.hookManager.initialize();
 		this.proxyChat = new ProxyChat(this);
+
 		registerListeners();
 
 		// bStats
