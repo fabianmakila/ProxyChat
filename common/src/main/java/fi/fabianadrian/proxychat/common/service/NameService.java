@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class NameService {
+public final class NameService {
 	private final Gson gson = new Gson();
 	private final ProxyChat proxyChat;
 	private final Path databasePath;

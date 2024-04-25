@@ -3,7 +3,7 @@ package fi.fabianadrian.proxychat.velocity.hook;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
 import fi.fabianadrian.proxychat.velocity.ProxyChatVelocity;
 
-public class VelocityHookManager extends HookManager {
+public final class VelocityHookManager extends HookManager {
 	private final ProxyChatVelocity plugin;
 
 	public VelocityHookManager(ProxyChatVelocity plugin) {

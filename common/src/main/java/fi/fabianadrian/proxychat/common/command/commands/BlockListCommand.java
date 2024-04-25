@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BlockListCommand extends ProxyChatCommand {
+public final class BlockListCommand extends ProxyChatCommand {
 	private final NameService nameService;
 
 	public BlockListCommand(ProxyChat proxyChat) {

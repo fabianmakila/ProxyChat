@@ -6,7 +6,7 @@ import fi.fabianadrian.proxychat.common.hook.VanishPluginHook;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class PremiumVanishBungeecordHook implements VanishPluginHook {
+public final class PremiumVanishBungeecordHook implements VanishPluginHook {
 
 	@Override
 	public boolean canSee(User user1, User user2) {

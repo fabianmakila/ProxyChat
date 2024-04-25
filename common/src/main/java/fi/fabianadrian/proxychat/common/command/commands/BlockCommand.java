@@ -8,7 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.context.CommandContext;
 
-public class BlockCommand extends ProxyChatCommand {
+public final class BlockCommand extends ProxyChatCommand {
 	public BlockCommand(ProxyChat proxyChat) {
 		super(proxyChat, "block", "ignore");
 	}

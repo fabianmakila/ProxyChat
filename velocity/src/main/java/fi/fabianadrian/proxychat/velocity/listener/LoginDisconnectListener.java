@@ -7,7 +7,6 @@ import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.velocity.VelocityPlatformPlayer;
 
 public final class LoginDisconnectListener {
-
 	private final ProxyChat proxyChat;
 
 	public LoginDisconnectListener(ProxyChat proxyChat) {

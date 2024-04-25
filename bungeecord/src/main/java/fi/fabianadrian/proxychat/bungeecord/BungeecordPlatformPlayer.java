@@ -7,16 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class BungeecordPlatformPlayer implements PlatformPlayer {
-
-	private final ProxiedPlayer player;
-	private final Audience audience;
-
-	public BungeecordPlatformPlayer(ProxiedPlayer player, Audience audience) {
-		this.player = player;
-		this.audience = audience;
-	}
-
+public record BungeecordPlatformPlayer(ProxiedPlayer player, Audience audience) implements PlatformPlayer {
 	@Override
 	public UUID uuid() {
 		return this.player.getUniqueId();
@@ -35,9 +26,5 @@ public class BungeecordPlatformPlayer implements PlatformPlayer {
 	@Override
 	public @NotNull Audience audience() {
 		return this.audience;
-	}
-
-	public ProxiedPlayer player() {
-		return this.player;
 	}
 }

@@ -8,7 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.context.CommandContext;
 
-public class UnblockCommand extends ProxyChatCommand {
+public final class UnblockCommand extends ProxyChatCommand {
 	public UnblockCommand(ProxyChat proxyChat) {
 		super(proxyChat, "unblock", "unignore");
 	}

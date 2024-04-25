@@ -10,6 +10,7 @@ import fi.fabianadrian.proxychat.common.platform.Platform;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
@@ -24,7 +25,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class ProxyChatBungeecord extends Plugin implements Platform {
+public final class ProxyChatBungeecord extends Plugin implements Platform {
 	private BungeeAudiences adventure;
 	private BungeeCommandManager<Commander> commandManager;
 	private ProxyChat proxyChat;
@@ -41,34 +42,7 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
 	public void onEnable() {
 		this.adventure = BungeeAudiences.create(this);
 
-		this.commandManager = new BungeeCommandManager<>(
-				this,
-				ExecutionCoordinator.simpleCoordinator(),
-				SenderMapper.create(
-						commandSource -> {
-							if (commandSource instanceof ProxiedPlayer) {
-								Optional<User> userOptional = this.proxyChat.userManager().user(((ProxiedPlayer) commandSource).getUniqueId());
-								if (userOptional.isPresent()) {
-									return userOptional.get();
-								}
-								throw new IllegalStateException("User was not loaded");
-							}
-							return new BungeecordConsoleCommander(commandSource, this.adventure.sender(commandSource));
-						},
-						commander -> {
-							if (commander instanceof BungeecordConsoleCommander) {
-								return ((BungeecordConsoleCommander) commander).commandSender();
-							}
-
-							ProxiedPlayer player = this.getProxy().getPlayer(((User) commander).uuid());
-							if (player == null) {
-								throw new IllegalArgumentException();
-							}
-
-							return player;
-						}
-				)
-		);
+		createCommandManager();
 
 		this.hookManager = new BungeecordHookManager(this);
 		this.hookManager.initialize();
@@ -114,14 +88,47 @@ public class ProxyChatBungeecord extends Plugin implements Platform {
 		return this.adventure.all();
 	}
 
+	public ProxyChat proxyChat() {
+		return this.proxyChat;
+	}
+
+	private void createCommandManager() {
+		SenderMapper<CommandSender, Commander> senderMapper = SenderMapper.create(
+				commandSource -> {
+					if (commandSource instanceof ProxiedPlayer) {
+						Optional<User> userOptional = this.proxyChat.userManager().user(((ProxiedPlayer) commandSource).getUniqueId());
+						if (userOptional.isPresent()) {
+							return userOptional.get();
+						}
+						throw new IllegalStateException("User was not loaded");
+					}
+					return new BungeecordConsoleCommander(commandSource, this.adventure.sender(commandSource));
+				},
+				commander -> {
+					if (commander instanceof BungeecordConsoleCommander) {
+						return ((BungeecordConsoleCommander) commander).commandSender();
+					}
+
+					ProxiedPlayer player = this.getProxy().getPlayer(((User) commander).uuid());
+					if (player == null) {
+						throw new IllegalArgumentException();
+					}
+
+					return player;
+				}
+		);
+
+		this.commandManager = new BungeeCommandManager<>(
+				this,
+				ExecutionCoordinator.simpleCoordinator(),
+				senderMapper
+		);
+	}
+
 	private void registerListeners() {
 		PluginManager manager = this.getProxy().getPluginManager();
 		Stream.of(
 				new LoginDisconnectListener(this)
 		).forEach(listener -> manager.registerListener(this, listener));
-	}
-
-	public ProxyChat proxyChat() {
-		return this.proxyChat;
 	}
 }

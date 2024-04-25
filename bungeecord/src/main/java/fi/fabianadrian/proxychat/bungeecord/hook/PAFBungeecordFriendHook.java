@@ -5,7 +5,7 @@ import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 
 import java.util.UUID;
 
-public class PAFBungeecordFriendHook implements FriendPluginHook {
+public final class PAFBungeecordFriendHook implements FriendPluginHook {
 	final PAFPlayerManager playerManager = PAFPlayerManager.getInstance();
 
 	@Override

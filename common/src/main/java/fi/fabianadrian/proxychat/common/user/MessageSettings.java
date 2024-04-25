@@ -1,6 +1,6 @@
 package fi.fabianadrian.proxychat.common.user;
 
-public class MessageSettings {
+public final class MessageSettings {
 	private PrivacySetting privacySetting = PrivacySetting.EVERYONE;
 	private boolean spy = false;
 

@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public record VelocityPlatformPlayer(Player player) implements PlatformPlayer {
-
 	@Override
 	public UUID uuid() {
 		return this.player.getUniqueId();
@@ -28,6 +27,4 @@ public record VelocityPlatformPlayer(Player player) implements PlatformPlayer {
 	public @NotNull Audience audience() {
 		return this.player;
 	}
-
-
 }

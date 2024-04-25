@@ -6,7 +6,7 @@ import fi.fabianadrian.proxychat.common.hook.VanishPluginHook;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.velocity.VelocityPlatformPlayer;
 
-public class PremiumVanishVelocityHook implements VanishPluginHook {
+public final class PremiumVanishVelocityHook implements VanishPluginHook {
 	@Override
 	public boolean canSee(User user1, User user2) {
 		Player player1 = ((VelocityPlatformPlayer) user1.player()).player();
