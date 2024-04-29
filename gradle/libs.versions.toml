@@ -1,7 +1,7 @@
 [versions]
 adventure = "4.16.0"
 bstats = "3.0.2"
-cloud-minecraft = "2.0.0-beta.4"
+cloud-minecraft = "2.0.0-beta.6"
 partyAndFriends = "1.0.92"
 
 [libraries]
@@ -10,7 +10,7 @@ bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats
 bstats-bungeecord = { module = "org.bstats:bstats-bungeecord", version.ref = "bstats" }
 
 # Cloud
-cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-beta.3" }
+cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-beta.5" }
 cloud-bungeecord = { module = "org.incendo:cloud-bungee", version.ref = "cloud-minecraft" }
 cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-minecraft" }
 cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
