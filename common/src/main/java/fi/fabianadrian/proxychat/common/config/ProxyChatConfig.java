@@ -7,7 +7,6 @@ import space.arim.dazzleconf.annote.SubSection;
 import java.util.List;
 
 public interface ProxyChatConfig {
-
 	FormatSection formats();
 
 	@ConfComments("Placeholders: <name>")
@@ -17,6 +16,9 @@ public interface ProxyChatConfig {
 			"<rainbow>----------------------------------------</rainbow>"
 	})
 	List<String> welcomeMessage();
+
+	@ConfDefault.DefaultBoolean(true)
+	boolean metrics();
 
 	@SubSection
 	interface FormatSection {
