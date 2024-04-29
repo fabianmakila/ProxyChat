@@ -18,6 +18,7 @@ public interface ProxyChatConfig {
 	List<String> welcomeMessage();
 
 	@ConfDefault.DefaultBoolean(true)
+	@ConfComments("Metrics are collected using bStats")
 	boolean metrics();
 
 	@SubSection
