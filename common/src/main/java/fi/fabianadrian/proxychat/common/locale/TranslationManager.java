@@ -78,9 +78,7 @@ public final class TranslationManager {
 	private void writeExampleTranslationsToDisk() {
 		// Extract all key-value pairs from the ResourceBundle
 		List<String> lines = new ArrayList<>();
-		this.defaultBundle.getKeys().asIterator().forEachRemaining(key -> {
-			lines.add(key + "=" + this.defaultBundle.getString(key));
-		});
+		this.defaultBundle.getKeys().asIterator().forEachRemaining(key -> lines.add(key + "=" + this.defaultBundle.getString(key)));
 		Collections.sort(lines);
 
 		try {
