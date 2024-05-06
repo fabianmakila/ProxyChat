@@ -4,12 +4,12 @@ plugins {
 }
 
 dependencies {
-	compileOnly(libs.waterfall.api)
+	compileOnly(libs.bungeecord.api)
 
 	implementation(libs.bstats.bungeecord)
 	implementation(libs.cloud.bungeecord)
 	implementation(libs.adventure.platform.bungeecord)
-	implementation(libs.gson)
+	implementation(libs.minimessage)
 
 	// Plugin hooks
 	compileOnly(libs.partyAndFriends.bungeecord)
@@ -23,7 +23,6 @@ tasks {
 			"net.kyori",
 			"space.arim",
 			"org.bstats",
-			"com.google.gson",
 			"de.myzelyam"
 		).forEach {
 			relocate(it, "${project.group}.${rootProject.name.lowercase()}.dependency.$it")

@@ -20,6 +20,7 @@ import org.incendo.cloud.bungee.BungeeCommandManager;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -66,7 +67,7 @@ public final class ProxyChatBungeecord extends Plugin implements Platform {
 
 	@Override
 	public Logger logger() {
-		return getSLF4JLogger();
+		return LoggerFactory.getLogger(this.getDescription().getName());
 	}
 
 	@Override
