@@ -20,11 +20,12 @@ dependencies {
 tasks {
 	shadowJar {
 		sequenceOf(
-			"cloud.commandframework",
+			"org.incendo.cloud",
 			"io.leangen",
 			"space.arim",
 			"org.bstats",
-			"com.google.gson"
+			"com.google.gson",
+			"de.myzelyam"
 		).forEach {
 			relocate(it, "${project.group}.${rootProject.name.lowercase()}.dependency.$it")
 		}
