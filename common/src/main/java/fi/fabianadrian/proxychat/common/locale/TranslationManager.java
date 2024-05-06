@@ -111,7 +111,9 @@ public final class TranslationManager {
 				}
 			}
 
-			this.logger.info("Loaded custom translations for {}", loadedLocaleNamesJoiner);
+			if (loadedLocaleNamesJoiner.length() != 0) {
+				this.logger.info("Loaded custom translations for {}", loadedLocaleNamesJoiner);
+			}
 		} catch (IOException e) {
 			this.logger.warn("Error reading the translations directory", e);
 		}
