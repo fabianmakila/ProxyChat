@@ -111,7 +111,7 @@ public final class ProxyChat {
 	}
 
 	public void shutdown() {
-		this.nameService.save();
+
 	}
 
 	public UserManager userManager() {

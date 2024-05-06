@@ -26,13 +26,13 @@ public final class NameService {
 	}
 
 	public void reload() {
-		if (!Files.exists(this.databasePath)) {
-			this.nameMap.clear();
-			return;
-		}
-
 		try (BufferedReader reader = Files.newBufferedReader(this.databasePath)) {
-			this.nameMap = this.gson.fromJson(reader, new TypeToken<>() {});
+			Map<UUID, String> mapFromJson = this.gson.fromJson(reader, new TypeToken<>() {});
+			if (mapFromJson == null) {
+				return;
+			}
+
+			this.nameMap = mapFromJson;
 		} catch (Exception e) {
 			this.proxyChat.platform().logger().warn("Failed to load usernames.json", e);
 		}
@@ -44,6 +44,7 @@ public final class NameService {
 
 	public void update(User user) {
 		this.nameMap.put(user.uuid(), user.name());
+		save();
 	}
 
 	public void save() {
