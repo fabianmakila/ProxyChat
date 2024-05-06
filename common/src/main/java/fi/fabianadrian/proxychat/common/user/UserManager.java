@@ -39,7 +39,7 @@ public final class UserManager {
 				User deserialized = this.gson.fromJson(reader, User.class);
 				user.populate(deserialized);
 			} catch (Exception e) {
-				this.proxyChat.platform().logger().warn("Failed to load data for user with UUID: " + player.uuid(), e);
+				this.proxyChat.platform().logger().warn("Failed to load data for user with UUID: {}", player.uuid(), e);
 			}
 		}
 
@@ -52,7 +52,7 @@ public final class UserManager {
 		try (BufferedWriter writer = Files.newBufferedWriter(file)) {
 			this.gson.toJson(user, writer);
 		} catch (Exception e) {
-			this.proxyChat.platform().logger().warn("Failed to save data for user with UUID: " + user.uuid(), e);
+			this.proxyChat.platform().logger().warn("Failed to save data for user with UUID: {}", user.uuid(), e);
 		}
 	}
 

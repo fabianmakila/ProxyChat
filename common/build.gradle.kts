@@ -16,7 +16,7 @@ dependencies {
 
 	api(libs.premiumvanish)
 
-	implementation(libs.gson)
+	compileOnly(libs.gson)
 
 	// Config
 	implementation(libs.dazzleconf) {
