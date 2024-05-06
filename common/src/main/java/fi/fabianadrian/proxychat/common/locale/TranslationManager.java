@@ -76,18 +76,15 @@ public final class TranslationManager {
 	}
 
 	private void writeExampleTranslationsToDisk() {
-		Properties properties = new Properties();
 		// Extract all key-value pairs from the ResourceBundle
-		Enumeration<String> keys = this.defaultBundle.getKeys();
-		while (keys.hasMoreElements()) {
-			String key = keys.nextElement();
-			String value = this.defaultBundle.getString(key);
-			properties.setProperty(key, value);
-		}
+		List<String> lines = new ArrayList<>();
+		this.defaultBundle.getKeys().asIterator().forEachRemaining(key -> {
+			lines.add(key + "=" + this.defaultBundle.getString(key));
+		});
+		Collections.sort(lines);
 
-		try (OutputStream outputStream = new FileOutputStream(this.translationsDirectory.resolve("messages_example.properties").toFile())) {
-			Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-			properties.store(writer, null);
+		try {
+			Files.write(this.translationsDirectory.resolve("messages_example.properties"), lines);
 		} catch (IOException e) {
 			this.logger.warn("Error saving example translation file", e);
 		}
