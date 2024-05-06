@@ -7,12 +7,12 @@ import fi.fabianadrian.proxychat.common.hook.VanishPluginHook;
 import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.common.user.UserManager;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.incendo.cloud.caption.Caption;
 import org.incendo.cloud.caption.CaptionVariable;
 import org.incendo.cloud.component.CommandComponent;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.context.CommandInput;
 import org.incendo.cloud.exception.parsing.ParserException;
+import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
 import org.incendo.cloud.parser.ArgumentParseResult;
 import org.incendo.cloud.parser.ArgumentParser;
 import org.incendo.cloud.parser.ParserDescriptor;
@@ -84,7 +84,7 @@ public final class UserParser implements ArgumentParser<Commander, User>, Blocki
 			super(
 					UserParser.class,
 					context,
-					Caption.of("argument.parse.failure.user"),
+					TranslatableCaption.translatableCaption("argument.parse.failure.user"),
 					CaptionVariable.of("input", input)
 			);
 		}

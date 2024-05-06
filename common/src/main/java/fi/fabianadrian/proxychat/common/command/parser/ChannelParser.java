@@ -5,12 +5,12 @@ import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatContextKeys;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.incendo.cloud.caption.Caption;
 import org.incendo.cloud.caption.CaptionVariable;
 import org.incendo.cloud.component.CommandComponent;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.context.CommandInput;
 import org.incendo.cloud.exception.parsing.ParserException;
+import org.incendo.cloud.minecraft.extras.caption.TranslatableCaption;
 import org.incendo.cloud.parser.ArgumentParseResult;
 import org.incendo.cloud.parser.ArgumentParser;
 import org.incendo.cloud.parser.ParserDescriptor;
@@ -54,7 +54,7 @@ public final class ChannelParser implements ArgumentParser<Commander, Channel>, 
 			super(
 					ChannelParser.class,
 					context,
-					Caption.of("argument.parse.failure.channel"),
+					TranslatableCaption.translatableCaption("argument.parse.failure.channel"),
 					CaptionVariable.of("input", input)
 			);
 		}
