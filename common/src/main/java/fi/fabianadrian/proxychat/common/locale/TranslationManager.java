@@ -42,11 +42,18 @@ public final class TranslationManager {
 		this.registry = TranslationRegistry.create(Key.key("proxychat", "main"));
 		this.registry.defaultLocale(DEFAULT_LOCALE);
 
-		// load custom translations first, then the base (built-in) translations after.
-		loadFromFileSystem(this.translationsDirectory);
+		try {
+			Files.createDirectories(this.translationsDirectory);
+
+			writeExampleTranslationsToDisk();
+			loadFromFileSystem(this.translationsDirectory);
+		} catch (IOException e) {
+			this.logger.error("Could not create translations directory", e);
+		}
+
 		loadFromResourceBundle();
 
-		// register it to the global source, so our translations can be picked up by adventure-platform
+		// register to the global source, so our translations can be picked up by adventure-platform
 		GlobalTranslator.translator().addSource(this.registry);
 	}
 
@@ -68,9 +75,6 @@ public final class TranslationManager {
 		}
 	}
 
-	/**
-	 * Creates the translation directory by writing the example translation in there.
-	 */
 	private void writeExampleTranslationsToDisk() {
 		Properties properties = new Properties();
 		// Extract all key-value pairs from the ResourceBundle
@@ -90,8 +94,6 @@ public final class TranslationManager {
 	}
 
 	private void loadFromFileSystem(Path directory) {
-		writeExampleTranslationsToDisk();
-
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory, "*.properties")) {
 			StringJoiner loadedLocaleNamesJoiner = new StringJoiner(", ");
 
