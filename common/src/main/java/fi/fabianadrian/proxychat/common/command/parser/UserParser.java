@@ -44,16 +44,16 @@ public final class UserParser implements ArgumentParser<Commander, User>, Blocki
 			return ArgumentParseResult.failure(new UserParseException(inputString, context));
 		}
 		User user = userOptional.get();
+		if (user == context.sender()) {
+			return ArgumentParseResult.failure(new UserParseException(inputString, context));
+		}
 
 		Optional<VanishPluginHook> vanishHookOptional = hookManager.vanishHook();
-		if (vanishHookOptional.isPresent() && context.sender() instanceof User) {
-			if (context.sender().equals(user) || !vanishHookOptional.get().canSee((User) context.sender(), user)) {
-				return ArgumentParseResult.failure(new UserParseException(inputString, context));
-			}
+		if (vanishHookOptional.isPresent() && context.sender() instanceof User senderUser && !vanishHookOptional.get().canSee(senderUser, user)) {
+			return ArgumentParseResult.failure(new UserParseException(inputString, context));
 		}
 
 		input.readString();
-
 		return ArgumentParseResult.success(user);
 	}
 
@@ -63,13 +63,13 @@ public final class UserParser implements ArgumentParser<Commander, User>, Blocki
 		HookManager hookManager = context.get(ProxyChatContextKeys.HOOK_MANAGER_KEY);
 
 		Stream<User> users = userManager.users().stream();
-		Optional<VanishPluginHook> vanishHookOptional = hookManager.vanishHook();
 
-		if (context.sender() instanceof User) {
+		if (context.sender() instanceof User senderUser) {
 			users = users.filter(user -> user != context.sender());
 
+			Optional<VanishPluginHook> vanishHookOptional = hookManager.vanishHook();
 			if (vanishHookOptional.isPresent()) {
-				users = users.filter(user -> vanishHookOptional.get().canSee((User) context.sender(), user));
+				users = users.filter(user -> vanishHookOptional.get().canSee(senderUser, user));
 			}
 		}
 
