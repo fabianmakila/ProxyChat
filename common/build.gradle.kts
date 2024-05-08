@@ -14,7 +14,7 @@ dependencies {
 	compileOnly(libs.snakeyaml)
 	compileOnly(libs.miniplaceholders)
 
-	api(libs.premiumvanish)
+	compileOnlyApi(libs.premiumvanish)
 
 	compileOnly(libs.gson)
 

@@ -22,8 +22,7 @@ tasks {
 			"io.leangen",
 			"net.kyori",
 			"space.arim",
-			"org.bstats",
-			"de.myzelyam"
+			"org.bstats"
 		).forEach {
 			relocate(it, "${project.group}.${rootProject.name.lowercase()}.dependency.$it")
 		}
