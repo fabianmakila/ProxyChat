@@ -8,7 +8,8 @@ import net.kyori.adventure.translation.Translator;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.slf4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -17,9 +18,8 @@ import java.util.*;
 
 public final class TranslationManager {
 	public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
-	public static final List<Locale> BUNDLED_LOCALES = List.of(new Locale("fi", "FI"));
+	public static final List<Locale> BUNDLED_LOCALES = List.of(DEFAULT_LOCALE, new Locale("fi", "FI"));
 
-	private final ResourceBundle defaultBundle = ResourceBundle.getBundle("messages", DEFAULT_LOCALE, UTF8ResourceBundleControl.get());
 	private final Path translationsDirectory;
 	private final Logger logger;
 	private TranslationRegistry registry;
@@ -29,7 +29,6 @@ public final class TranslationManager {
 		this.translationsDirectory = proxyChat.platform().dataDirectory().resolve("translations");
 	}
 
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private static boolean isAdventureDuplicatesException(Exception e) {
 		return e instanceof IllegalArgumentException && (e.getMessage().startsWith("Invalid key") || e.getMessage().startsWith("Translation already exists"));
 	}
@@ -61,24 +60,25 @@ public final class TranslationManager {
 	 * Loads the bundled translations included inside the jar.
 	 */
 	private void loadFromResourceBundle() {
-		try {
-			// Register default bundle first
-			this.registry.registerAll(DEFAULT_LOCALE, defaultBundle, false);
-
-			// Then the rest of the included bundles
-			BUNDLED_LOCALES.forEach(locale -> {
-				ResourceBundle bundle = ResourceBundle.getBundle("messages", locale, UTF8ResourceBundleControl.get());
+		BUNDLED_LOCALES.forEach(locale -> {
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", locale, UTF8ResourceBundleControl.get());
+			try {
 				this.registry.registerAll(locale, bundle, false);
-			});
-		} catch (IllegalArgumentException e) {
-			this.logger.warn("Error loading default locale file", e);
-		}
+			} catch (IllegalArgumentException e) {
+				if (isAdventureDuplicatesException(e)) {
+					return;
+				}
+				this.logger.warn("Error loading default locale file", e);
+			}
+		});
 	}
 
 	private void writeExampleTranslationsToDisk() {
+		ResourceBundle defaultBundle = ResourceBundle.getBundle("messages", DEFAULT_LOCALE, UTF8ResourceBundleControl.get());
+
 		// Extract all key-value pairs from the ResourceBundle
 		List<String> lines = new ArrayList<>();
-		this.defaultBundle.getKeys().asIterator().forEachRemaining(key -> lines.add(key + "=" + this.defaultBundle.getString(key)));
+		defaultBundle.getKeys().asIterator().forEachRemaining(key -> lines.add(key + "=" + defaultBundle.getString(key)));
 		Collections.sort(lines);
 
 		try {
@@ -102,9 +102,7 @@ public final class TranslationManager {
 					Locale locale = loadTranslationFile(translationFile);
 					loadedLocaleNamesJoiner.add(locale.getLanguage());
 				} catch (Exception e) {
-					if (!isAdventureDuplicatesException(e)) {
-						this.logger.warn("Error loading locale file: {}", translationFile.getFileName(), e);
-					}
+					this.logger.warn("Error loading locale file: {}", translationFile.getFileName(), e);
 				}
 			}
 
