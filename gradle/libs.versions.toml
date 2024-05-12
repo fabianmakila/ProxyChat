@@ -1,13 +1,20 @@
 [versions]
-adventure = "4.16.0"
+adventure = "4.17.0"
 bstats = "3.0.2"
 cloud-minecraft = "2.0.0-beta.6"
 partyAndFriends = "1.0.92"
 
 [libraries]
+# Adventure
+adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version = "4.3.2" }
+adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+adventure-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+
 # Bstats
 bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats" }
 bstats-bungeecord = { module = "org.bstats:bstats-bungeecord", version.ref = "bstats" }
+
+dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", version = "1.3.0-M2" }
 
 # Cloud
 cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-beta.5" }
@@ -15,29 +22,22 @@ cloud-bungeecord = { module = "org.incendo:cloud-bungee", version.ref = "cloud-m
 cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-minecraft" }
 cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
 
-# Configuration
-dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", version = "1.3.0-M2" }
-snakeyaml = { module = "org.yaml:snakeyaml", version = "2.2" }
-
 # Google
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 guava = { module = "com.google.guava:guava", version = "33.1.0-jre" }
 
-# Adventure
-adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version = "4.3.2" }
-adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
-adventure-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
+
+partyAndFriends-bungeecord = { module = "de.simonsator:BungeecordPartyAndFriends", version.ref = "partyAndFriends" }
+partyAndFriends-velocity = { module = "de.simonsator:VelocityPoweredPartyAndFriends", version.ref = "partyAndFriends" }
+
+premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = "2.9.0-4" }
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.12" }
+snakeyaml = { module = "org.yaml:snakeyaml", version = "2.2" }
 
 # Platforms
 bungeecord-api = { module = "net.md-5:bungeecord-api", version = "1.20-R0.3-SNAPSHOT" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version = "3.3.0-SNAPSHOT" }
-
-# Other
-slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.12" }
-partyAndFriends-bungeecord = { module = "de.simonsator:BungeecordPartyAndFriends", version.ref = "partyAndFriends" }
-partyAndFriends-velocity = { module = "de.simonsator:VelocityPoweredPartyAndFriends", version.ref = "partyAndFriends" }
-premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = "2.9.0-4" }
-miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
