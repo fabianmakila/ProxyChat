@@ -10,6 +10,7 @@ dependencies {
 	implementation(libs.adventure.platform.bungeecord)
 	implementation(libs.bstats.bungeecord)
 	implementation(libs.cloud.bungeecord)
+	implementation(libs.slf4j)
 
 	// Plugin hooks
 	compileOnly(libs.partyAndFriends.bungeecord)
@@ -18,11 +19,12 @@ dependencies {
 tasks {
 	shadowJar {
 		sequenceOf(
-			"org.incendo.cloud",
 			"io.leangen",
 			"net.kyori",
-			"space.arim",
-			"org.bstats"
+			"org.bstats",
+			"org.incendo.cloud",
+			"org.slf4j",
+			"space.arim"
 		).forEach {
 			relocate(it, "${project.group}.${rootProject.name.lowercase()}.dependency.$it")
 		}
