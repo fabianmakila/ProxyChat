@@ -6,10 +6,10 @@ plugins {
 dependencies {
 	compileOnly(libs.bungeecord.api)
 
+	implementation(libs.adventure.minimessage)
+	implementation(libs.adventure.platform.bungeecord)
 	implementation(libs.bstats.bungeecord)
 	implementation(libs.cloud.bungeecord)
-	implementation(libs.adventure.platform.bungeecord)
-	implementation(libs.minimessage)
 
 	// Plugin hooks
 	compileOnly(libs.partyAndFriends.bungeecord)

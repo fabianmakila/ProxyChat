@@ -8,7 +8,7 @@ dependencies {
 	implementation(libs.cloud.minecraftExtras)
 
 	compileOnly(libs.adventure.api)
-	compileOnly(libs.minimessage)
+	compileOnly(libs.adventure.minimessage)
 	compileOnly(libs.slf4j)
 	compileOnly(libs.guava)
 	compileOnly(libs.snakeyaml)

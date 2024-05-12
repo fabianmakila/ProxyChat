@@ -26,7 +26,7 @@ guava = { module = "com.google.guava:guava", version = "33.1.0-jre" }
 # Adventure
 adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version = "4.3.2" }
 adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+adventure-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 
 # Platforms
 bungeecord-api = { module = "net.md-5:bungeecord-api", version = "1.20-R0.3-SNAPSHOT" }
