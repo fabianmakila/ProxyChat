@@ -18,7 +18,7 @@ public final class ProxyChatCommandPreprocessor<C> implements CommandPreprocesso
 	public void accept(@NonNull CommandPreprocessingContext<C> context) {
 		CommandContext<C> commandContext = context.commandContext();
 		commandContext.store(ProxyChatContextKeys.CHANNEL_REGISTRY_KEY, this.proxyChat.channelRegistry());
-		commandContext.store(ProxyChatContextKeys.HOOK_MANAGER_KEY, this.proxyChat.platform().hookManager());
+		commandContext.store(ProxyChatContextKeys.HOOK_MANAGER_KEY, this.proxyChat.platform().dependencyManager());
 		commandContext.store(ProxyChatContextKeys.USER_MANAGER_KEY, this.proxyChat.userManager());
 	}
 }

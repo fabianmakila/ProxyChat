@@ -1,7 +1,6 @@
 package fi.fabianadrian.proxychat.common.config;
 
 import fi.fabianadrian.conversation.common.config.ConfigManager;
-import fi.fabianadrian.proxychat.common.ConversationProxy;
 import org.slf4j.Logger;
 import space.arim.dazzleconf.ConfigurationOptions;
 import space.arim.dazzleconf.error.ConfigFormatSyntaxException;

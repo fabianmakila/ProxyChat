@@ -5,6 +5,9 @@ plugins {
 }
 
 dependencies {
+	implementation(project(":common"))
+	implementation(project(":proxy:proxy"))
+
 	compileOnly(libs.proxy.bungeecord)
 
 	implementation(libs.adventure.minimessage)

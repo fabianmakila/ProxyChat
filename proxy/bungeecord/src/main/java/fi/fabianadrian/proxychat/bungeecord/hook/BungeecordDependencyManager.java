@@ -1,12 +1,12 @@
 package fi.fabianadrian.proxychat.bungeecord.hook;
 
-import fi.fabianadrian.proxychat.bungeecord.ProxyChatBungeecord;
-import fi.fabianadrian.proxychat.common.dependency.HookManager;
+import fi.fabianadrian.proxychat.bungeecord.ConversationBungeecord;
+import fi.fabianadrian.proxychat.common.dependency.ProxyDependencyManager;
 
-public final class BungeecordHookManager extends HookManager {
-	private final ProxyChatBungeecord plugin;
+public final class BungeecordDependencyManager extends ProxyDependencyManager {
+	private final ConversationBungeecord plugin;
 
-	public BungeecordHookManager(ProxyChatBungeecord plugin) {
+	public BungeecordDependencyManager(ConversationBungeecord plugin) {
 		super(plugin.logger());
 		this.plugin = plugin;
 	}
@@ -27,5 +27,10 @@ public final class BungeecordHookManager extends HookManager {
 
 	private boolean isPluginPresent(String name) {
 		return this.plugin.getProxy().getPluginManager().getPlugin(name) != null;
+	}
+
+	@Override
+	public boolean isMiniPlaceholdersPresent() {
+		return false;
 	}
 }

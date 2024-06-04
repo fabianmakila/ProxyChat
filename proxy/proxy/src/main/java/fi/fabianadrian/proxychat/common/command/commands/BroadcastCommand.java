@@ -38,7 +38,7 @@ public final class BroadcastCommand extends ProxyChatCommand {
 				Placeholder.parsed("message", message)
 		);
 
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+		if (this.proxyChat.platform().dependencyManager().isMiniPlaceholdersPresent()) {
 			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getGlobalPlaceholders());
 		}
 

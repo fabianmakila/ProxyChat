@@ -9,5 +9,5 @@ import org.incendo.cloud.CommandManager;
 public interface ProxyPlatform extends Platform, ForwardingAudience.Single {
 	CommandManager<Commander> commandManager();
 
-	ProxyDependencyManager hookManager();
+	ProxyDependencyManager dependencyManager();
 }

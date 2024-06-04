@@ -1,12 +1,11 @@
 package fi.fabianadrian.proxychat.bungeecord;
 
 import fi.fabianadrian.proxychat.bungeecord.command.BungeecordConsoleCommander;
-import fi.fabianadrian.proxychat.bungeecord.hook.BungeecordHookManager;
+import fi.fabianadrian.proxychat.bungeecord.hook.BungeecordDependencyManager;
 import fi.fabianadrian.proxychat.bungeecord.listener.LoginDisconnectListener;
-import fi.fabianadrian.proxychat.common.ProxyChat;
+import fi.fabianadrian.proxychat.common.ConversationProxy;
 import fi.fabianadrian.proxychat.common.command.Commander;
-import fi.fabianadrian.proxychat.common.dependency.HookManager;
-import fi.fabianadrian.proxychat.common.platform.Platform;
+import fi.fabianadrian.proxychat.common.platform.ProxyPlatform;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
@@ -26,11 +25,11 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public final class ProxyChatBungeecord extends Plugin implements Platform {
+public final class ConversationBungeecord extends Plugin implements ProxyPlatform {
 	private BungeeAudiences adventure;
 	private BungeeCommandManager<Commander> commandManager;
-	private ProxyChat proxyChat;
-	private BungeecordHookManager hookManager;
+	private ConversationProxy conversation;
+	private BungeecordDependencyManager dependencyManager;
 
 	public BungeeAudiences adventure() {
 		if (this.adventure == null) {
@@ -45,13 +44,13 @@ public final class ProxyChatBungeecord extends Plugin implements Platform {
 
 		createCommandManager();
 
-		this.hookManager = new BungeecordHookManager(this);
-		this.hookManager.initialize();
-		this.proxyChat = new ProxyChat(this);
+		this.dependencyManager = new BungeecordDependencyManager(this);
+		this.dependencyManager.initialize();
+		this.conversation = new ConversationProxy(this);
 
 		registerListeners();
 
-		if (this.proxyChat.configManager().mainConfig().metrics()) {
+		if (this.conversation.configManager().mainConfig().metrics()) {
 			new Metrics(this, 18435);
 		}
 	}
@@ -62,7 +61,7 @@ public final class ProxyChatBungeecord extends Plugin implements Platform {
 			this.adventure.close();
 			this.adventure = null;
 		}
-		this.proxyChat.shutdown();
+		this.conversation.shutdown();
 	}
 
 	@Override
@@ -81,8 +80,8 @@ public final class ProxyChatBungeecord extends Plugin implements Platform {
 	}
 
 	@Override
-	public HookManager hookManager() {
-		return this.hookManager;
+	public BungeecordDependencyManager dependencyManager() {
+		return this.dependencyManager;
 	}
 
 	@Override
@@ -90,15 +89,15 @@ public final class ProxyChatBungeecord extends Plugin implements Platform {
 		return this.adventure.all();
 	}
 
-	public ProxyChat proxyChat() {
-		return this.proxyChat;
+	public ConversationProxy conversation() {
+		return this.conversation;
 	}
 
 	private void createCommandManager() {
 		SenderMapper<CommandSender, Commander> senderMapper = SenderMapper.create(
 				commandSource -> {
 					if (commandSource instanceof ProxiedPlayer) {
-						Optional<User> userOptional = this.proxyChat.userManager().user(((ProxiedPlayer) commandSource).getUniqueId());
+						Optional<User> userOptional = this.conversation.userManager().user(((ProxiedPlayer) commandSource).getUniqueId());
 						if (userOptional.isPresent()) {
 							return userOptional.get();
 						}

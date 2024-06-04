@@ -27,7 +27,7 @@ public final class MessageService {
 
 	public MessageService(ConversationProxy proxyChat) {
 		this.proxyChat = proxyChat;
-		this.friendHook = proxyChat.platform().hookManager().friendHook().orElse(null);
+		this.friendHook = proxyChat.platform().dependencyManager().friendHook().orElse(null);
 		this.formats = proxyChat.configManager().mainConfig().formats();
 	}
 
@@ -89,7 +89,7 @@ public final class MessageService {
 				Placeholder.unparsed("message", message)
 		);
 
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+		if (this.proxyChat.platform().dependencyManager().isMiniPlaceholdersPresent()) {
 			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(sender));
 		}
 
@@ -112,7 +112,7 @@ public final class MessageService {
 		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
 				Placeholder.unparsed("name", user.name())
 		);
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+		if (this.proxyChat.platform().dependencyManager().isMiniPlaceholdersPresent()) {
 			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(user));
 		}
 
@@ -131,7 +131,7 @@ public final class MessageService {
 				Placeholder.unparsed("message", message)
 		);
 
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+		if (this.proxyChat.platform().dependencyManager().isMiniPlaceholdersPresent()) {
 			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
 		}
 
@@ -145,7 +145,7 @@ public final class MessageService {
 				Placeholder.unparsed("message", message)
 		);
 
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+		if (this.proxyChat.platform().dependencyManager().isMiniPlaceholdersPresent()) {
 			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
 		}
 
@@ -159,7 +159,7 @@ public final class MessageService {
 				Placeholder.unparsed("message", message)
 		);
 
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+		if (this.proxyChat.platform().dependencyManager().isMiniPlaceholdersPresent()) {
 			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
 		}
 
