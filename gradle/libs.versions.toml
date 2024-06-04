@@ -24,7 +24,7 @@ cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version
 
 # Google
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
-guava = { module = "com.google.guava:guava", version = "33.1.0-jre" }
+guava = { module = "com.google.guava:guava", version = "33.2.1-jre" }
 
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 
