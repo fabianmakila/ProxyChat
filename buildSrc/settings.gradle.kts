@@ -1,4 +1,4 @@
-rootProject.name = "proxychat-conventions"
+rootProject.name = "conversation-conventions"
 
 dependencyResolutionManagement {
 	repositories {

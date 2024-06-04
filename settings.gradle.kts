@@ -1,9 +1,12 @@
-rootProject.name = "ProxyChat"
+rootProject.name = "Conversation"
 
 include(
-	"bungeecord",
-	"common",
-	"velocity"
+	"proxy:bungeecord",
+	"proxy:proxy",
+	"proxy:velocity",
+	"backend:backend",
+	"backend:paper",
+	"common"
 )
 
 dependencyResolutionManagement {
