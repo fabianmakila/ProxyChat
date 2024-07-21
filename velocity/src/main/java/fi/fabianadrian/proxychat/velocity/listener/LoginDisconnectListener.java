@@ -21,6 +21,10 @@ public final class LoginDisconnectListener {
 
 	@Subscribe
 	public void onDisconnect(DisconnectEvent event) {
-		this.proxyChat.handleDisconnect(event.getPlayer().getUniqueId());
+		switch (event.getLoginStatus()) {
+			case PRE_SERVER_JOIN:
+			case SUCCESSFUL_LOGIN:
+				this.proxyChat.handleDisconnect(event.getPlayer().getUniqueId());
+		}
 	}
 }
