@@ -1,4 +1,4 @@
-![ProxyChatBanner](/assets/proxychat-banner.png)
+![ProxyChatBanner](/assets/proxychat-banner.svg)
 
 [<img src="https://img.shields.io/badge/Modrinth-%2316181c?style=for-the-badge&logo=modrinth">](https://modrinth.com/plugin/proxychat)
 ![Repository Size Badge](https://img.shields.io/github/repo-size/fabianmakila/proxychat?style=for-the-badge&color=%2310b981)
