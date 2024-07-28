@@ -1,5 +1,12 @@
 ![ProxyChatBanner](/assets/proxychat-banner.png)
 
+[<img src="https://img.shields.io/badge/Modrinth-%2316181c?style=for-the-badge&logo=modrinth">](https://modrinth.com/plugin/proxychat)
+![Repository Size Badge](https://img.shields.io/github/repo-size/fabianmakila/proxychat?style=for-the-badge&color=%2310b981)
+[<img src="https://img.shields.io/github/v/release/fabianmakila/proxychat?include_prereleases&style=for-the-badge&color=%2310b981">](https://github.com/waeverything/WAEPack/releases)
+
+> [!IMPORTANT]
+> This README is intended for plugin developers. See the [Modrinth page](https://modrinth.com/plugin/proxychat) for a more user-friendly description.
+
 # ProxyChat
 
 A chat plugin for Minecraft proxies providing proxy-wide private messaging, chat channels and more!
