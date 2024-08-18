@@ -1,12 +1,12 @@
 [versions]
 adventure = "4.17.0"
 bstats = "3.0.2"
-cloud-minecraft = "2.0.0-beta.6"
+cloud-minecraft = "2.0.0-beta.9"
 partyAndFriends = "1.0.92"
 
 [libraries]
 # Adventure
-adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version = "4.3.2" }
+adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version = "4.3.4" }
 adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 adventure-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 
@@ -17,7 +17,7 @@ bstats-bungeecord = { module = "org.bstats:bstats-bungeecord", version.ref = "bs
 dazzleconf = { module = "space.arim.dazzleconf:dazzleconf-ext-snakeyaml", version = "1.3.0-M2" }
 
 # Cloud
-cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-beta.5" }
+cloud-core = { module = "org.incendo:cloud-core", version = "2.0.0-rc.2" }
 cloud-bungeecord = { module = "org.incendo:cloud-bungee", version.ref = "cloud-minecraft" }
 cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-minecraft" }
 cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
@@ -40,6 +40,6 @@ bungeecord-api = { module = "net.md-5:bungeecord-api", version = "1.20-R0.3-SNAP
 velocity-api = { module = "com.velocitypowered:velocity-api", version = "3.3.0-SNAPSHOT" }
 
 [plugins]
-shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
-spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.25.0" }
+shadow = { id = "com.gradleup.shadow", version = "8.3.0" }
+spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.0.0.BETA1" }
 pluginYml-bungee = { id = "net.minecrell.plugin-yml.bungee", version = "0.6.0" }

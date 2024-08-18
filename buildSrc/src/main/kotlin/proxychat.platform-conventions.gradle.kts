@@ -1,6 +1,6 @@
 plugins {
 	id("proxychat.java-conventions")
-	id("com.github.johnrengelman.shadow")
+	id("com.gradleup.shadow")
 }
 
 dependencies {
