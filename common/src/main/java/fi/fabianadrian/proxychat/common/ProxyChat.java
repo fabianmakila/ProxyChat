@@ -110,10 +110,6 @@ public final class ProxyChat {
 		this.userManager.unloadUser(uuid);
 	}
 
-	public void shutdown() {
-
-	}
-
 	public UserManager userManager() {
 		return userManager;
 	}
