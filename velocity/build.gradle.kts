@@ -1,5 +1,6 @@
 plugins {
 	id("proxychat.platform-conventions")
+	alias(libs.plugins.run.velocity)
 }
 
 dependencies {
@@ -15,6 +16,9 @@ dependencies {
 }
 
 tasks {
+	runVelocity {
+		velocityVersion("3.3.0-SNAPSHOT")
+	}
 	shadowJar {
 		sequenceOf(
 			"org.incendo.cloud",

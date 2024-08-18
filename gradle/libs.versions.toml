@@ -3,6 +3,7 @@ adventure = "4.17.0"
 bstats = "3.0.2"
 cloud-minecraft = "2.0.0-beta.9"
 partyAndFriends = "1.0.92"
+run = "2.3.0"
 
 [libraries]
 # Adventure
@@ -43,3 +44,5 @@ velocity-api = { module = "com.velocitypowered:velocity-api", version = "3.3.0-S
 shadow = { id = "com.gradleup.shadow", version = "8.3.0" }
 spotless = { id = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.0.0.BETA1" }
 pluginYml-bungee = { id = "net.minecrell.plugin-yml.bungee", version = "0.6.0" }
+run-waterfall = { id = "xyz.jpenilla.run-waterfall", version.ref = "run" }
+run-velocity = { id = "xyz.jpenilla.run-velocity", version.ref = "run" }
