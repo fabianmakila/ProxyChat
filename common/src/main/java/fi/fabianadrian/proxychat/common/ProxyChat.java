@@ -2,8 +2,8 @@ package fi.fabianadrian.proxychat.common;
 
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
 import fi.fabianadrian.proxychat.common.command.Commander;
-import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCaptionFormatter;
+import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
 import fi.fabianadrian.proxychat.common.command.commands.*;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandPreprocessor;
 import fi.fabianadrian.proxychat.common.config.ConfigManager;
@@ -73,7 +73,6 @@ public final class ProxyChat {
 
 	private void registerCommands() {
 		Stream.of(
-				new AnnouncementsCommand(this),
 				new BlockCommand(this),
 				new BlockListCommand(this),
 				new BroadcastCommand(this),

@@ -15,7 +15,6 @@ public final class User implements Commander {
 
 	private final transient PlatformPlayer player;
 
-	private boolean announcements = true;
 	private MessageSettings messageSettings = new MessageSettings();
 	private Set<String> mutedChannels = new HashSet<>();
 	private transient UUID lastMessaged;
@@ -26,7 +25,6 @@ public final class User implements Commander {
 	}
 
 	public void populate(User deserialized) {
-		this.announcements = deserialized.announcements;
 		if (deserialized.messageSettings != null) {
 			this.messageSettings = deserialized.messageSettings;
 		}
@@ -64,14 +62,6 @@ public final class User implements Commander {
 
 	public boolean unMuteChannel(Channel channel) {
 		return this.mutedChannels.remove(channel.name());
-	}
-
-	public boolean announcements() {
-		return announcements;
-	}
-
-	public void announcements(boolean value) {
-		this.announcements = value;
 	}
 
 	public MessageSettings messageSettings() {

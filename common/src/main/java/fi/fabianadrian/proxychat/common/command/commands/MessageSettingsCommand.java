@@ -29,6 +29,11 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 				.required("enabled", BooleanParser.booleanParser())
 				.handler(this::executeSpy)
 		);
+		this.manager.command(subCommand("announcements")
+				.senderType(User.class)
+				.optional("visible", BooleanParser.booleanParser())
+				.handler(this::executeAnnouncement)
+		);
 	}
 
 	private void executeSpy(CommandContext<User> ctx) {
@@ -57,5 +62,15 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 				user.sendMessage(Messages.COMMAND_MESSAGES_ALLOW_EVERYONE);
 				break;
 		}
+	}
+
+	private void executeAnnouncement(CommandContext<User> ctx) {
+		Optional<Boolean> visibleOptional = ctx.optional("visible");
+		User user = ctx.sender();
+
+		boolean visible = visibleOptional.orElseGet(() -> !user.messageSettings().announcements());
+
+		user.messageSettings().announcements(visible);
+		user.sendMessage(visible ? Messages.COMMAND_ANNOUNCEMENTS_ON : Messages.COMMAND_ANNOUNCEMENTS_OFF);
 	}
 }
