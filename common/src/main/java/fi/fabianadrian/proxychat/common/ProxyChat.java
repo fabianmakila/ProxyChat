@@ -67,7 +67,7 @@ public final class ProxyChat {
 
 		manager.registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
 		manager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
-		AudienceProvider<Commander> audienceProvider = commander -> commander.audience();
+		AudienceProvider<Commander> audienceProvider = AudienceProvider.nativeAudience();
 		MinecraftExceptionHandler.create(audienceProvider).defaultHandlers().captionFormatter(ProxyChatComponentCaptionFormatter.translatable()).registerTo(manager);
 	}
 
