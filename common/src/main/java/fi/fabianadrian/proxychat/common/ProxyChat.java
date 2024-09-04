@@ -3,7 +3,7 @@ package fi.fabianadrian.proxychat.common;
 import fi.fabianadrian.proxychat.common.channel.ChannelRegistry;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
-import fi.fabianadrian.proxychat.common.command.ProxyChatComponentCaptionFormatter;
+import fi.fabianadrian.proxychat.common.command.ProxyChatCaptionFormatter;
 import fi.fabianadrian.proxychat.common.command.commands.*;
 import fi.fabianadrian.proxychat.common.command.processor.ProxyChatCommandPreprocessor;
 import fi.fabianadrian.proxychat.common.config.ConfigManager;
@@ -68,7 +68,7 @@ public final class ProxyChat {
 		manager.registerCommandPreProcessor(new ProxyChatCommandPreprocessor<>(this));
 		manager.captionRegistry().registerProvider(TranslatableCaption.translatableCaptionProvider());
 		AudienceProvider<Commander> audienceProvider = AudienceProvider.nativeAudience();
-		MinecraftExceptionHandler.create(audienceProvider).defaultHandlers().captionFormatter(ProxyChatComponentCaptionFormatter.translatable()).registerTo(manager);
+		MinecraftExceptionHandler.create(audienceProvider).defaultHandlers().captionFormatter(new ProxyChatCaptionFormatter<>()).registerTo(manager);
 	}
 
 	private void registerCommands() {
