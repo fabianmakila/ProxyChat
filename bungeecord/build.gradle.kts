@@ -1,6 +1,6 @@
 plugins {
 	id("proxychat.platform-conventions")
-	alias(libs.plugins.pluginYml.bungee)
+	alias(libs.plugins.resourceFactory.bungeecord)
 	alias(libs.plugins.run.waterfall)
 }
 
@@ -23,19 +23,15 @@ tasks {
 	}
 	shadowJar {
 		sequenceOf(
-			"io.leangen",
 			"net.kyori",
-			"org.bstats",
-			"org.incendo.cloud",
 			"org.slf4j",
-			"space.arim"
 		).forEach {
 			relocate(it, "${project.group}.${rootProject.name.lowercase()}.dependency.$it")
 		}
 	}
 }
 
-bungee {
+bungeePluginYaml {
 	main = "fi.fabianadrian.proxychat.bungeecord.ProxyChatBungeecord"
 	name = rootProject.name
 	author = "FabianAdrian"

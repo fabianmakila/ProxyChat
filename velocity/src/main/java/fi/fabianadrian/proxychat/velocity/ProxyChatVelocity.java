@@ -34,18 +34,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Plugin(
-		id = "proxychat",
-		name = "ProxyChat",
-		version = "1.0.1",
-		url = "https://github.com/fabianmakila/ProxyChat",
-		description = "A simple chat plugin for Minecraft proxies.",
-		authors = {"FabianAdrian"},
-		dependencies = {
-				@Dependency(id = "partyandfriends", optional = true),
-				@Dependency(id = "premiumvanish", optional = true)
-		}
-)
 public final class ProxyChatVelocity implements Platform {
 	private final Injector injector;
 	private final Path dataDirectory;
