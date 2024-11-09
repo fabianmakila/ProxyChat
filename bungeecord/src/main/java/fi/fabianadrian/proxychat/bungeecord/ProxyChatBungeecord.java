@@ -51,9 +51,7 @@ public final class ProxyChatBungeecord extends Plugin implements Platform {
 
 		registerListeners();
 
-		if (this.proxyChat.configManager().mainConfig().metrics()) {
-			new Metrics(this, 18435);
-		}
+		new Metrics(this, 18435);
 	}
 
 	@Override

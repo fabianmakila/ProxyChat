@@ -75,9 +75,7 @@ public final class ProxyChatVelocity implements Platform {
 
 		registerListeners();
 
-		if (this.proxyChat.configManager().mainConfig().metrics()) {
-			this.metricsFactory.make(this, 15557);
-		}
+		this.metricsFactory.make(this, 15557);
 	}
 
 	private void createCommandManager() {
