@@ -18,6 +18,16 @@ tasks {
 	runVelocity {
 		velocityVersion("3.3.0-SNAPSHOT")
 	}
+	shadowJar {
+		sequenceOf(
+			"org.incendo.cloud",
+			"io.leangen",
+			"space.arim",
+			"org.bstats"
+		).forEach {
+			relocate(it, "${project.group}.${rootProject.name.lowercase()}.dependency.$it")
+		}
+	}
 }
 
 velocityPluginJson {

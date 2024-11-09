@@ -23,8 +23,12 @@ tasks {
 	}
 	shadowJar {
 		sequenceOf(
+			"org.incendo.cloud",
+			"io.leangen",
+			"space.arim",
+			"org.bstats",
 			"net.kyori",
-			"org.slf4j",
+			"org.slf4j"
 		).forEach {
 			relocate(it, "${project.group}.${rootProject.name.lowercase()}.dependency.$it")
 		}
