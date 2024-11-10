@@ -4,6 +4,7 @@ import fi.fabianadrian.proxychat.common.channel.Channel;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.platform.PlatformPlayer;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -50,6 +51,10 @@ public final class User implements Commander {
 
 	public boolean hasPermission(String permission) {
 		return this.player.hasPermission(permission);
+	}
+
+	public Component currentServerName() {
+		return this.player.currentServerName();
 	}
 
 	public Set<String> mutedChannels() {

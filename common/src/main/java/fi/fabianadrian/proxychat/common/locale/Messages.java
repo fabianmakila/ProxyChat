@@ -81,4 +81,6 @@ public interface Messages {
 	);
 
 	Component GENERAL_ME = translatable("proxychat.general.me");
+
+	Component GENERAL_UNKNOWN = translatable("proxychat.general.unknown");
 }

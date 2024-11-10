@@ -2,6 +2,7 @@ package fi.fabianadrian.proxychat.common.command.commands;
 
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.ProxyChatCommand;
+import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.service.NameService;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
@@ -42,7 +43,7 @@ public final class BlockListCommand extends ProxyChatCommand {
 			if (nameOptional.isPresent()) {
 				resolvedNameComponents.add(Component.text(nameOptional.get()));
 			} else {
-				resolvedNameComponents.add(Component.translatable("proxychat.general.unknown").hoverEvent(Component.text(uuid.toString())));
+				resolvedNameComponents.add(Messages.GENERAL_UNKNOWN.hoverEvent(Component.text(uuid.toString())));
 			}
 		});
 
