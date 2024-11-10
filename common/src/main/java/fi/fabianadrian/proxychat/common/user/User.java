@@ -49,6 +49,10 @@ public final class User implements Commander {
 		return this.player.name();
 	}
 
+	public Component nameAsComponent() {
+		return Component.text(this.player.name());
+	}
+
 	public boolean hasPermission(String permission) {
 		return this.player.hasPermission(permission);
 	}

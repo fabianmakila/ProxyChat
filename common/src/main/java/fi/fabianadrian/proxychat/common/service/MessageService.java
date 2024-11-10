@@ -11,6 +11,7 @@ import fi.fabianadrian.proxychat.common.user.UserManager;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -20,9 +21,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public final class MessageService {
+import static net.kyori.adventure.text.Component.translatable;
 
-	private static final String BYPASS_PERMISSION = "proxychat.command.message.bypass";
+public final class MessageService {
+	private static final Component COMPONENT_MESSAGE_ERROR_DISALLOWED = translatable(
+			"proxychat.command.message.disallowed",
+			NamedTextColor.RED
+	);
+	private static final String PERMISSION_BYPASS = "proxychat.command.message.bypass";
 	private final ProxyChat proxyChat;
 	private final MiniMessage miniMessage = MiniMessage.miniMessage();
 	private final FriendPluginHook friendHook;
@@ -39,7 +45,7 @@ public final class MessageService {
 	}
 
 	public void sendPrivateMessage(User sender, User receiver, String message) {
-		if (!sender.hasPermission(BYPASS_PERMISSION)) {
+		if (!sender.hasPermission(PERMISSION_BYPASS)) {
 			MessageSettings.PrivacySetting receiverPrivacySetting = receiver.messageSettings().privacySetting();
 
 			if (receiver.hasBlockedUser(sender)) {
@@ -48,7 +54,7 @@ public final class MessageService {
 
 			switch (receiverPrivacySetting) {
 				case NOBODY -> {
-					sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+					sender.sendMessage(COMPONENT_MESSAGE_ERROR_DISALLOWED);
 					return;
 				}
 				case FRIENDS -> {
@@ -57,7 +63,7 @@ public final class MessageService {
 					}
 
 					if (!this.friendHook.areFriends(sender.uuid(), receiver.uuid())) {
-						sender.sendMessage(Messages.COMMAND_MESSAGE_ERROR_DISALLOWED);
+						sender.sendMessage(COMPONENT_MESSAGE_ERROR_DISALLOWED);
 						return;
 					}
 				}

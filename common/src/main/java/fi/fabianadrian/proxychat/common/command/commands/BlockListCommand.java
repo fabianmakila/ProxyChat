@@ -7,6 +7,7 @@ import fi.fabianadrian.proxychat.common.service.NameService;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.context.CommandContext;
 
@@ -14,7 +15,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static net.kyori.adventure.text.Component.*;
+
 public final class BlockListCommand extends ProxyChatCommand {
+	private static final Component COMPONENT_BLOCKLIST_EMPTY = translatable()
+			.key("proxychat.command.blocklist.empty")
+			.color(NamedTextColor.RED)
+			.build();
+	private static final Component COMPONENT_BLOCKLIST_HEADER = translatable()
+			.key("proxychat.command.blocklist.header")
+			.color(NamedTextColor.RED)
+			.appendNewline()
+			.build();
+
+
 	private final NameService nameService;
 
 	public BlockListCommand(ProxyChat proxyChat) {
@@ -33,7 +47,7 @@ public final class BlockListCommand extends ProxyChatCommand {
 		User user = ctx.sender();
 
 		if (user.blockedUsers().isEmpty()) {
-			user.sendMessage(Component.translatable("proxychat.command.blocklist.empty", NamedTextColor.RED));
+			user.sendMessage(COMPONENT_BLOCKLIST_EMPTY);
 			return;
 		}
 
@@ -41,12 +55,14 @@ public final class BlockListCommand extends ProxyChatCommand {
 		user.blockedUsers().forEach(uuid -> {
 			Optional<String> nameOptional = this.nameService.resolve(uuid);
 			if (nameOptional.isPresent()) {
-				resolvedNameComponents.add(Component.text(nameOptional.get()));
+				resolvedNameComponents.add(text(nameOptional.get()));
 			} else {
-				resolvedNameComponents.add(Messages.GENERAL_UNKNOWN.hoverEvent(Component.text(uuid.toString())));
+				resolvedNameComponents.add(Messages.GENERAL_UNKNOWN.hoverEvent(text(uuid.toString())));
 			}
 		});
 
-		user.sendMessage(Component.translatable("proxychat.command.blocklist.header", NamedTextColor.RED).appendNewline().append(Component.join(JoinConfiguration.commas(true), resolvedNameComponents)).color(NamedTextColor.WHITE));
+		user.sendMessage(COMPONENT_BLOCKLIST_HEADER.append(
+				join(JoinConfiguration.commas(true), resolvedNameComponents)).color(NamedTextColor.WHITE)
+		);
 	}
 }
