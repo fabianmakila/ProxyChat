@@ -7,14 +7,6 @@ import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 public interface Messages {
-	Component COMMAND_ANNOUNCEMENTS_OFF = translatable(
-			"proxychat.command.announcements.off",
-			RED
-	);
-	Component COMMAND_ANNOUNCEMENTS_ON = translatable(
-			"proxychat.command.announcements.on",
-			GREEN
-	);
 	Component COMMAND_CHANNEL_ERROR_ALREADY_MUTED = translatable(
 			"proxychat.command.channel.already-muted",
 			RED
@@ -39,24 +31,40 @@ public interface Messages {
 			"proxychat.command.message.disallowed",
 			RED
 	);
-	Component COMMAND_MESSAGES_ALLOW_NOBODY = translatable(
-			"proxychat.command.messages.privacy.nobody",
-			GREEN
-	);
-	Component COMMAND_MESSAGES_ALLOW_FRIENDS = translatable(
-			"proxychat.command.messages.privacy.friends",
-			GREEN
-	);
-	Component COMMAND_MESSAGES_ALLOW_EVERYONE = translatable(
-			"proxychat.command.messages.privacy.everyone",
-			GREEN
-	);
-	Component COMMAND_MESSAGES_SPY_DISABLE = translatable(
-			"proxychat.command.messages.spy.disable",
+	Component COMMAND_MESSAGESETTINGS_ANNOUNCEMENTS_HIDDEN = translatable(
+			"proxychat.command.messagesettings.announcements.hidden",
 			RED
 	);
-	Component COMMAND_MESSAGES_SPY_ENABLE = translatable(
-			"proxychat.command.messages.spy.enable",
+	Component COMMAND_MESSAGESETTINGS_ANNOUNCEMENTS_VISIBLE = translatable(
+			"proxychat.command.messagesettings.announcements.visible",
+			GREEN
+	);
+	Component COMMAND_MESSAGESETTINGS_GLOBALCHAT_HIDDEN = translatable(
+			"proxychat.command.messagesettings.globalchat.hidden",
+			RED
+	);
+	Component COMMAND_MESSAGESETTINGS_GLOBALCHAT_VISIBLE = translatable(
+			"proxychat.command.messagesettings.globalchat.visible",
+			GREEN
+	);
+	Component COMMAND_MESSAGESETTINGS_ALLOW_NOBODY = translatable(
+			"proxychat.command.messagesettings.privacy.nobody",
+			GREEN
+	);
+	Component COMMAND_MESSAGESETTINGS_ALLOW_FRIENDS = translatable(
+			"proxychat.command.messagesettings.privacy.friends",
+			GREEN
+	);
+	Component COMMAND_MESSAGESETTINGS_ALLOW_EVERYONE = translatable(
+			"proxychat.command.messagesettings.privacy.everyone",
+			GREEN
+	);
+	Component COMMAND_MESSAGESETTINGS_SPY_DISABLE = translatable(
+			"proxychat.command.messagesettings.spy.disable",
+			RED
+	);
+	Component COMMAND_MESSAGESETTINGS_SPY_ENABLE = translatable(
+			"proxychat.command.messagesettings.spy.enable",
 			GREEN
 	);
 	Component COMMAND_PROXYCHAT_RELOAD_SUCCESS = translatable(

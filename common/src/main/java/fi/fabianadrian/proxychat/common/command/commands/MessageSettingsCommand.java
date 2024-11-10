@@ -19,6 +19,16 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 
 	@Override
 	public void register() {
+		this.manager.command(subCommand("announcements")
+				.senderType(User.class)
+				.optional("visible", BooleanParser.booleanParser())
+				.handler(this::executeAnnouncement)
+		);
+		this.manager.command(subCommand("globalchat")
+				.senderType(User.class)
+				.optional("visible", BooleanParser.booleanParser())
+				.handler(this::executeGlobalChat)
+		);
 		this.manager.command(subCommand("privacy")
 				.senderType(User.class)
 				.required("privacySetting", EnumParser.enumParser(MessageSettings.PrivacySetting.class))
@@ -29,11 +39,6 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 				.required("enabled", BooleanParser.booleanParser())
 				.handler(this::executeSpy)
 		);
-		this.manager.command(subCommand("announcements")
-				.senderType(User.class)
-				.optional("visible", BooleanParser.booleanParser())
-				.handler(this::executeAnnouncement)
-		);
 	}
 
 	private void executeSpy(CommandContext<User> ctx) {
@@ -42,7 +47,7 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 		boolean value = enabledOptional.orElseGet(() -> !user.messageSettings().spy());
 
 		user.messageSettings().spy(value);
-		ctx.sender().sendMessage(value ? Messages.COMMAND_MESSAGES_SPY_ENABLE : Messages.COMMAND_MESSAGES_SPY_DISABLE);
+		ctx.sender().sendMessage(value ? Messages.COMMAND_MESSAGESETTINGS_SPY_ENABLE : Messages.COMMAND_MESSAGESETTINGS_SPY_DISABLE);
 	}
 
 	private void executeAllow(CommandContext<User> ctx) {
@@ -53,13 +58,13 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 
 		switch (privacySetting) {
 			case NOBODY:
-				user.sendMessage(Messages.COMMAND_MESSAGES_ALLOW_NOBODY);
+				user.sendMessage(Messages.COMMAND_MESSAGESETTINGS_ALLOW_NOBODY);
 				break;
 			case FRIENDS:
-				user.sendMessage(Messages.COMMAND_MESSAGES_ALLOW_FRIENDS);
+				user.sendMessage(Messages.COMMAND_MESSAGESETTINGS_ALLOW_FRIENDS);
 				break;
 			case EVERYONE:
-				user.sendMessage(Messages.COMMAND_MESSAGES_ALLOW_EVERYONE);
+				user.sendMessage(Messages.COMMAND_MESSAGESETTINGS_ALLOW_EVERYONE);
 				break;
 		}
 	}
@@ -71,6 +76,16 @@ public class MessageSettingsCommand extends ProxyChatCommand {
 		boolean visible = visibleOptional.orElseGet(() -> !user.messageSettings().announcements());
 
 		user.messageSettings().announcements(visible);
-		user.sendMessage(visible ? Messages.COMMAND_ANNOUNCEMENTS_ON : Messages.COMMAND_ANNOUNCEMENTS_OFF);
+		user.sendMessage(visible ? Messages.COMMAND_MESSAGESETTINGS_ANNOUNCEMENTS_VISIBLE : Messages.COMMAND_MESSAGESETTINGS_ANNOUNCEMENTS_HIDDEN);
+	}
+
+	private void executeGlobalChat(CommandContext<User> ctx) {
+		Optional<Boolean> visibleOptional = ctx.optional("visible");
+		User user = ctx.sender();
+
+		boolean visible = visibleOptional.orElseGet(() -> !user.messageSettings().globalChat());
+
+		user.messageSettings().globalChat(visible);
+		user.sendMessage(visible ? Messages.COMMAND_MESSAGESETTINGS_GLOBALCHAT_VISIBLE : Messages.COMMAND_MESSAGESETTINGS_GLOBALCHAT_HIDDEN);
 	}
 }
