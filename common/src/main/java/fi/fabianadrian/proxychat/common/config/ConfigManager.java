@@ -19,11 +19,9 @@ import java.nio.file.Path;
 public final class ConfigManager {
 	private final Logger logger;
 	private final ConfigurationHelper<ProxyChatConfig> mainConfigHelper;
-	private final ConfigurationHelper<AnnouncementsConfig> announcementsConfigHelper;
 	private final ConfigurationHelper<ChannelsConfig> channelsConfigHelper;
 
 	private volatile ProxyChatConfig mainConfigData;
-	private volatile AnnouncementsConfig announcementsConfigData;
 	private volatile ChannelsConfig channelsConfigData;
 
 	public ConfigManager(ProxyChat proxyChat) {
@@ -52,16 +50,6 @@ public final class ConfigManager {
 				)
 		);
 
-		this.announcementsConfigHelper = new ConfigurationHelper<>(
-				dataDirectory,
-				"announcements.yml",
-				SnakeYamlConfigurationFactory.create(
-						AnnouncementsConfig.class,
-						ConfigurationOptions.defaults(),
-						yamlOptions
-				)
-		);
-
 		this.channelsConfigHelper = new ConfigurationHelper<>(
 				dataDirectory,
 				"channels.yml",
@@ -76,14 +64,12 @@ public final class ConfigManager {
 	public void reload() {
 		try {
 			this.mainConfigData = this.mainConfigHelper.reloadConfigData();
-			this.announcementsConfigData = this.announcementsConfigHelper.reloadConfigData();
 			this.channelsConfigData = this.channelsConfigHelper.reloadConfigData();
 		} catch (IOException ex) {
 			throw new UncheckedIOException(ex);
 
 		} catch (ConfigFormatSyntaxException ex) {
 			this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
-			this.announcementsConfigData = this.announcementsConfigHelper.getFactory().loadDefaults();
 			this.channelsConfigData = this.channelsConfigHelper.getFactory().loadDefaults();
 			this.logger.error(
 					"The yaml syntax in your configuration is invalid. " +
@@ -92,7 +78,6 @@ public final class ConfigManager {
 			);
 		} catch (InvalidConfigException ex) {
 			this.mainConfigData = this.mainConfigHelper.getFactory().loadDefaults();
-			this.announcementsConfigData = this.announcementsConfigHelper.getFactory().loadDefaults();
 			this.channelsConfigData = this.channelsConfigHelper.getFactory().loadDefaults();
 			this.logger.error(
 					"One of the values in your configuration is not valid. " +
@@ -104,14 +89,6 @@ public final class ConfigManager {
 
 	public ProxyChatConfig mainConfig() {
 		ProxyChatConfig configData = this.mainConfigData;
-		if (configData == null) {
-			throw new IllegalStateException("Configuration has not been loaded yet");
-		}
-		return configData;
-	}
-
-	public AnnouncementsConfig announcementsConfig() {
-		AnnouncementsConfig configData = this.announcementsConfigData;
 		if (configData == null) {
 			throw new IllegalStateException("Configuration has not been loaded yet");
 		}

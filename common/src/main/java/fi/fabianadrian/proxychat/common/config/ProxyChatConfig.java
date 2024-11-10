@@ -20,6 +20,8 @@ public interface ProxyChatConfig {
 	@ConfDefault.DefaultBoolean(false)
 	boolean globalChat();
 
+	AnnouncementsSection announcements();
+
 	@SubSection
 	interface FormatSection {
 		@ConfDefault.DefaultString("<gold>[<green>Broadcast</green>]</gold> <message>")
@@ -33,5 +35,20 @@ public interface ProxyChatConfig {
 
 		@ConfDefault.DefaultString("<gold>[<aqua><sender> -> <receiver></aqua>]</gold> <gray><message>")
 		String msgSpy();
+	}
+
+	@SubSection
+	interface AnnouncementsSection {
+		@ConfDefault.DefaultStrings({})
+		List<String> messages();
+
+		@ConfDefault.DefaultInteger(30)
+		int interval();
+
+		@ConfDefault.DefaultBoolean(false)
+		boolean random();
+
+		@ConfDefault.DefaultString("<gray>[<green>!</green>]</gray> <message>")
+		String format();
 	}
 }
