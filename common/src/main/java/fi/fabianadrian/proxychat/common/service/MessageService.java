@@ -45,47 +45,17 @@ public final class MessageService {
 	}
 
 	public void sendPrivateMessage(User sender, User receiver, String message) {
-		if (!sender.hasPermission(PERMISSION_BYPASS)) {
-			MessageSettings.PrivacySetting receiverPrivacySetting = receiver.messageSettings().privacySetting();
-
-			if (receiver.hasBlockedUser(sender)) {
-				return;
-			}
-
-			switch (receiverPrivacySetting) {
-				case NOBODY -> {
-					sender.sendMessage(COMPONENT_MESSAGE_ERROR_DISALLOWED);
-					return;
-				}
-				case FRIENDS -> {
-					if (this.friendHook == null) {
-						break;
-					}
-
-					if (!this.friendHook.areFriends(sender.uuid(), receiver.uuid())) {
-						sender.sendMessage(COMPONENT_MESSAGE_ERROR_DISALLOWED);
-						return;
-					}
-				}
-			}
+		if (!isAllowedToMessage(sender, receiver)) {
+			sender.sendMessage(COMPONENT_MESSAGE_ERROR_DISALLOWED);
+			return;
 		}
 
-		// Message components
-		Component senderComponent = messageSenderComponent(sender, receiver, message);
-		Component receiverComponent = messageReceiverComponent(sender, receiver, message);
-		Component spyComponent = messageSpyComponent(
-				sender,
-				receiver,
-				message
-		);
-
-		// Send components
-		sender.sendMessage(senderComponent);
-		receiver.sendMessage(receiverComponent);
-
+		sender.sendMessage(messageSenderComponent(sender, receiver, message));
+		receiver.sendMessage(messageReceiverComponent(sender, receiver, message));
 		receiver.lastMessaged(sender.uuid());
 
 		//Sends message spy component to every online user that has spy true
+		Component spyComponent = messageSpyComponent(sender, receiver, message);
 		for (User user : this.proxyChat.userManager().users()) {
 			if (user == sender || user == receiver || !user.messageSettings().spy()) continue;
 			user.sendMessage(spyComponent);
@@ -95,7 +65,11 @@ public final class MessageService {
 	public void sendChannelMessage(Channel channel, User sender, String message) {
 		Component component = this.miniMessage.deserialize(
 				channel.format(),
-				senderMessageResolver(sender, message)
+				TagResolver.resolver(
+						senderResolver(sender),
+						messageResolver(message),
+						miniPlaceholdersAudienceResolver(sender)
+				)
 		);
 
 		for (User user : this.proxyChat.userManager().users()) {
@@ -149,70 +123,118 @@ public final class MessageService {
 
 		Component messageComponent = this.miniMessage.deserialize(
 				this.formats.global(),
-				senderMessageResolver(senderOptional.get(), message)
+				TagResolver.resolver(
+						senderResolver(senderOptional.get()),
+						messageResolver(message),
+						miniPlaceholdersAudienceResolver(senderOptional.get())
+				)
 		);
 		recipients.forEach(recipient -> recipient.sendMessage(messageComponent));
 	}
 
-	private Component messageSenderComponent(User sender, User receiver, String message) {
-		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
-				Placeholder.component("sender", Messages.GENERAL_ME),
-				Placeholder.unparsed("receiver", receiver.name()),
-				Placeholder.unparsed("message", message)
-		);
-
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
-			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
+	private boolean isAllowedToMessage(User sender, User receiver) {
+		if (sender.hasPermission(PERMISSION_BYPASS)) {
+			return true;
 		}
 
-		return this.miniMessage.deserialize(this.formats.msg(), resolverBuilder.build());
+		MessageSettings.PrivacySetting receiverPrivacySetting = receiver.messageSettings().privacySetting();
+
+		if (receiver.hasBlockedUser(sender)) {
+			return false;
+		}
+
+		switch (receiverPrivacySetting) {
+			case NOBODY -> {
+				return false;
+			}
+			case FRIENDS -> {
+				if (this.friendHook == null) {
+					return true;
+				}
+
+				return this.friendHook.areFriends(sender.uuid(), receiver.uuid());
+			}
+		}
+
+		return true;
+	}
+
+	private Component messageSenderComponent(User sender, User receiver, String message) {
+		TagResolver resolver = TagResolver.resolver(
+				senderResolverMe(sender),
+				receiverResolver(receiver),
+				messageResolver(message),
+				miniPlaceholdersRelationalResolver(sender, receiver)
+		);
+
+		return this.miniMessage.deserialize(this.formats.msg(), resolver);
 	}
 
 	private Component messageReceiverComponent(User sender, User receiver, String message) {
-		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
-				Placeholder.unparsed("sender", sender.name()),
-				Placeholder.component("receiver", Messages.GENERAL_ME),
-				Placeholder.unparsed("message", message)
+		TagResolver resolver = TagResolver.resolver(
+				senderResolver(sender),
+				receiverResolverMe(receiver),
+				messageResolver(message),
+				miniPlaceholdersRelationalResolver(sender, receiver)
 		);
 
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
-			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
-		}
-
-		return this.miniMessage.deserialize(this.formats.msg(), resolverBuilder.build());
+		return this.miniMessage.deserialize(this.formats.msg(), resolver);
 	}
 
 	private Component messageSpyComponent(User sender, User receiver, String message) {
-		return this.miniMessage.deserialize(
-				this.formats.msgSpy(),
-				senderReceiverMessageResolver(sender, receiver, message)
+		TagResolver resolver = TagResolver.resolver(
+				senderResolver(sender),
+				receiverResolver(receiver),
+				messageResolver(message),
+				miniPlaceholdersRelationalResolver(sender, receiver)
+		);
+
+		return this.miniMessage.deserialize(this.formats.msgSpy(), resolver);
+	}
+
+	private TagResolver senderResolver(User sender) {
+		return TagResolver.resolver(
+				Placeholder.unparsed("sender_name", sender.name()),
+				Placeholder.component("sender_server", sender.currentServerName())
 		);
 	}
 
-	private TagResolver senderMessageResolver(User sender, String message) {
-		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
-				Placeholder.unparsed("sender", sender.name()),
-				Placeholder.unparsed("message", message)
+	private TagResolver senderResolverMe(User sender) {
+		return TagResolver.resolver(
+				Placeholder.component("sender_name", Messages.GENERAL_ME),
+				Placeholder.component("sender_server", sender.currentServerName())
 		);
-
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
-			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(sender));
-		}
-
-		return resolverBuilder.build();
 	}
 
-	private TagResolver senderReceiverMessageResolver(User sender, User receiver, String message) {
-		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
-				Placeholder.unparsed("sender", sender.name()),
-				Placeholder.unparsed("receiver", receiver.name()),
-				Placeholder.unparsed("message", message)
+	private TagResolver receiverResolver(User receiver) {
+		return TagResolver.resolver(
+				Placeholder.unparsed("receiver_name", receiver.name()),
+				Placeholder.component("receiver_server", receiver.currentServerName())
 		);
+	}
 
+	private TagResolver receiverResolverMe(User receiver) {
+		return TagResolver.resolver(
+				Placeholder.component("receiver_name", Messages.GENERAL_ME),
+				Placeholder.component("receiver_server", receiver.currentServerName())
+		);
+	}
+
+	private TagResolver messageResolver(String message) {
+		return Placeholder.unparsed("message", message);
+	}
+
+	private TagResolver miniPlaceholdersAudienceResolver(User sender) {
 		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
-			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
+			return MiniPlaceholders.getAudienceGlobalPlaceholders(sender);
 		}
+		return TagResolver.empty();
+	}
 
-		return resolverBuilder.build();
+	private TagResolver miniPlaceholdersRelationalResolver(User sender, User receiver) {
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			return MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver);
+		}
+		return TagResolver.empty();
 	}
 }

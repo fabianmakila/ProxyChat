@@ -27,13 +27,13 @@ public interface ProxyChatConfig {
 		@ConfDefault.DefaultString("<gold>[<green>Broadcast</green>]</gold> <message>")
 		String broadcast();
 
-		@ConfDefault.DefaultString("<gold>[<green>Global</green>]</gold> <sender>: <message>")
+		@ConfDefault.DefaultString("<gold>[<green>Global</green>]</gold> <sender_name>: <message>")
 		String global();
 
-		@ConfDefault.DefaultString("<gold>[<red><sender> -> <receiver></red>]</gold> <message>")
+		@ConfDefault.DefaultString("<gold>[<red><sender_name> -> <receiver_name></red>]</gold> <message>")
 		String msg();
 
-		@ConfDefault.DefaultString("<gold>[<aqua><sender> -> <receiver></aqua>]</gold> <gray><message>")
+		@ConfDefault.DefaultString("<gold>[<aqua><sender_name> -> <receiver_name></aqua>]</gold> <gray><message>")
 		String msgSpy();
 	}
 

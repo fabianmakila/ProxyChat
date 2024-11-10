@@ -7,7 +7,6 @@ import fi.fabianadrian.proxychat.common.service.NameService;
 import fi.fabianadrian.proxychat.common.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
-import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.context.CommandContext;
 
