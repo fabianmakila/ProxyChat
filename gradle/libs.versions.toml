@@ -25,8 +25,8 @@ cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-m
 cloud-minecraftExtras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-minecraft" }
 
 # Google
-gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
-guava = { module = "com.google.guava:guava", version = "33.2.1-jre" }
+gson = { module = "com.google.code.gson:gson", version = "2.11.0" }
+guava = { module = "com.google.guava:guava", version = "33.3.1-jre" }
 
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 
@@ -35,7 +35,7 @@ partyAndFriends-velocity = { module = "de.simonsator:VelocityPoweredPartyAndFrie
 
 premiumvanish = { module = "com.github.LeonMangler:PremiumVanishAPI", version = "2.9.0-4" }
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.12" }
-snakeyaml = { module = "org.yaml:snakeyaml", version = "2.2" }
+snakeyaml = { module = "org.yaml:snakeyaml", version = "2.3" }
 
 # Platforms
 bungeecord-api = { module = "net.md-5:bungeecord-api", version = "1.21-R0.1-SNAPSHOT" }
