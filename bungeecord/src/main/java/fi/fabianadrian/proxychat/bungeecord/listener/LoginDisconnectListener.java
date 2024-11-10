@@ -9,7 +9,6 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 public final class LoginDisconnectListener implements Listener {
-
 	private final ProxyChatBungeecord plugin;
 	private final ProxyChat proxyChat;
 

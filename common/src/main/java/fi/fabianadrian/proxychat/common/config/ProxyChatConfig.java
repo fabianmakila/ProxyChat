@@ -17,15 +17,21 @@ public interface ProxyChatConfig {
 	})
 	List<String> welcomeMessage();
 
+	@ConfDefault.DefaultBoolean(false)
+	boolean globalChat();
+
 	@SubSection
 	interface FormatSection {
+		@ConfDefault.DefaultString("<gold>[<green>Broadcast</green>]</gold> <message>")
+		String broadcast();
+
+		@ConfDefault.DefaultString("<gold>[<green>Global</green>]</gold> <sender>: <message>")
+		String global();
+
 		@ConfDefault.DefaultString("<gold>[<red><sender> -> <receiver></red>]</gold> <message>")
 		String msg();
 
 		@ConfDefault.DefaultString("<gold>[<aqua><sender> -> <receiver></aqua>]</gold> <gray><message>")
 		String msgSpy();
-
-		@ConfDefault.DefaultString("<white>[<green>Broadcast</green>]</white> <message>")
-		String broadcast();
 	}
 }

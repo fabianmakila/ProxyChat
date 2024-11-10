@@ -7,6 +7,7 @@ import fi.fabianadrian.proxychat.common.hook.FriendPluginHook;
 import fi.fabianadrian.proxychat.common.locale.Messages;
 import fi.fabianadrian.proxychat.common.user.MessageSettings;
 import fi.fabianadrian.proxychat.common.user.User;
+import fi.fabianadrian.proxychat.common.user.UserManager;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
@@ -16,6 +17,8 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public final class MessageService {
 
@@ -84,18 +87,9 @@ public final class MessageService {
 	}
 
 	public void sendChannelMessage(Channel channel, User sender, String message) {
-		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
-				Placeholder.unparsed("sender", sender.name()),
-				Placeholder.unparsed("message", message)
-		);
-
-		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
-			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(sender));
-		}
-
 		Component component = this.miniMessage.deserialize(
 				channel.format(),
-				resolverBuilder.build()
+				senderMessageResolver(sender, message)
 		);
 
 		for (User user : this.proxyChat.userManager().users()) {
@@ -122,6 +116,36 @@ public final class MessageService {
 		}
 
 		user.sendMessage(Component.join(JoinConfiguration.newlines(), lines));
+	}
+
+	public void sendGlobalMessage(UUID senderUUID, String message, List<UUID> recipientUUIDList) {
+		UserManager userManager = this.proxyChat.userManager();
+
+		Optional<User> senderOptional = userManager.user(senderUUID);
+		if (senderOptional.isEmpty()) {
+			return;
+		}
+
+		List<User> recipients = new ArrayList<>();
+		recipientUUIDList.forEach(uuid -> {
+			Optional<User> userOptional = userManager.user(uuid);
+			if (userOptional.isEmpty()) {
+				return;
+			}
+			User user = userOptional.get();
+
+			if (!user.messageSettings().globalChat()) {
+				return;
+			}
+
+			recipients.add(user);
+		});
+
+		Component messageComponent = this.miniMessage.deserialize(
+				this.formats.global(),
+				senderMessageResolver(senderOptional.get(), message)
+		);
+		recipients.forEach(recipient -> recipient.sendMessage(messageComponent));
 	}
 
 	private Component messageSenderComponent(User sender, User receiver, String message) {
@@ -153,6 +177,26 @@ public final class MessageService {
 	}
 
 	private Component messageSpyComponent(User sender, User receiver, String message) {
+		return this.miniMessage.deserialize(
+				this.formats.msgSpy(),
+				senderReceiverMessageResolver(sender, receiver, message)
+		);
+	}
+
+	private TagResolver senderMessageResolver(User sender, String message) {
+		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
+				Placeholder.unparsed("sender", sender.name()),
+				Placeholder.unparsed("message", message)
+		);
+
+		if (this.proxyChat.platform().hookManager().isMiniplaceholdersAvailable()) {
+			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getAudienceGlobalPlaceholders(sender));
+		}
+
+		return resolverBuilder.build();
+	}
+
+	private TagResolver senderReceiverMessageResolver(User sender, User receiver, String message) {
 		TagResolver.Builder resolverBuilder = TagResolver.builder().resolvers(
 				Placeholder.unparsed("sender", sender.name()),
 				Placeholder.unparsed("receiver", receiver.name()),
@@ -163,6 +207,6 @@ public final class MessageService {
 			resolverBuilder = resolverBuilder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(sender, receiver));
 		}
 
-		return this.miniMessage.deserialize(this.formats.msgSpy(), resolverBuilder.build());
+		return resolverBuilder.build();
 	}
 }

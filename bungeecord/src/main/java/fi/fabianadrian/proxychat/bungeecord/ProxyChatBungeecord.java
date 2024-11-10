@@ -3,6 +3,7 @@ package fi.fabianadrian.proxychat.bungeecord;
 import fi.fabianadrian.proxychat.bungeecord.command.BungeecordConsoleCommander;
 import fi.fabianadrian.proxychat.bungeecord.hook.BungeecordHookManager;
 import fi.fabianadrian.proxychat.bungeecord.listener.LoginDisconnectListener;
+import fi.fabianadrian.proxychat.bungeecord.listener.PlayerListener;
 import fi.fabianadrian.proxychat.common.ProxyChat;
 import fi.fabianadrian.proxychat.common.command.Commander;
 import fi.fabianadrian.proxychat.common.hook.HookManager;
@@ -23,8 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public final class ProxyChatBungeecord extends Plugin implements Platform {
 	private BungeeAudiences adventure;
@@ -126,8 +127,9 @@ public final class ProxyChatBungeecord extends Plugin implements Platform {
 
 	private void registerListeners() {
 		PluginManager manager = this.getProxy().getPluginManager();
-		Stream.of(
-				new LoginDisconnectListener(this)
+		List.of(
+				new LoginDisconnectListener(this),
+				new PlayerListener(this)
 		).forEach(listener -> manager.registerListener(this, listener));
 	}
 }

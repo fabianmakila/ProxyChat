@@ -19,6 +19,7 @@ import fi.fabianadrian.proxychat.common.user.User;
 import fi.fabianadrian.proxychat.velocity.command.VelocityConsoleCommander;
 import fi.fabianadrian.proxychat.velocity.hook.VelocityHookManager;
 import fi.fabianadrian.proxychat.velocity.listener.LoginDisconnectListener;
+import fi.fabianadrian.proxychat.velocity.listener.PlayerListener;
 import net.kyori.adventure.audience.Audience;
 import org.bstats.velocity.Metrics;
 import org.incendo.cloud.SenderMapper;
@@ -29,8 +30,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public final class ProxyChatVelocity implements Platform {
 	private final Injector injector;
@@ -100,8 +101,9 @@ public final class ProxyChatVelocity implements Platform {
 
 	private void registerListeners() {
 		EventManager manager = this.server.getEventManager();
-		Stream.of(
-				new LoginDisconnectListener(this.proxyChat)
+		List.of(
+				new LoginDisconnectListener(this.proxyChat),
+				new PlayerListener(this, this.proxyChat)
 		).forEach(listener -> manager.register(this, listener));
 	}
 
