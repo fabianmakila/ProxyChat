@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static net.kyori.adventure.text.Component.translatable;
 
-public class MessageSettingsCommand extends ProxyChatCommand {
+public final class MessageSettingsCommand extends ProxyChatCommand {
 	private static final Component COMPONENT_ANNOUNCEMENTS_HIDDEN = translatable(
 			"proxychat.command.messagesettings.announcements.hidden",
 			NamedTextColor.RED
